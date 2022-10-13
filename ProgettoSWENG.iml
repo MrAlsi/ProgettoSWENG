@@ -3,7 +3,10 @@
   <component name="FacetManager">
     <facet type="gwt" name="GWT">
       <configuration>
+        <setting name="compilerMaxHeapSize" value="1024" />
+        <setting name="gwtScriptOutputStyle" value="DETAILED" />
         <setting name="gwtSdkUrl" value="file://$USER_HOME$/gwt-2.10.0" />
+        <setting name="webFacet" value="Web" />
       </configuration>
     </facet>
     <facet type="web" name="Web">
@@ -26,5 +29,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="gwt-user" level="project" />
+    <orderEntry type="library" name="mapdb-3.0.8" level="project" />
   </component>
 </module>

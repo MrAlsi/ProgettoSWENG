@@ -1,6 +1,7 @@
 package com.university.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.DOM;
@@ -12,45 +13,69 @@ import com.google.gwt.event.dom.client.ClickEvent;
  */
 public class University implements EntryPoint {
 
+    FormPanel login;
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        final Button button = new Button("Click me");
-        final Label label = new Label();
+        caricaLogin();
+    }
 
-        button.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                if (label.getText().equals("")) {
-                    UniversityService.App.getInstance().getMessage("Hello, World!", new MyAsyncCallback(label));
-                } else {
-                    label.setText("");
+    public void caricaLogin(){
+        /*HTML contenitore = new HTML("<div id=\"login\">");
+        Label usernameLabel = new Label("Username");
+        TextBox usernameTextBox = new TextBox();
+        Label passwordLabel = new Label("Password");
+        PasswordTextBox passwordTextBox = new PasswordTextBox();*/
+
+        login = new FormPanel();
+        login.setAction("/login");
+        login.setMethod(FormPanel.METHOD_POST);
+
+        VerticalPanel formPanel = new VerticalPanel();
+        final Label labelUsername = new Label("Username:");
+        labelUsername.getElement().setClassName("label");
+        formPanel.add(labelUsername);
+        final TextBox username = new TextBox();
+        username.getElement().setClassName("input");
+        username.setName("Username");
+        formPanel.add(username);
+
+        final Label labelPassword = new Label("Password:");
+        labelPassword.getElement().setClassName("label");
+        formPanel.add(labelPassword);
+        final PasswordTextBox password = new PasswordTextBox();
+        password.getElement().setClassName("input");
+        password.setName("Password");
+        formPanel.add(password);
+
+        Button send = new Button("Login");
+        send.getElement().setClassName("btn-login");
+        send.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                login.submit();
+            }
+        });
+        formPanel.add(send);
+
+        login.add(formPanel);
+        login.addSubmitHandler(new FormPanel.SubmitHandler() {
+            @Override
+            public void onSubmit(FormPanel.SubmitEvent submitEvent) {
+                if (username.getText().length() == 0 || password.getText().length() == 0) {
+                    Window.alert("Compilare tutti i campi.");
+                    submitEvent.cancel();
                 }
             }
         });
 
-        // Assume that the host HTML has elements defined whose
-        // IDs are "slot1", "slot2".  In a real app, you probably would not want
-        // to hard-code IDs.  Instead, you could, for example, search for all
-        // elements with a particular CSS class and replace them with widgets.
-        //
-        RootPanel.get("slot1").add(button);
-        RootPanel.get("slot2").add(label);
-    }
+        //Condizioni se username e password sono corretti
 
-    private static class MyAsyncCallback implements AsyncCallback<String> {
-        private Label label;
 
-        MyAsyncCallback(Label label) {
-            this.label = label;
-        }
+        RootPanel.get("container").add(login);
 
-        public void onSuccess(String result) {
-            label.getElement().setInnerHTML(result);
-        }
 
-        public void onFailure(Throwable throwable) {
-            label.setText("Failed to receive answer from server!");
-        }
+
     }
 }
