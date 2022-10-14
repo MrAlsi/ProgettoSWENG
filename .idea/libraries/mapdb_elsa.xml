@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="mapdb.elsa" type="repository">
+    <properties maven-id="org.mapdb:elsa:3.0.0-M7" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/elsa-3.0.0-M7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
