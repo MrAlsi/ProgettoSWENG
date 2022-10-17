@@ -30,5 +30,13 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="gwt-user" level="project" />
     <orderEntry type="library" name="mapdb-3.0.8" level="project" />
+    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" name="eclipse.collections" level="project" />
+    <orderEntry type="library" name="net.jpountz.lz4" level="project" />
+    <orderEntry type="library" name="mapdb.elsa" level="project" />
+    <orderEntry type="library" name="java" level="project" />
+    <orderEntry type="library" name="google.guava" level="project" />
+    <orderEntry type="library" name="mapdb.elsa1" level="project" />
+    <orderEntry type="library" name="mapdb" level="project" />
   </component>
 </module>
