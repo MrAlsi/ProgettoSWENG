@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.university.client.model.Studente;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>
@@ -16,6 +17,7 @@ public class University implements EntryPoint {
     FormPanel login;
     FormPanel creaStudente;
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
+    private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
     /**
      * This is the entry point method.
      */
@@ -145,6 +147,17 @@ public class University implements EntryPoint {
 
                     @Override
                     public void onSuccess(Void result) {
+                        adminServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
+                            @Override
+                            public void onFailure(Throwable caught) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(Studente[] result) {
+
+                            }
+                        });
                         Window.alert("Oh yes");
                     }
                 });

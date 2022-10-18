@@ -9,4 +9,5 @@ public interface StudenteService extends RemoteService {
     void getCorsiDisponibili();
     boolean iscrizioneCorso(String mail);
     void getVoti(String mail);
+
 }
