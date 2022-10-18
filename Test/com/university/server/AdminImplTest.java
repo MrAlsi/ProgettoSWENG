@@ -13,10 +13,10 @@ class AdminImplTest {
     @Test
     void creaStudente() {
         assertEquals(true, adminImpl.creaStudente("Gabriel", "Alsina", "password", "22-08-1999") );
-        //assertEquals(1, 1);
     }
 
     @Test
     void getStudenti() {
+
     }
 }

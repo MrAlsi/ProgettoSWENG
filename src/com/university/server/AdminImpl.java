@@ -3,7 +3,9 @@ package com.university.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.AdminService;
 import com.university.client.model.Docente;
+import com.university.client.model.Segreteria;
 import com.university.client.model.Serializer.SerializerDocente;
+import com.university.client.model.Serializer.SerializerSegreteria;
 import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.model.Studente;
 import org.mapdb.DB;
@@ -15,6 +17,9 @@ import javax.print.Doc;
 import javax.servlet.ServletContext;
 
 public class AdminImpl extends RemoteServiceServlet implements AdminService {
+
+    /**         ~~ metodi per Studente ~~       **/
+
     /**
      * Crea un nuovo oggetto studente e lo salva nel DB
      */
@@ -64,7 +69,7 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
     @Override
     public Studente[] getStudenti() {
         try{
-            DB db = getDb("studente.db");
+            DB db = getDb("./studente.db");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
             Studente[] studenti = new Studente[map.size()];
             int j = 0;
@@ -99,6 +104,8 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
         }
         return null;
     }
+
+    /**         ~~ metodi per Docente ~~       **/
     @Override
     public boolean creaDocente(String nome, String cognome, String password) {
         try{
@@ -109,6 +116,7 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
                                                                     getMailDocente(nome, cognome),
                                                                     password,
                                                                     getDocenti().length));
+            db.commit();
             return true;
         } catch (Exception e) {
             return false;
@@ -151,10 +159,60 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
     public String[] informazioniDocente(String mail) {
         return null;
     }
+
+    /**         ~~ metodi per Segreteria ~~       **/
+
     @Override
     public boolean creaSegreteria(String nome, String cognome, String password) {
-        return false;
+        try{
+            DB db = getDb("segreteria.db");
+            HTreeMap<String, Segreteria> map = db.hashMap("segreteriaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSegreteria()).createOrOpen();
+            map.put(String.valueOf(map.size() + 1),
+                    new Segreteria(nome,
+                            cognome,
+                            creaMailSegreteria(nome, cognome),
+                            password));
+            db.commit();
+            return true;
+        } catch(Exception e){
+            System.out.println(e);
+            return false;
+        }
     }
+    public String creaMailSegreteria(String nome, String cognome){
+        int num = 0;
+        Segreteria[] segreteria = getSegreteria();
+        for(int i = 0; i < segreteria.length; i++){
+            if(nome.equals(segreteria[i].getNome()) && cognome.equals(segreteria[i].getCognome())){
+                num++;
+            }
+        }
+        if(num>0){
+            return nome + "." + cognome + num + "@segreteria.university.com";
+        } else {
+            return nome + "." + cognome + "@segreteria.university.com";
+        }
+    }
+
+    public Segreteria[] getSegreteria(){
+        try{
+            DB db = getDb("segreteria.db");
+            HTreeMap<String, Segreteria> map = db.hashMap("segreteriaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSegreteria()).createOrOpen();
+            Segreteria[] segreteria = new Segreteria[map.size()];
+            int j = 0;
+            for( String i: map.getKeys()){
+                segreteria[j] = map.get(i);
+                j++;
+            }
+            return segreteria;
+
+        } catch(Exception e){
+            return null;
+        }
+    }
+
+
+
 
     private DB getDb(String nomeDB) {
         ServletContext context = this.getServletContext();
