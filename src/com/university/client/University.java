@@ -18,13 +18,60 @@ public class University implements EntryPoint {
     FormPanel creaStudente;
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
+
+
+    final String[] menuSections = {"Home", "Dipartimenti"};
+    final Button[] menuButtons = new Button[menuSections.length];
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
 
-        //caricaLogin();
-        creaStudente();
+        Navbar();
+
+        // Di default mostro il contenuto della homepage
+        try {
+            Index index = new Index();
+            index.aggiungiContenuto();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //creaStudente();
+    }
+
+    public void Navbar() {
+
+        HorizontalPanel hPanel = new HorizontalPanel();
+        hPanel.setSpacing(5);
+
+        Button home__btn = new Button("");
+        home__btn.getElement().setId("home__GWTbtn");
+        RootPanel.get("home__btn").add(home__btn);
+
+        Button dipartimenti__btn = new Button("");
+        dipartimenti__btn.getElement().setId("dipartimenti__GWTbtn");
+        RootPanel.get("dipartimenti__btn").add(dipartimenti__btn);
+
+        Button login__btn = new Button("");
+        login__btn.getElement().setId("login__GWTbtn");
+        RootPanel.get("login__btn").add(login__btn);
+
+        Button contatti__btn = new Button("");
+        contatti__btn.getElement().setId("contatti__GWTbtn");
+        RootPanel.get("contatti__btn").add(contatti__btn);
+
+        login__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                RootPanel.get("container").clear();
+                try {
+                    caricaLogin();
+                    creaStudente();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void caricaLogin(){
