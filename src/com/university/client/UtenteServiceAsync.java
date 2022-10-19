@@ -2,9 +2,11 @@ package com.university.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.university.client.model.Studente;
+import com.university.client.model.Utente;
 
 public interface UtenteServiceAsync {
-    void creaUtente(String mail, String password, AsyncCallback<Void> async);
+    void getStudenti(AsyncCallback<Studente[]> async);
 
-    void getStudenti(AsyncCallback<Void> async);
+    void login(String mail, String password, AsyncCallback<Utente> async);
 }

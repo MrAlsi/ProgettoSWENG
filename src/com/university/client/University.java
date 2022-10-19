@@ -118,51 +118,11 @@ public class University implements EntryPoint {
             }
         });
 
-        creaStudente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
-            @Override
-            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                utenteServiceAsync.creaUtente(mail.getText(), password.getText(), new AsyncCallback<Void>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                       Window.alert("Non è stato possibile creare l'utente");
-                    }
-
-                    @Override
-                    public void onSuccess(Void result) {
-                        Window.alert("Utente creato con successo");
-                    }
-                });
-            }
-        });
 
         Button studenti = new Button("Get studenti");
-        studenti.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                utenteServiceAsync.getStudenti(new AsyncCallback<Void>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
 
-                    }
 
-                    @Override
-                    public void onSuccess(Void result) {
-                        adminServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
-                            @Override
-                            public void onFailure(Throwable caught) {
 
-                            }
-
-                            @Override
-                            public void onSuccess(Studente[] result) {
-
-                            }
-                        });
-                        Window.alert("Oh yes");
-                    }
-                });
-            }
-        });
 
 
 
