@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.university.client.model.Studente;
+import com.university.client.model.Utente;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>
@@ -66,7 +67,7 @@ public class University implements EntryPoint {
                 RootPanel.get("container").clear();
                 try {
                     caricaLogin();
-                    creaStudente();
+                    //creaStudente();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -75,12 +76,6 @@ public class University implements EntryPoint {
     }
 
     public void caricaLogin(){
-        /*HTML contenitore = new HTML("<div id=\"login\">");
-        Label usernameLabel = new Label("Username");
-        TextBox usernameTextBox = new TextBox();
-        Label passwordLabel = new Label("Password");
-        PasswordTextBox passwordTextBox = new PasswordTextBox();*/
-
         login = new FormPanel();
         login.setAction("/login");
         login.setMethod(FormPanel.METHOD_POST);
@@ -125,17 +120,29 @@ public class University implements EntryPoint {
         login.add(formPanel);
 
         //Condizioni se username e password sono corretti
-
-       /* login.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+        login.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                utenteServiceAsync.login(mail.getText(), password.getText(), new AsyncCallback<Utente>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Utente o password sbagliati");
+                    }
 
+                    @Override
+                    public void onSuccess(Utente result) {
+                        //Window.alert("sei dentro");
+                        //Carica account
+
+                    }
+                });
             }
-        })*/
+        });
+
         RootPanel.get("container").add(login);
     }
 
-    public void creaStudente(){
+    /*public void creaStudente(){
         creaStudente = new FormPanel();
         creaStudente.setAction("creaUtente");
         creaStudente.setMethod(FormPanel.METHOD_POST);
@@ -159,13 +166,10 @@ public class University implements EntryPoint {
         creaButton.getElement().setClassName("btn-login");
 
         creaButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                creaStudente.submit();
-            }
+
         });
 
-        creaStudente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+       /*creaStudente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
                 utenteServiceAsync.creaUtente(mail.getText(), password.getText(), new AsyncCallback<Void>() {
@@ -212,10 +216,9 @@ public class University implements EntryPoint {
         });
 
 
-
         formPanel.add(creaButton);
         creaStudente.add(formPanel);
         RootPanel.get("container").add(creaStudente);
-        RootPanel.get("container").add(studenti);
-    }
+        //RootPanel.get("container").add(studenti);
+    }*/
 }
