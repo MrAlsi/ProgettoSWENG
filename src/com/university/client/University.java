@@ -115,29 +115,90 @@ public class University implements EntryPoint {
                 }
             }
         });
-        formPanel.add(send);
 
-        login.add(formPanel);
+
+       adminServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Utente creato");
+            }
+        });
 
         //Condizioni se username e password sono corretti
         login.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+               // adminServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
+                   /* @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("ma porca");
+
+                    }
+
+                    @Override
+                    public void onSuccess(Studente[] result) {
+                        Window.alert("R: ");
+                    }
+                });
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("baofh");
+
+                    }
+
+                    @Override
+                    public void onSuccess(Studente[] result) {
+                        Window.alert("T: " + result[0].getNome());
+                    }
+                });*/
                 utenteServiceAsync.login(mail.getText(), password.getText(), new AsyncCallback<Utente>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("Utente o password sbagliati");
+                        Window.alert("Utente o password sbagliati " + caught + "fojao");
                     }
 
                     @Override
                     public void onSuccess(Utente result) {
                         //Window.alert("sei dentro");
                         //Carica account
+                        switch (result.getTipo()){
+                            case "Studente":
+                                //Carica pagina studente
+                                Window.alert("studente");
+                                break;
+                            case "Docente":
+                                //Carica pagina docente
+                                Window.alert("docente");
+                                break;
+                            case "Segreteria":
+                                //Carica segreteria
+                                Window.alert("segreteria.");
+                                break;
+                            default:
+                                //Carica admin
+                                Window.alert("Admin");
+                                break;
+
+
+                        }
+                        //Window.alert(String.valueOf(result.));
+                        //Cambio pagina in PortaleStudente
 
                     }
                 });
             }
         });
+
+        formPanel.add(send);
+
+        login.add(formPanel);
 
         RootPanel.get("container").add(login);
     }

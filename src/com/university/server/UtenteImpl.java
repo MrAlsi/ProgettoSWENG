@@ -28,13 +28,14 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
         System.out.println(dominio[1]);
         //Switch per vedere il dominio e cercare in un determinato database
         return switch (dominio[1]) {
-            case "studente.university.com" -> cercaStudenti(mail, password);
+            case "studente.university.com" -> cercaStudente(mail, password);
             case "docente.university.com" -> cercaDocente(mail, password);
             default -> cercaSegreteria(mail, password);
         };
     }
 
-    public Studente cercaStudenti(String mail, String password){
+    @Override
+    public Studente cercaStudente(String mail, String password){
         Studente[] studenti = getStudenti();
         for (Studente studente : studenti) {
             if (mail.equals(studente.getMail()) && password.equals(studente.getPassword()))
@@ -72,7 +73,7 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
     public Docente[] getDocenti(){
         try{
-            DB db = getDb("C:\\docenti.db");
+            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\docenti.db");
             HTreeMap<String, Docente> map = db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
             Docente[] docenti = new Docente[map.size()];
             int j = 0;
@@ -98,7 +99,7 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
     public Segreteria[] getSegreteria(){
         try{
-            DB db = getDb("C:\\segreteria.db");
+            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\segreteria.db");
             HTreeMap<String, Segreteria> map = db.hashMap("segreteriaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSegreteria()).createOrOpen();
             Segreteria[] segreteria = new Segreteria[map.size()];
             int j = 0;
