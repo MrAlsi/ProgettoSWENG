@@ -1,14 +1,31 @@
+/*======== PALETTE =========*/
+:root {
+    --color-bg: #D8E3E7;
+    --color-bg-variant: #51C4D3;
+    --color-primary: #126E82;
+    --color-primary-variant: #132C33;
+    --color-white: #fff;
+    --color-dark: rgb(34 34 34);
+
+    --transition: all 400ms ease;
+
+}
+
 
 /*========== BODY =========*/
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700");
 
 body {
     width: 100%;
-    height: 100vh;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0px;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body, table td, select, button {
@@ -61,7 +78,7 @@ a:hover #contatti__GWTbtn {
     height: 60px;
     padding: 0 15px;
     border-radius: 30px;
-    background: rgb(255, 255, 255, 0.1);
+    background: rgb(255, 255, 255, 0.3);
     backdrop-filter: blur(4px);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
     z-index: 1;
@@ -71,6 +88,7 @@ a:hover #contatti__GWTbtn {
     width: 32px;
     height: 32px;
     background: url('./img/home__icon.png') no-repeat;
+    filter: invert(0.1);
     border: none
 }
 
@@ -78,6 +96,7 @@ a:hover #contatti__GWTbtn {
     width: 32px;
     height: 32px;
     background: url('./img/dipartimenti__icon.png') no-repeat;
+    filter: invert(0.1);
     border: none
 }
 
@@ -85,6 +104,7 @@ a:hover #contatti__GWTbtn {
     width: 32px;
     height: 32px;
     background: url('./img/utente__icon.png') no-repeat;
+    filter: invert(0.1);
     border: none
 }
 
@@ -92,6 +112,7 @@ a:hover #contatti__GWTbtn {
     width: 32px;
     height: 32px;
     background: url('./img/contatti__icon.png') no-repeat;
+    filter: invert(0.1);
     border: none
 }
 
@@ -114,6 +135,8 @@ a:hover #contatti__GWTbtn {
 
 /*========= HOMEPAGE ===========*/
 
+/*SFONDO*/
+
 .sfondo__img {
     width: 100%;
     object-fit: cover;
@@ -124,12 +147,13 @@ a:hover #contatti__GWTbtn {
 #sfondo__div {
     position: relative;
     text-align: center;
-    color: white;
-    background: black;
+    background: var(--color-dark);
     overflow: hidden;
+    height: auto;
 }
 
 .titolo {
+    color: var(--color-white);
     position: absolute;
     top: 45%;
     left: 50%;
@@ -141,6 +165,7 @@ a:hover #contatti__GWTbtn {
 }
 
 .sottotitolo {
+    color: var(--color-bg);
     position: absolute;
     top: 60%;
     left: 50%;
@@ -163,4 +188,205 @@ a:hover #contatti__GWTbtn {
     50%, 100% {
         opacity: 1;
     }
+}
+
+/*PARAGRAFO 1*/
+#paragrafo__1 {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    background-color: var(--color-bg);
+    justify-content: center;
+}
+
+.card__p1 {
+    position: relative;
+    width: 15%;
+    height: fit-content;
+    min-height: 48vh;
+    border-radius: 20px;
+    margin: 3rem;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-white);
+    transition: transform .5s ease
+}
+
+.card__img {
+    width: 100%;
+    height: 40%;
+    object-fit: fill;
+    border-radius: 20px 20px 0px 0px;
+}
+
+.card__titolo {
+    margin-top: 10px;
+    font-size: 22px;
+    padding: 0rem 1rem;
+}
+
+.card__descrizione {
+    margin: 10px 0px;
+    font-size: 14px;
+    padding: 0rem 1rem;
+}
+
+.card__p1:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/*PARAGRAFO 2*/
+#paragrafo__2 {
+    width: 100%;
+    height: 10vh;
+    background-color: var(--color-bg-variant);
+    justify-content: center;
+    display: flex;
+    padding: 10px 0px;
+    align-items: center;
+}
+
+.title__p2 {
+    color: var(--color-primary);
+    font-size: 36px;
+    padding: 0px 5px;
+}
+
+#dipartimenti__p2 {
+    color: var(--color-primary);
+    font-size: 36px;
+    padding: 0px 50px 0px 0px;
+}
+
+#insegnanti__p2 {
+    color: var(--color-primary);
+    font-size: 36px;
+    padding: 0px 50px 0px 0px;
+}
+
+#studenti__p2 {
+    color: var(--color-primary);
+    font-size: 36px;
+    padding: 0px 50px 0px 0px;
+}
+
+
+/*PARAGRAFO 3*/
+#paragrafo__3 {
+    width: 100%;
+    height: 90vh;
+    background-color: var(--color-bg);
+    justify-content: center;
+    padding: 3rem 0rem;
+}
+
+#paragrafo__3 h2 {
+    font-size: 32px;
+    color: var(--color-primary-variant);
+    margin: 0rem 5rem;
+    text-align: center;
+}
+
+#paragrafo__3 h5 {
+    font-size: 18px;
+    color: var(--color-primary);
+    margin: 0rem 5rem;
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.container__p3 {
+    display: grid;
+    grid-template-columns: 35% 50%;
+    gap: 15%;
+    align-items: center;
+}
+
+.dipartimenti__img__container {
+    width: 90%;
+    aspect-ratio: 1/1;
+    border-radius: 2rem;
+    background: linear-gradient(
+            45deg,
+            transparent,
+            var(--color-primary),
+            transparent
+    );
+    display: grid;
+    place-items: center;
+    margin-top: 5rem;
+    margin-left: 10rem;
+}
+
+.dipartimenti__img {
+    border-radius: 2rem;
+    overflow: hidden;
+    transform: rotate(10deg);
+    transition: var(--transition);
+}
+
+.dipartimenti__img__tag {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+
+.dipartimenti__img:hover {
+    transform: rotate(0deg);
+}
+
+.dipartimenti__text__container {
+  margin-right: 10rem;
+}
+
+.dipartimenti__text__container p {
+    margin: 1.5rem 0 1.5rem;
+    color: var(--color-primary);
+    font-size: 22px;
+}
+
+/*======== FOOTER =========*/
+#footer {
+    background-color: var(--color-primary-variant);
+    width: 100%;
+    height: fit-content;
+    padding: 5rem 0 5rem;
+    font-size: 15px;
+    color: var(--color-primary);
+    display: grid;
+    grid-template-columns: 1fr 4fr 4fr 1fr;
+}
+
+.footer__container__left {
+    grid-column: 2/3;
+}
+
+.footer__container__right {
+    grid-column: 3/4;
+    margin-left: 40rem;
+}
+
+.footer__title {
+    color: var(--color-white);
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-top: 25px;
+    letter-spacing: 2px;
+}
+
+.footer__description {
+    margin-top: 25px;
+}
+
+.footer__contacts {
+    color: var(--color-white);
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+.footer__details {
+    margin-bottom: 10px;
 }
