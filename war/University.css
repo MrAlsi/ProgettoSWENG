@@ -71,6 +71,7 @@ a:hover #contatti__GWTbtn {
     width: 32px;
     height: 32px;
     background: url('./img/home__icon.png') no-repeat;
+    filter: invert(0.8);
     border: none
 }
 
