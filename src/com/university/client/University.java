@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.university.client.model.Studente;
+import com.university.client.model.Utente;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>
@@ -18,22 +19,63 @@ public class University implements EntryPoint {
     FormPanel creaStudente;
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
+
+
+    final String[] menuSections = {"Home", "Dipartimenti"};
+    final Button[] menuButtons = new Button[menuSections.length];
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
 
-        //caricaLogin();
-        creaStudente();
+        Navbar();
+
+        // Di default mostro il contenuto della homepage
+        try {
+            Index index = new Index();
+            index.aggiungiContenuto();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //creaStudente();
+    }
+
+    public void Navbar() {
+
+        HorizontalPanel hPanel = new HorizontalPanel();
+        hPanel.setSpacing(5);
+
+        Button home__btn = new Button("");
+        home__btn.getElement().setId("home__GWTbtn");
+        RootPanel.get("home__btn").add(home__btn);
+
+        Button dipartimenti__btn = new Button("");
+        dipartimenti__btn.getElement().setId("dipartimenti__GWTbtn");
+        RootPanel.get("dipartimenti__btn").add(dipartimenti__btn);
+
+        Button login__btn = new Button("");
+        login__btn.getElement().setId("login__GWTbtn");
+        RootPanel.get("login__btn").add(login__btn);
+
+        Button contatti__btn = new Button("");
+        contatti__btn.getElement().setId("contatti__GWTbtn");
+        RootPanel.get("contatti__btn").add(contatti__btn);
+
+        login__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                RootPanel.get("container").clear();
+                try {
+                    caricaLogin();
+                    //creaStudente();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void caricaLogin(){
-        /*HTML contenitore = new HTML("<div id=\"login\">");
-        Label usernameLabel = new Label("Username");
-        TextBox usernameTextBox = new TextBox();
-        Label passwordLabel = new Label("Password");
-        PasswordTextBox passwordTextBox = new PasswordTextBox();*/
-
         login = new FormPanel();
         login.setAction("/login");
         login.setMethod(FormPanel.METHOD_POST);
@@ -73,22 +115,96 @@ public class University implements EntryPoint {
                 }
             }
         });
+
+
+       adminServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Utente creato");
+            }
+        });
+
+        //Condizioni se username e password sono corretti
+        login.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+            @Override
+            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+               // adminServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
+                   /* @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("ma porca");
+
+                    }
+
+                    @Override
+                    public void onSuccess(Studente[] result) {
+                        Window.alert("R: ");
+                    }
+                });
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("baofh");
+
+                    }
+
+                    @Override
+                    public void onSuccess(Studente[] result) {
+                        Window.alert("T: " + result[0].getNome());
+                    }
+                });*/
+                utenteServiceAsync.login(mail.getText(), password.getText(), new AsyncCallback<Utente>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Utente o password sbagliati " + caught + "fojao");
+                    }
+
+                    @Override
+                    public void onSuccess(Utente result) {
+                        //Window.alert("sei dentro");
+                        //Carica account
+                        String tipo = result.getTipo();
+                        switch (tipo){
+                            case "Studente":
+                                //Carica pagina studente
+                                Window.alert("studente");
+                                break;
+                            case "Docente":
+                                //Carica pagina docente
+                                Window.alert("docente");
+                                break;
+                            case "Segreteria":
+                                //Carica segreteria
+                                Window.alert("segreteria.");
+                                break;
+                            default:
+                                //Carica admin
+                                Window.alert("Admin");
+                                break;
+
+
+                        }
+                        //Window.alert(String.valueOf(result.));
+                        //Cambio pagina in PortaleStudente
+
+                    }
+                });
+            }
+        });
+
         formPanel.add(send);
 
         login.add(formPanel);
 
-        //Condizioni se username e password sono corretti
-
-       /* login.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
-            @Override
-            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-
-            }
-        })*/
         RootPanel.get("container").add(login);
     }
 
-    public void creaStudente(){
+    /*public void creaStudente(){
         creaStudente = new FormPanel();
         creaStudente.setAction("creaUtente");
         creaStudente.setMethod(FormPanel.METHOD_POST);
@@ -112,23 +228,59 @@ public class University implements EntryPoint {
         creaButton.getElement().setClassName("btn-login");
 
         creaButton.addClickHandler(new ClickHandler() {
+
+        });
+
+       /*creaStudente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
-            public void onClick(ClickEvent event) {
-                creaStudente.submit();
+            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                utenteServiceAsync.creaUtente(mail.getText(), password.getText(), new AsyncCallback<Void>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                       Window.alert("Non è stato possibile creare l'utente");
+                    }
+
+                    @Override
+                    public void onSuccess(Void result) {
+                        Window.alert("Utente creato con successo");
+                    }
+                });
             }
         });
 
-
         Button studenti = new Button("Get studenti");
+        studenti.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                utenteServiceAsync.getStudenti(new AsyncCallback<Void>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
 
+                    }
 
+                    @Override
+                    public void onSuccess(Void result) {
+                        adminServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
+                            @Override
+                            public void onFailure(Throwable caught) {
 
+                            }
 
+                            @Override
+                            public void onSuccess(Studente[] result) {
+
+                            }
+                        });
+                        Window.alert("Oh yes");
+                    }
+                });
+            }
+        });
 
 
         formPanel.add(creaButton);
         creaStudente.add(formPanel);
         RootPanel.get("container").add(creaStudente);
-        RootPanel.get("container").add(studenti);
-    }
+        //RootPanel.get("container").add(studenti);
+    }*/
 }

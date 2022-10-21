@@ -26,7 +26,7 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
     @Override
     public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {
         try{
-            DB db = getDb("C:\\studenti.db");
+            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\studente.db");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
             map.put(String.valueOf(map.size() + 1),
                     new Studente(nome,
@@ -69,7 +69,7 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
     @Override
     public Studente[] getStudenti() {
         try{
-            DB db = getDb("C:\\studenti.db");
+            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\studente.db");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
             Studente[] studenti = new Studente[map.size()];
             int j = 0;
@@ -109,7 +109,7 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
     @Override
     public boolean creaDocente(String nome, String cognome, String password) {
         try{
-            DB db = getDb("C:\\docenti.db");
+            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\docenti.db");
             HTreeMap<String, Docente> map = db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
             map.put(String.valueOf(map.size() + 1), new Docente( nome,
                                                                     cognome,

@@ -9,5 +9,7 @@ import com.university.client.model.Utente;
 public interface UtenteService extends RemoteService {
     Utente login(String mail, String password);
 
+    Studente cercaStudente(String mail, String password);
+
     Studente[] getStudenti();
 }

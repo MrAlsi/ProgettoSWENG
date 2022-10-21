@@ -6,7 +6,7 @@ public class Docente extends Utente{
     public int codDocente;
 
     public Docente(String nome, String cognome, String mail, String password, int codDocente) {
-        super(nome, cognome, mail, password);
+        super(nome, cognome, mail, password, "Docente");
         this.codDocente = codDocente;
     }
 
