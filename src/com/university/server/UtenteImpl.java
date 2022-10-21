@@ -47,7 +47,7 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
     @Override
     public Studente[] getStudenti(){
         try{
-            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\studenti.db");
+            DB db = getDb("..\\..\\..\\..\\..\\..\\studenti.db");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
             Studente[] studenti = new Studente[map.size()];
             int j = 0;

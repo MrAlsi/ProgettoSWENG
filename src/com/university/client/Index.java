@@ -1,9 +1,13 @@
 package com.university.client;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import com.university.client.model.Studente;
 
 public class Index implements Contenuto{
 
+    private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
     final static HTML sfondo = new HTML("" +
             "<section id=\"sfondo__div\">" +
                 "<img src=\"img/homepage__bg.jpg\" class=\"sfondo__img\">" +
@@ -37,7 +41,7 @@ public class Index implements Contenuto{
                 "<div class=\"title__p2\"><b>INSEGNANTI: </b></div>" +
                 "<div id=\"insegnanti__p2\">0</div>" +
                 "<div class=\"title__p2\"><b>STUDENTI: </b></div>" +
-                "<div id=\"studenti__p2\">0</div>" +
+                "<div id=\"studenti__p2\"> " + getNumeroStudenti() + "</div>" +
             "</section>" +
             "");
 
@@ -98,6 +102,26 @@ public class Index implements Contenuto{
         homepage__panel.add(footer);
 
         RootPanel.get("container").add(homepage__panel);
+    }
+
+    public static int getNumeroStudenti(){
+
+        int[] studenti = new int[1];
+        adminServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                studenti[0] = 3;
+            }
+
+            @Override
+            public void onSuccess(Studente[] result) {
+                studenti[0] = result.length;
+                System.out.println("fblsgfliushgs---------- é*é*é*é: " + studenti[0]);
+                studenti[0] = 1000;
+            }
+        });
+
+        return studenti[0];
     }
 }
 

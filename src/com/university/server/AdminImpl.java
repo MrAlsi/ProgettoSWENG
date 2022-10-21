@@ -109,7 +109,7 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
     @Override
     public boolean creaDocente(String nome, String cognome, String password) {
         try{
-            DB db = getDb("C:\\docenti.db");
+            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\docenti.db");
             HTreeMap<String, Docente> map = db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
             map.put(String.valueOf(map.size() + 1), new Docente( nome,
                                                                     cognome,
@@ -210,9 +210,6 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
             return null;
         }
     }
-
-
-
 
     private DB getDb(String nomeDB) {
         ServletContext context = this.getServletContext();

@@ -29,8 +29,9 @@ public class Utente implements Serializable {
     public String getMail(){
         return this.mail;
     }
-    public String getPassword(){return password;}
-
+    public String getPassword(){
+        return password;
+    }
     public String getTipo() {
         return tipo;
     }
@@ -38,19 +39,15 @@ public class Utente implements Serializable {
     public void setNome(String nome){
         this.nome = nome;
     }
-
     public void setCognome(String cognome) {
         this.cognome = cognome;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
-
     public void setUsername(String username){
         this.mail = username;
     }
-
 
     @Override
     public String toString(){

@@ -168,7 +168,8 @@ public class University implements EntryPoint {
                     public void onSuccess(Utente result) {
                         //Window.alert("sei dentro");
                         //Carica account
-                        switch (result.getTipo()){
+                        String tipo = result.getTipo();
+                        switch (tipo){
                             case "Studente":
                                 //Carica pagina studente
                                 Window.alert("studente");
