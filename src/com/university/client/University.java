@@ -15,14 +15,20 @@ import com.university.client.model.Utente;
  */
 public class University implements EntryPoint {
 
-    FormPanel login;
+    FormPanel login__panel;
     FormPanel creaStudente;
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
 
+    final HTML login__background = new HTML("" +
+            "<div class=\"login__background\">" +
+            "</div>" +
+            "");
 
-    final String[] menuSections = {"Home", "Dipartimenti"};
-    final Button[] menuButtons = new Button[menuSections.length];
+    final HTML login__img = new HTML("" +
+            "<img src=\"img/ragazza__login.png\" class=\"login__img\">" +
+            "");
+
     /**
      * This is the entry point method.
      */
@@ -76,40 +82,43 @@ public class University implements EntryPoint {
     }
 
     public void caricaLogin(){
-        login = new FormPanel();
-        login.setAction("/login");
-        login.setMethod(FormPanel.METHOD_POST);
+        login__panel = new FormPanel();
+        login__panel.setAction("/login");
+        login__panel.setMethod(FormPanel.METHOD_POST);
 
-        VerticalPanel formPanel = new VerticalPanel();
-        final Label labelMail = new Label("Mail:");
-        labelMail.getElement().setClassName("label");
-        formPanel.add(labelMail);
-        final TextBox mail = new TextBox();
-        mail.getElement().setClassName("input");
-        mail.setName("Mail");
-        formPanel.add(mail);
 
-        final Label labelPassword = new Label("Password:");
-        labelPassword.getElement().setClassName("label");
-        formPanel.add(labelPassword);
-        final PasswordTextBox password = new PasswordTextBox();
-        password.getElement().setClassName("input");
-        password.setName("Password");
-        formPanel.add(password);
+        VerticalPanel login__container = new VerticalPanel();
+        login__container.add(login__img);
+        login__container.getElement().setClassName("login__container");
+        final Label email__label = new Label("Email:");
+        email__label.getElement().setClassName("email__label");
+        login__container.add(email__label);
+        final TextBox email__input = new TextBox();
+        email__input.getElement().setClassName("email__input");
+        email__input.setName("Email");
+        login__container.add(email__input);
 
-        Button send = new Button("Login");
-        send.getElement().setClassName("btn-login");
-        send.addClickHandler(new ClickHandler() {
+        final Label password__label = new Label("Password:");
+        password__label.getElement().setClassName("password__label");
+        login__container.add(password__label);
+        final PasswordTextBox password__input = new PasswordTextBox();
+        password__input.getElement().setClassName("password__input");
+        password__input.setName("Password");
+        login__container.add(password__input);
+
+        Button login__btn = new Button("Login");
+        login__btn.getElement().setClassName("login__btn");
+        login__btn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                login.submit();
+                login__panel.submit();
             }
         });
 
-        login.addSubmitHandler(new FormPanel.SubmitHandler() {
+        login__panel.addSubmitHandler(new FormPanel.SubmitHandler() {
             @Override
             public void onSubmit(FormPanel.SubmitEvent submitEvent) {
-                if (mail.getText().length() == 0 || password.getText().length() == 0) {
+                if (email__input.getText().length() == 0 || password__input.getText().length() == 0) {
                     Window.alert("Compilare tutti i campi.");
                     submitEvent.cancel();
                 }
@@ -130,7 +139,7 @@ public class University implements EntryPoint {
         });
 
         //Condizioni se username e password sono corretti
-        login.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+        login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
 
@@ -158,7 +167,7 @@ public class University implements EntryPoint {
                         Window.alert("T: " + result[0].getNome());
                     }
                 });*/
-                utenteServiceAsync.login(mail.getText(), password.getText(), new AsyncCallback<Utente>() {
+                utenteServiceAsync.login(email__input.getText(), password__input.getText(), new AsyncCallback<Utente>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Utente o password sbagliati " + caught + "fojao");
@@ -199,11 +208,11 @@ public class University implements EntryPoint {
             }
         });
 
-        formPanel.add(send);
+        login__container.add(login__btn);
 
-        login.add(formPanel);
-
-        RootPanel.get("container").add(login);
+        login__panel.add(login__container);
+        RootPanel.get("body").add(login__background);
+        RootPanel.get("container").add(login__panel);
     }
 
     /*public void creaStudente(){

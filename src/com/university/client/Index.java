@@ -92,7 +92,7 @@ public class Index implements Contenuto{
     public void aggiungiContenuto() throws Exception {
 
         RootPanel.get("container").clear();
-        VerticalPanel homepage__panel = new VerticalPanel();
+        final VerticalPanel homepage__panel = new VerticalPanel();
         homepage__panel.addStyleName("homepage__panel");
 
         adminServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
@@ -141,7 +141,7 @@ public class Index implements Contenuto{
     }
 
     public void getNumeroStudenti(){
-        int[] num = new int[1];
+        final int[] num = new int[1];
         adminServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
             @Override
             public void onFailure(Throwable caught) {
