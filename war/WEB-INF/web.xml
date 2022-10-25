@@ -21,6 +21,14 @@
         <servlet-name>com.university.University AdminService</servlet-name>
         <servlet-class>com.university.server.AdminImpl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>com.university.University CorsoService</servlet-name>
+        <servlet-class>com.university.server.CorsoImpl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>com.university.University IndexService</servlet-name>
+        <servlet-class>com.university.server.IndexImpl</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>com.university.University UniversityService</servlet-name>
@@ -38,5 +46,13 @@
     <servlet-mapping>
         <servlet-name>com.university.University AdminService</servlet-name>
         <url-pattern>/University/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University CorsoService</servlet-name>
+        <url-pattern>/University/CorsoService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University IndexService</servlet-name>
+        <url-pattern>/University/index</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -1,7 +1,7 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.UniversityService;
+import com.university.client.IndexService;
 import com.university.client.model.Corso;
 import com.university.client.model.Docente;
 import com.university.client.model.Serializer.SerializerCorso;
@@ -15,19 +15,13 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class UniversityServiceImpl extends RemoteServiceServlet implements UniversityService {
-    @Override
-    public String getMessage(String msg) {
-        return null;
-    }
-    // Implementation of sample interface method
-
+public class IndexImpl extends RemoteServiceServlet implements IndexService {
     @Override
     public int[] getDataHP(){
-        return new int[]{/*getNumeroCorsi(), getNumeroDocenti(),*/ getNumeroStudenti()};
+        return new int[]{getNumeroCorsi(), getNumeroDocenti(), getNumeroStudenti()};
     }
 
-    /*public int getNumeroCorsi(){
+    public int getNumeroCorsi(){
         try{
             DB db = getDb("C:\\MapDB\\corsi");
             HTreeMap<String, Corso> map = db.hashMap("corsiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerCorso()).createOrOpen();
@@ -45,7 +39,7 @@ public class UniversityServiceImpl extends RemoteServiceServlet implements Unive
         } catch(Exception e){
             return -1;
         }
-    }*/
+    }
 
     @Override
     public int getNumeroStudenti(){
@@ -71,5 +65,4 @@ public class UniversityServiceImpl extends RemoteServiceServlet implements Unive
             return db;
         }
     }
-
 }

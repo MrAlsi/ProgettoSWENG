@@ -11,6 +11,7 @@ public interface UniversityService extends RemoteService {
     int getNumeroStudenti();
 
     int[] getDataHP();
+
 /*
     /**
      * Utility/Convenience class.

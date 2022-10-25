@@ -64,7 +64,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
 
     private Sostiene[] caricaEsami() {
         try {
-            DB db = getDb("C:\\MapDB\\sostiene.db");
+            DB db = getDb("C:\\MapDB\\sostiene");
             HTreeMap<String, Sostiene> map = db.hashMap("sostieneMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSostiene()).createOrOpen();
             Sostiene[] sostiene = new Sostiene[map.size()];
             int j = 0;
@@ -80,7 +80,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
 
     private Frequenta[] getCorsi(){
         try {
-            DB db = getDb("C:\\MapDB\\frequenta.db");
+            DB db = getDb("C:\\MapDB\\frequenta");
             HTreeMap<String, Frequenta> map = db.hashMap("frequentaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerFrequenta()).createOrOpen();
             Frequenta[] frequenta = new Frequenta[map.size()];
             int j = 0;

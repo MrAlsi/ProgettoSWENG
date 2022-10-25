@@ -12,10 +12,7 @@ import org.mapdb.HTreeMap;
 import org.mapdb.Serializer;
 
 public class Index implements Contenuto{
-
-    private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
-    //public static AdminService adminService = GWT.create(AdminService.class);
-    public static int numStudenti;
+    private static IndexServiceAsync indexServiceAsync = GWT.create(com.university.client.IndexService.class);
     final static HTML sfondo = new HTML("" +
             "<section id=\"sfondo__div\">" +
                 "<img src=\"img/homepage__bg.jpg\" class=\"sfondo__img\">" +
@@ -42,18 +39,6 @@ public class Index implements Contenuto{
                 "</div> " +
             "</section>"
     );
-
-    final HTML paragrafo__2 = new HTML("" +
-            "<section id=\"paragrafo__2\">" +
-                "<div class=\"title__p2\"><b>DIPARTIMENTI: </b></div>" +
-                "<div id=\"dipartimenti__p2\">0</div>" +
-                "<div class=\"title__p2\"><b>INSEGNANTI: </b></div>" +
-                "<div id=\"insegnanti__p2\">0</div>" +
-                "<div class=\"title__p2\"><b>STUDENTI: </b></div>" +
-                "<div id=\"studenti__p2\"> " +   "</div>" +
-            "</section>" +
-            "");
-
     final static HTML paragrafo__3 = new HTML("" +
             "<section id=\"paragrafo__3\">" +
                 "<h2>I NOSTRI DIPARTIMENTI</h2>" +
@@ -92,18 +77,17 @@ public class Index implements Contenuto{
     public void aggiungiContenuto() throws Exception {
 
         RootPanel.get("container").clear();
-        final VerticalPanel homepage__panel = new VerticalPanel();
+        VerticalPanel homepage__panel = new VerticalPanel();
         homepage__panel.addStyleName("homepage__panel");
 
-        adminServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
+       indexServiceAsync.getDataHP(new AsyncCallback<int[]>() {
             @Override
             public void onFailure(Throwable caught) {
 
             }
 
             @Override
-            public void onSuccess(Integer result) {
-
+            public void onSuccess(int[] result) {
                 // SFONDO SCHERMATA PRINCIPALE
                 homepage__panel.add(sfondo);
 
@@ -113,12 +97,12 @@ public class Index implements Contenuto{
                 // PARAGRAFO 2 SCHERMATA PRINCIPALE
                 HTML paragrafo__2 = new HTML("" +
                         "<section id=\"paragrafo__2\">" +
-                        "<div class=\"title__p2\"><b>DIPARTIMENTI: </b></div>" +
-                        "<div id=\"dipartimenti__p2\">0</div>" +
+                        "<div class=\"title__p2\"><b>CORSI: </b></div>" +
+                        "<div id=\"dipartimenti__p2\">" +  result[2] + "</div>" +
                         "<div class=\"title__p2\"><b>INSEGNANTI: </b></div>" +
-                        "<div id=\"insegnanti__p2\">0</div>" +
+                        "<div id=\"insegnanti__p2\">" +  result[1] + "</div>" +
                         "<div class=\"title__p2\"><b>STUDENTI: </b></div>" +
-                        "<div id=\"studenti__p2\"> " +  result + "</div>" +
+                        "<div id=\"studenti__p2\"> " +  result[0] + "</div>" +
                         "</section>" +
                         "");
 
@@ -132,31 +116,8 @@ public class Index implements Contenuto{
 
                 RootPanel.get("container").add(homepage__panel);
 
-            }
+           }
         });
-
-
-
-
-    }
-
-    public void getNumeroStudenti(){
-        final int[] num = new int[1];
-        adminServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                num[0]=101;
-            }
-
-            @Override
-            public void onSuccess(Integer result) {
-
-
-
-                num[0] = 100;
-            }
-        });
-
     }
 }
 
