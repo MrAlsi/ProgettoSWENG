@@ -73,7 +73,7 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
     public Docente[] getDocenti(){
         try{
-            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\docenti.db");
+            DB db = getDb("C:\\MapDB\\docenti.db");
             HTreeMap<String, Docente> map = db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
             Docente[] docenti = new Docente[map.size()];
             int j = 0;
@@ -99,7 +99,8 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
     public Segreteria[] getSegreteria(){
         try{
-            DB db = getDb("C:\\Users\\gabri\\OneDrive\\Desktop\\segreteria.db");
+            DB db = getDb("C:\\MapDB\\" +
+                    "segreteria.db");
             HTreeMap<String, Segreteria> map = db.hashMap("segreteriaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSegreteria()).createOrOpen();
             Segreteria[] segreteria = new Segreteria[map.size()];
             int j = 0;

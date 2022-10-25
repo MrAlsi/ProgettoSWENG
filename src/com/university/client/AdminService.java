@@ -12,4 +12,5 @@ public interface AdminService extends RemoteService {
     String[] informazioniStudente(String mail);
     String[] informazioniDocente(String mail);
     Studente[] getStudenti();
+    int getNumeroStudenti();
 }

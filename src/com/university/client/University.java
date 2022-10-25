@@ -172,6 +172,8 @@ public class University implements EntryPoint {
                         switch (tipo){
                             case "Studente":
                                 //Carica pagina studente
+                                SchermataStudente schermataStudente = new SchermataStudente();
+                                schermataStudente.accesso((Studente) result);
                                 Window.alert("studente");
                                 break;
                             case "Docente":
@@ -283,4 +285,22 @@ public class University implements EntryPoint {
         RootPanel.get("container").add(creaStudente);
         //RootPanel.get("container").add(studenti);
     }*/
+
+
+    public int getNumStudenti(){
+        final int[] numStudenti = {10};
+        adminServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Integer result) {
+                numStudenti[0] = result;
+            }
+        });
+
+        return numStudenti[0];
+    }
 }

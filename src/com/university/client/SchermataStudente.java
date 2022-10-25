@@ -2,6 +2,7 @@ package com.university.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.university.client.model.Sostiene;
 import com.university.client.model.Studente;
@@ -23,7 +24,7 @@ public class SchermataStudente {
 
     public void caricaInformazioniPersonali(){
         //Qua metti il biding della sezione informazioni personali
-
+        final Label[] lab = new Label[1];
         serviceStudente.getInformazioniPersonali(studente, new AsyncCallback<String[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -33,8 +34,11 @@ public class SchermataStudente {
             @Override
             public void onSuccess(String[] result) {
                 //In result dovresti avere tutti i dati personali dell'utente in un array
+                lab[0] = new Label(result[0]);
             }
         });
+
+        RootPanel.get("container").add(lab[0]);
     }
 
     public void caricaEsamiSvolti(){

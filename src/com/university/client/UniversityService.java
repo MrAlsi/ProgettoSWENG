@@ -8,11 +8,14 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface UniversityService extends RemoteService {
     // Sample interface method of remote interface
     String getMessage(String msg);
+    int getNumeroStudenti();
 
+    int[] getDataHP();
+/*
     /**
      * Utility/Convenience class.
      * Use UniversityService.App.getInstance() to access static instance of UniversityServiceAsync
-     */
+
     public static class App {
         private static UniversityServiceAsync ourInstance = GWT.create(UniversityService.class);
 
@@ -20,4 +23,5 @@ public interface UniversityService extends RemoteService {
             return ourInstance;
         }
     }
+*/
 }

@@ -1,13 +1,21 @@
 package com.university.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.model.Studente;
+import com.university.server.AdminImpl;
+import org.mapdb.DB;
+import org.mapdb.HTreeMap;
+import org.mapdb.Serializer;
 
 public class Index implements Contenuto{
 
     private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
+    //public static AdminService adminService = GWT.create(AdminService.class);
+    public static int numStudenti;
     final static HTML sfondo = new HTML("" +
             "<section id=\"sfondo__div\">" +
                 "<img src=\"img/homepage__bg.jpg\" class=\"sfondo__img\">" +
@@ -34,14 +42,15 @@ public class Index implements Contenuto{
                 "</div> " +
             "</section>"
     );
-    final static HTML paragrafo__2 = new HTML("" +
+
+    final HTML paragrafo__2 = new HTML("" +
             "<section id=\"paragrafo__2\">" +
                 "<div class=\"title__p2\"><b>DIPARTIMENTI: </b></div>" +
                 "<div id=\"dipartimenti__p2\">0</div>" +
                 "<div class=\"title__p2\"><b>INSEGNANTI: </b></div>" +
                 "<div id=\"insegnanti__p2\">0</div>" +
                 "<div class=\"title__p2\"><b>STUDENTI: </b></div>" +
-                "<div id=\"studenti__p2\"> " + getNumeroStudenti() + "</div>" +
+                "<div id=\"studenti__p2\"> " +   "</div>" +
             "</section>" +
             "");
 
@@ -86,42 +95,68 @@ public class Index implements Contenuto{
         VerticalPanel homepage__panel = new VerticalPanel();
         homepage__panel.addStyleName("homepage__panel");
 
-        // SFONDO SCHERMATA PRINCIPALE
-        homepage__panel.add(sfondo);
-
-        // PARAGRAFO 1 SCHERMATA PRINCIPALE
-        homepage__panel.add(paragrafo__1);
-
-        // PARAGRAFO 2 SCHERMATA PRINCIPALE
-        homepage__panel.add(paragrafo__2);
-
-        // PARAGRAFO 3 SCHERMATA PRINCIPALE
-        homepage__panel.add(paragrafo__3);
-
-        // FOOTER SCHERMATA PRINCIPALE
-        homepage__panel.add(footer);
-
-        RootPanel.get("container").add(homepage__panel);
-    }
-
-    public static int getNumeroStudenti(){
-
-        int[] studenti = new int[1];
-        adminServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
+        adminServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
             @Override
             public void onFailure(Throwable caught) {
-                studenti[0] = 3;
+
             }
 
             @Override
-            public void onSuccess(Studente[] result) {
-                studenti[0] = result.length;
-                System.out.println("fblsgfliushgs---------- é*é*é*é: " + studenti[0]);
-                studenti[0] = 1000;
+            public void onSuccess(Integer result) {
+
+                // SFONDO SCHERMATA PRINCIPALE
+                homepage__panel.add(sfondo);
+
+                // PARAGRAFO 1 SCHERMATA PRINCIPALE
+                homepage__panel.add(paragrafo__1);
+
+                // PARAGRAFO 2 SCHERMATA PRINCIPALE
+                HTML paragrafo__2 = new HTML("" +
+                        "<section id=\"paragrafo__2\">" +
+                        "<div class=\"title__p2\"><b>DIPARTIMENTI: </b></div>" +
+                        "<div id=\"dipartimenti__p2\">0</div>" +
+                        "<div class=\"title__p2\"><b>INSEGNANTI: </b></div>" +
+                        "<div id=\"insegnanti__p2\">0</div>" +
+                        "<div class=\"title__p2\"><b>STUDENTI: </b></div>" +
+                        "<div id=\"studenti__p2\"> " +  result + "</div>" +
+                        "</section>" +
+                        "");
+
+                homepage__panel.add(paragrafo__2);
+
+                // PARAGRAFO 3 SCHERMATA PRINCIPALE
+                homepage__panel.add(paragrafo__3);
+
+                // FOOTER SCHERMATA PRINCIPALE
+                homepage__panel.add(footer);
+
+                RootPanel.get("container").add(homepage__panel);
+
             }
         });
 
-        return studenti[0];
+
+
+
+    }
+
+    public void getNumeroStudenti(){
+        int[] num = new int[1];
+        adminServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                num[0]=101;
+            }
+
+            @Override
+            public void onSuccess(Integer result) {
+
+
+
+                num[0] = 100;
+            }
+        });
+
     }
 }
 

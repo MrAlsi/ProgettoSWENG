@@ -17,4 +17,6 @@ public interface AdminServiceAsync {
     void informazioniStudente(String mail, AsyncCallback<String[]> async);
 
     void informazioniDocente(String mail, AsyncCallback<String[]> async);
+
+    void getNumeroStudenti(AsyncCallback<Integer> async);
 }
