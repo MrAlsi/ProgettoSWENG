@@ -6,4 +6,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 public interface CorsoServiceAsync {
     void creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame, AsyncCallback<Boolean> async);
+    //void creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame, AsyncCallback<Boolean> async);
 }

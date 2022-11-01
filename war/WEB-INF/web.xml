@@ -29,6 +29,10 @@
         <servlet-name>com.university.University IndexService</servlet-name>
         <servlet-class>com.university.server.IndexImpl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>com.university.University DocenteService</servlet-name>
+        <servlet-class>com.university.server.DocenteImpl</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>com.university.University UniversityService</servlet-name>
@@ -54,5 +58,9 @@
     <servlet-mapping>
         <servlet-name>com.university.University IndexService</servlet-name>
         <url-pattern>/University/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University DocenteService</servlet-name>
+        <url-pattern>/University/docente</url-pattern>
     </servlet-mapping>
 </web-app>
