@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Esame implements Serializable {
 
-    public int codEsame;
+    public int codEsame; //chiave primaria
     public String nomeCorso;
     public String data;
     public String ora;
