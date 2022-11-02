@@ -12,4 +12,7 @@ public interface CorsoServiceAsync {
     void cercaCorsoByNomeCorso(String nome, AsyncCallback<Corso> async);
 
     void cercaCorsoByDocente(int docente, AsyncCallback<Corso[]> async);
+
+
+    void getCorsi(AsyncCallback<Corso[]> async);
 }
