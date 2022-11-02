@@ -3,7 +3,7 @@ package com.university.client.model;
 import java.io.Serializable;
 
 public class Corso implements Serializable {
-    public String nome;
+    public String nome; //chiave
     public String dataInizio;
     public String dataFine;
     public String descrizione;
