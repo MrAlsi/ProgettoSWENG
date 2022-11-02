@@ -126,7 +126,7 @@ public class University implements EntryPoint {
         });
 
 
-       adminServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
+       /*adminServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -136,7 +136,7 @@ public class University implements EntryPoint {
             public void onSuccess(Boolean result) {
                 Window.alert("Utente creato");
             }
-        });
+        });*/
 
         //Condizioni se username e password sono corretti
         login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
@@ -170,7 +170,7 @@ public class University implements EntryPoint {
                 utenteServiceAsync.login(email__input.getText(), password__input.getText(), new AsyncCallback<Utente>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("Utente o password sbagliati " + caught + "fojao");
+                        Window.alert("Utente o password sbagliati");
                     }
 
                     @Override
@@ -183,7 +183,7 @@ public class University implements EntryPoint {
                                 //Carica pagina studente
                                 SchermataStudente schermataStudente = new SchermataStudente();
                                 schermataStudente.accesso((Studente) result);
-                                Window.alert("studente");
+                                //Window.alert("studente");
                                 break;
                             case "Docente":
                                 //Carica pagina docente

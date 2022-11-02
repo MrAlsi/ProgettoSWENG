@@ -12,6 +12,24 @@ import org.mapdb.Serializer;
 import javax.servlet.ServletContext;
 
 public class CorsoImpl extends RemoteServiceServlet implements CorsoService {
+
+    @Override
+    public Corso[] getCorsi(){
+        try{
+            DB db = getDb("C:\\MapDB\\corsi");
+            HTreeMap<String, Corso> map = db.hashMap("corsoMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerCorso()).createOrOpen();
+            Corso[] corsi= new Corso[map.size()];
+            int j = 0;
+            for( String i: map.getKeys()){
+                corsi[j] = map.get(i);
+                j++;
+            }
+            return corsi;
+        }catch(Exception e){
+            System.out.println("Exception: "+e);
+            return null;
+        }
+    }
     @Override
     public boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame) {
         try{
