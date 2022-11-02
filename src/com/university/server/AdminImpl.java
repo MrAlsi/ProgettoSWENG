@@ -16,7 +16,8 @@ import org.mapdb.Serializer;
 import javax.print.Doc;
 import javax.servlet.ServletContext;
 
-public class AdminImpl extends RemoteServiceServlet implements AdminService {
+public class AdminImpl extends Database implements AdminService {
+
 
     /**         ~~ metodi per Studente ~~       **/
 
@@ -25,7 +26,7 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
      */
     @Override
     public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {
-        try{
+        /*try{
             DB db = getDb("C:\\MapDB\\studenti");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
             map.put(String.valueOf(map.size() + 1),
@@ -39,6 +40,13 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
             return true;
         } catch (Exception e){
             System.out.println("Exception:" + e);
+            return false;
+        }*/
+        try{
+            Studente[] s = super.getStudenti();
+            return true;
+        } catch (Exception e){
+            System.out.println("PP:" + e);
             return false;
         }
     }
@@ -66,8 +74,8 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
     /**
      * Restituisce un array di oggetti studente con tutti gli studenti presenti nel DB
      */
-    @Override
-    public Studente[] getStudenti() {
+    //@Override
+    /*public Studente[] getStudenti() {
         try{
             DB db = getDb("C:\\MapDB\\studenti");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
@@ -82,7 +90,9 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
         } catch(Exception e){
             return null;
         }
-    }
+    }*/
+
+
 
     @Override
     public int getNumeroStudenti(){
@@ -179,6 +189,11 @@ public class AdminImpl extends RemoteServiceServlet implements AdminService {
     @Override
     public String[] informazioniDocente(String mail) {
         return null;
+    }
+
+    @Override
+    public Studente[] getStudenti() {
+        return new Studente[0];
     }
 
     /**         ~~ metodi per Segreteria ~~       **/

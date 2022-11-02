@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 
 public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
+    Database db = new Database();
     @Override
     public Utente login(String mail, String password) {
         String[] dominio = mail.split("@");
@@ -46,7 +47,7 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
     @Override
     public Studente[] getStudenti(){
-        try{
+        /*try{
             DB db = getDb("..\\..\\..\\..\\..\\..\\studenti.db");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
             Studente[] studenti = new Studente[map.size()];
@@ -59,7 +60,9 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
         } catch(Exception e){
             return null;
-        }
+        }*/
+        return db.getStudenti();
+
     }
 
     public Docente cercaDocente(String mail, String password){

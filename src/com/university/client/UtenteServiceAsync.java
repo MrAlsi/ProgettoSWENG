@@ -11,4 +11,5 @@ public interface UtenteServiceAsync {
     void login(String mail, String password, AsyncCallback<Utente> async);
 
     void cercaStudente(String mail, String password, AsyncCallback<Studente> async);
+
 }
