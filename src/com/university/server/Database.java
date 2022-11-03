@@ -42,10 +42,9 @@ public class Database extends RemoteServiceServlet implements DatabaseService {
             return null;
         }
     }
-
     @Override
-    public void creaDB() {
-
+    public boolean creaDB() {
+        return true;
     }
 
 }

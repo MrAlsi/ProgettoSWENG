@@ -4,9 +4,9 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.university.client.model.Studente;
 
-@RemoteServiceRelativePath("Database")
+@RemoteServiceRelativePath("database")
 public interface DatabaseService extends RemoteService {
     Studente[] getStudenti();
 
-    void creaDB();
+    boolean creaDB();
 }

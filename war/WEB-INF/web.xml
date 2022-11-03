@@ -63,4 +63,12 @@
         <servlet-name>com.university.University IndexService</servlet-name>
         <url-pattern>/University/index</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University DatabaseService</servlet-name>
+        <url-pattern>/University/database</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University DocenteService</servlet-name>
+        <url-pattern>/University/docente</url-pattern>
+    </servlet-mapping>
 </web-app>

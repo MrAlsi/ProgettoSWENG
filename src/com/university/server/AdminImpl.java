@@ -26,7 +26,7 @@ public class AdminImpl extends Database implements AdminService {
      */
     @Override
     public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {
-        /*try{
+        try{
             DB db = getDb("C:\\MapDB\\studenti");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
             map.put(String.valueOf(map.size() + 1),
@@ -41,14 +41,14 @@ public class AdminImpl extends Database implements AdminService {
         } catch (Exception e){
             System.out.println("Exception:" + e);
             return false;
-        }*/
-        try{
+        }
+        /*try{
             Studente[] s = super.getStudenti();
             return true;
         } catch (Exception e){
             System.out.println("PP:" + e);
             return false;
-        }
+        }*/
     }
 
     /**

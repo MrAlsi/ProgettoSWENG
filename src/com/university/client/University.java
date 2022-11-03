@@ -82,16 +82,14 @@ public class University implements EntryPoint {
     }
 
     public void caricaLogin() {
-        databaseServiceAsync.creaDB(new AsyncCallback<Void>() {
+        databaseServiceAsync.creaDB(new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
-
+                Window.alert("P: " + caught);
             }
 
             @Override
-            public void onSuccess(Void result) {
-
-
+            public void onSuccess(Boolean result) {
                 login__panel = new FormPanel();
                 login__panel.setAction("/login");
                 login__panel.setMethod(FormPanel.METHOD_POST);

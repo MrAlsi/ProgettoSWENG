@@ -7,5 +7,5 @@ import com.university.client.model.Studente;
 
 public interface DatabaseServiceAsync {
     void getStudenti(AsyncCallback<Studente[]> async);
-    void creaDB(AsyncCallback<Void> async);
+    void creaDB(AsyncCallback<Boolean> async);
 }
