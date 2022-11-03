@@ -1,7 +1,6 @@
 package com.university.server;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.AdminService;
+import com.university.client.services.AdminService;
 import com.university.client.model.Docente;
 import com.university.client.model.Segreteria;
 import com.university.client.model.Serializer.SerializerDocente;
@@ -13,13 +12,21 @@ import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
 import org.mapdb.Serializer;
 
-import javax.print.Doc;
 import javax.servlet.ServletContext;
 
 public class AdminImpl extends Database implements AdminService {
 
 
     /**         ~~ metodi per Studente ~~       **/
+    @Override
+    public Studente[] getStudenti() {
+        try{
+            return super.getStudenti();
+        } catch (Exception e){
+            System.out.println("C: AdminImpl - M: getStudenti:" + e);
+            return null;
+        }
+    }
 
     /**
      * Crea un nuovo oggetto studente e lo salva nel DB
@@ -27,28 +34,12 @@ public class AdminImpl extends Database implements AdminService {
     @Override
     public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {
         try{
-            DB db = getDb("C:\\MapDB\\studenti");
-            HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
-            map.put(String.valueOf(map.size() + 1),
-                    new Studente(nome,
-                                cognome,
-                                creaMailStudente(nome, cognome),
-                                password,
-                                dataNascita,
-                                getStudenti().length));
-            db.commit();
-            return true;
-        } catch (Exception e){
-            System.out.println("Exception:" + e);
-            return false;
-        }
-        /*try{
             Studente[] s = super.getStudenti();
             return true;
         } catch (Exception e){
             System.out.println("PP:" + e);
             return false;
-        }*/
+        }
     }
 
     /**
@@ -58,7 +49,7 @@ public class AdminImpl extends Database implements AdminService {
      */
     public String creaMailStudente(String nome, String cognome){
         int num = 0;
-        Studente[] studenti = getStudenti();
+        Studente[] studenti = super.getStudenti();
         for(int i = 0; i < studenti.length; i++){
             if(nome.equals(studenti[i].getNome()) && cognome.equals(studenti[i].getCognome())){
                 num++;
@@ -74,38 +65,8 @@ public class AdminImpl extends Database implements AdminService {
     /**
      * Restituisce un array di oggetti studente con tutti gli studenti presenti nel DB
      */
-    //@Override
-    /*public Studente[] getStudenti() {
-        try{
-            DB db = getDb("C:\\MapDB\\studenti");
-            HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
-            Studente[] studenti = new Studente[map.size()];
-            int j = 0;
-            for( String i: map.getKeys()){
-                studenti[j] = map.get(i);
-                j++;
-            }
-            return studenti;
-
-        } catch(Exception e){
-            return null;
-        }
-    }*/
-
-
-
     @Override
     public int getNumeroStudenti(){
-        try{
-            DB db = getDb("C:\\MapDB\\studenti");
-            HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
-            return map.size();
-        } catch(Exception e){
-            return -1;
-        }
-    }
-
-    public int getNumStudenti(){
         try{
             DB db = getDb("C:\\MapDB\\studenti");
             HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
@@ -120,7 +81,7 @@ public class AdminImpl extends Database implements AdminService {
      */
     @Override
     public String[] informazioniStudente(String mail) {
-        Studente[] studenti = getStudenti();
+        Studente[] studenti = super.getStudenti();
         String [] informazioni = new String[6];
         for(int i = 0; i < studenti.length; i++){
             if(mail.equals(studenti[i].getMail())){
@@ -135,6 +96,7 @@ public class AdminImpl extends Database implements AdminService {
         }
         return null;
     }
+
 
     /**         ~~ metodi per Docente ~~       **/
     @Override
@@ -170,20 +132,7 @@ public class AdminImpl extends Database implements AdminService {
     }
 
     public Docente[] getDocenti(){
-        try{
-            DB db = getDb("C:\\MapDB\\docenti.db");
-            HTreeMap<String, Docente> map = db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
-            Docente[] docenti = new Docente[map.size()];
-            int j = 0;
-            for( String i: map.getKeys()){
-                docenti[j] = map.get(i);
-                j++;
-            }
-            return docenti;
-
-        } catch(Exception e){
-            return null;
-        }
+        return super.getDocenti();
     }
 
     @Override
@@ -191,10 +140,6 @@ public class AdminImpl extends Database implements AdminService {
         return null;
     }
 
-    @Override
-    public Studente[] getStudenti() {
-        return new Studente[0];
-    }
 
     /**         ~~ metodi per Segreteria ~~       **/
 
@@ -231,20 +176,7 @@ public class AdminImpl extends Database implements AdminService {
     }
 
     public Segreteria[] getSegreteria(){
-        try{
-            DB db = getDb("C:\\MapDB\\segreteria.db");
-            HTreeMap<String, Segreteria> map = db.hashMap("segreteriaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSegreteria()).createOrOpen();
-            Segreteria[] segreteria = new Segreteria[map.size()];
-            int j = 0;
-            for( String i: map.getKeys()){
-                segreteria[j] = map.get(i);
-                j++;
-            }
-            return segreteria;
-
-        } catch(Exception e){
-            return null;
-        }
+        return super.getSegretari();
     }
 
     private DB getDb(String nomeDB) {

@@ -1,11 +1,7 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.UniversityService;
-import com.university.client.model.Corso;
-import com.university.client.model.Docente;
-import com.university.client.model.Serializer.SerializerCorso;
-import com.university.client.model.Serializer.SerializerDocente;
+import com.university.client.services.UniversityService;
 import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.model.Studente;
 import org.mapdb.DB;
