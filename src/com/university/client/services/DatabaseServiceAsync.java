@@ -17,4 +17,12 @@ public interface DatabaseServiceAsync {
     void getCorsi(AsyncCallback<Corso[]> async);
 
     void getEsami(AsyncCallback<Esame[]> async);
+
+    void getFrequenta(AsyncCallback<Frequenta[]> async);
+
+    void getSostiene(AsyncCallback<Sostiene[]> async);
+
+    void creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame, AsyncCallback<Boolean> async);
+
+    void getAdmin(AsyncCallback<Admin[]> async);
 }
