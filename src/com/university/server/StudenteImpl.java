@@ -1,7 +1,7 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.StudenteService;
+import com.university.client.services.StudenteService;
 import com.university.client.model.Frequenta;
 import com.university.client.model.Serializer.SerializerFrequenta;
 import com.university.client.model.Serializer.SerializerSostiene;

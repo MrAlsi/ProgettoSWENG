@@ -1,18 +1,13 @@
-package com.university.client;
+package com.university.client.schermate;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
-import com.university.client.model.Serializer.SerializerStudente;
-import com.university.client.model.Studente;
-import com.university.server.AdminImpl;
-import org.mapdb.DB;
-import org.mapdb.HTreeMap;
-import org.mapdb.Serializer;
+import com.university.client.services.Contenuto;
+import com.university.client.services.IndexServiceAsync;
 
-public class Index implements Contenuto{
-    private static IndexServiceAsync indexServiceAsync = GWT.create(com.university.client.IndexService.class);
+public class Index implements Contenuto {
+    private static IndexServiceAsync indexServiceAsync = GWT.create(com.university.client.services.IndexService.class);
     final static HTML sfondo = new HTML("" +
             "<section id=\"sfondo__div\">" +
                 "<img src=\"img/homepage__bg.jpg\" class=\"sfondo__img\">" +

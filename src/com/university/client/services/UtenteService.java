@@ -1,4 +1,4 @@
-package com.university.client;
+package com.university.client.services;
 
 import com.university.client.model.Studente;
 import com.google.gwt.user.client.rpc.RemoteService;

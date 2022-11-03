@@ -1,4 +1,4 @@
-package com.university.client;
+package com.university.client.schermate;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.university.client.model.Studente;
 import com.university.client.model.Utente;
+import com.university.client.services.*;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>
@@ -85,13 +86,11 @@ public class University implements EntryPoint {
         databaseServiceAsync.creaDB(new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
-
+                Window.alert("P:" + caught);
             }
 
             @Override
             public void onSuccess(Void result) {
-
-
                 login__panel = new FormPanel();
                 login__panel.setAction("/login");
                 login__panel.setMethod(FormPanel.METHOD_POST);

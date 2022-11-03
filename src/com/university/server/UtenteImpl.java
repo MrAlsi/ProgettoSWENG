@@ -1,22 +1,19 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.UtenteService;
+import com.university.client.services.UtenteService;
 import com.university.client.model.Docente;
 import com.university.client.model.Segreteria;
 import com.university.client.model.Serializer.SerializerDocente;
 import com.university.client.model.Serializer.SerializerSegreteria;
-import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.model.Studente;
 import com.university.client.model.Utente;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
 import org.mapdb.Serializer;
-import org.mapdb.serializer.SerializerArray;
 
 import javax.servlet.ServletContext;
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

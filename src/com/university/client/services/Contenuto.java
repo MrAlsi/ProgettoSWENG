@@ -1,4 +1,4 @@
-package com.university.client;
+package com.university.client.services;
 
 public interface Contenuto {
     public void aggiungiContenuto() throws Exception;

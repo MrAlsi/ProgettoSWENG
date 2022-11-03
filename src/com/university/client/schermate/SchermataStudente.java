@@ -1,4 +1,4 @@
-package com.university.client;
+package com.university.client.schermate;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -6,6 +6,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.university.client.model.Sostiene;
 import com.university.client.model.Studente;
+import com.university.client.services.StudenteService;
+import com.university.client.services.StudenteServiceAsync;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,6 @@
 package com.university.server;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.AdminService;
+import com.university.client.services.AdminService;
 import com.university.client.model.Docente;
 import com.university.client.model.Segreteria;
 import com.university.client.model.Serializer.SerializerDocente;
@@ -13,7 +12,6 @@ import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
 import org.mapdb.Serializer;
 
-import javax.print.Doc;
 import javax.servlet.ServletContext;
 
 public class AdminImpl extends Database implements AdminService {
