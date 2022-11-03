@@ -25,4 +25,16 @@ public interface DatabaseServiceAsync {
     void creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame, AsyncCallback<Boolean> async);
 
     void getAdmin(AsyncCallback<Admin[]> async);
+
+    void creaEsami(int codEsame, String nomeCorso, String data, String ora, String durata, String aula, AsyncCallback<Boolean> async);
+
+    void creaSegratario(String nome, String cognome, String mail, String password, AsyncCallback<Boolean> async);
+
+    void creaSostiene(int matricola, int codEsame, int voto, AsyncCallback<Boolean> async);
+
+    void creaFrequenta(int matricola, String nomeCorso, AsyncCallback<Boolean> async);
+
+    void creaDocenti(String nome, String cognome, String mail, String password, int codDocente, AsyncCallback<Boolean> async);
+
+    void creaStudente(String nome, String cognome, String mail, String password, String dataNascita, int matricola, AsyncCallback<Boolean> async);
 }

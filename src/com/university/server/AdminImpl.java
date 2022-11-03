@@ -42,7 +42,6 @@ public class AdminImpl extends Database implements AdminService {
         }
     }
 
-
     /**
      * Metodo che crea la mail per studenti nome.cognomeN@studente.university.com
      * controlla se esistono degli ononimi nel DB, nel caso aggiunge un numero N alla mail

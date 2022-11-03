@@ -65,7 +65,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>com.university.University DatabaseService</servlet-name>
-        <url-pattern>/University/Database</url-pattern>
+        <url-pattern>/University/database</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>com.university.University DocenteService</servlet-name>
