@@ -1,10 +1,10 @@
 /*======== PALETTE =========*/
 :root {
     --color-bg: #D8E3E7;
-    --color-bg-variant: #51C4D3;
+    --color-bg-variant: #39848e;
     --color-primary: #126E82;
     --color-primary-variant: #132C33;
-    --color-white: #fff;
+    --color-white: #e8e8e8;
     --color-dark: rgb(34 34 34);
 
     --transition: all 400ms ease;
@@ -22,7 +22,7 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0px;
-    background: linear-gradient(-45deg, var(--color-primary-variant), var(--color-primary), var(--color-bg-variant), var(--color-bg));
+    background-color: var(--color-white) !important;
 }
 
 html {
@@ -400,32 +400,9 @@ form {
     height: 60rem;
     justify-content: center;
     border-radius: 30px;
-    background-color: var(--color-bg);
-    box-shadow: 0px 10px 15px rgb(0 0 0 / 10%);
-}
-
-.login__container {
-
-}
-
-.login__background {
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    height: 100vh;
-    width: 100%;
-}
-
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+    margin-top: 10rem;
+    background: linear-gradient(145deg, #e7f3f7, #c2ccd0);
+    box-shadow: 41px 41px 82px #b8c1c4, -41px -41px 82px #f8ffff;
 }
 
 .login__img {
@@ -449,7 +426,7 @@ form {
     border-width: 0px;
     background: #e0e0e0;
     box-shadow: inset 5px 5px 8px #b5bfc2,
-                inset -5px -5px 8px #fbffff;
+    inset -5px -5px 8px #fbffff;
     outline: none;
     padding: 0px 10px;
 }
@@ -468,7 +445,7 @@ form {
     border-width: 0px;
     background: #e0e0e0;
     box-shadow: inset 5px 5px 8px #b5bfc2,
-                inset -5px -5px 8px #fbffff;
+    inset -5px -5px 8px #fbffff;
     outline: none;
     padding: 0px 10px;
 }
@@ -482,4 +459,88 @@ form {
     background: linear-gradient(145deg, #e7f3f7, #c2ccd0);
     border-width: 0px;
     border-radius: 10px;
+}
+
+.login__btn:hover {
+    background: linear-gradient(145deg, #c2ccd0, #e7f3f7);
+}
+
+.login__btn:active {
+    background: #d8e3e7;
+    box-shadow: inset 7px 7px 12px #c2ccd0, inset -7px -7px 12px #eefafe;
+}
+
+/*======== PANNELLO USER =========*/
+.user__container {
+    margin-top: 10rem;
+    width: 100rem;
+    background-color: #e8e8e8;
+    height: 70vh;
+    border-radius: 5rem;
+    box-shadow:   8px 8px 22px #cacaca, -8px -8px 22px #ffffff;
+}
+
+.user__container tbody tr:nth-child(1) td:nth-child(1) {
+    height: 100px;
+}
+
+.user__title {
+    font-size: 30px;
+    color: var(--color-primary-variant);
+    margin: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid;
+    text-align: center;
+}
+
+.content__studente {
+    padding-left: calc(50rem - 10vw);
+}
+
+.user__container tbody {
+    vertical-align: auto;
+}
+
+.user__container tr {
+
+}
+
+.user__container td {
+    min-height: 0px;
+}
+
+.nav__user {
+    position: fixed;
+    height: fit-content;
+    left: 5%;
+    border-radius: 3rem;
+    margin-top: 15vh;
+    background-color: #e8e8e8;
+    box-shadow: 12px 12px 26px #cccccc, -12px -12px 26px #ffffff;
+}
+
+table.nav__user tbody {
+    float: left;
+}
+
+.gwt-Button.nav__user__btn {
+    width: 90%;
+    height: 6vh;
+    border-radius: 15px;
+    color: var(--color-primary);
+    font-size: 18px;
+    border-width: 0px;
+    margin: 1.5rem;
+    background-color: var(--color-white);
+    text-align: inherit;
+    padding: 0rem 1.5rem;
+}
+
+.nav__user__btn:hover {
+    background-color: #e3e3e3;
+}
+
+.nav__user__btn:active {
+    background-color: #f0f0f0;
+    box-shadow: inset 5px 5px 10px #e2e2e2, inset -5px -5px 10px #fefefe;
 }
