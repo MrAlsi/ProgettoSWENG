@@ -6,6 +6,4 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 public interface IndexServiceAsync {
     void getDataHP(AsyncCallback<int[]> async);
-
-    void getNumeroStudenti(AsyncCallback<Integer> async);
 }

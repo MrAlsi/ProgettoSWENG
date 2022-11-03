@@ -1,25 +1,12 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.university.client.model.*;
 import com.university.client.services.UtenteService;
-import com.university.client.model.Docente;
-import com.university.client.model.Segreteria;
-import com.university.client.model.Serializer.SerializerDocente;
-import com.university.client.model.Serializer.SerializerSegreteria;
-import com.university.client.model.Studente;
-import com.university.client.model.Utente;
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
-import org.mapdb.HTreeMap;
-import org.mapdb.Serializer;
 
-import javax.servlet.ServletContext;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
+public class UtenteImpl extends Database implements UtenteService {
 
-    Database db = new Database();
     @Override
     public Utente login(String mail, String password) {
         String[] dominio = mail.split("@");
@@ -29,12 +16,12 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
             case "studente.university.com" -> cercaStudente(mail, password);
             case "docente.university.com" -> cercaDocente(mail, password);
             default -> cercaSegreteria(mail, password);
+            //default -> cercaAdmin(mail, password);
         };
     }
 
-    @Override
-    public Studente cercaStudente(String mail, String password){
-        Studente[] studenti = getStudenti();
+    public Studente cercaStudente(String mail, String password) {
+        Studente[] studenti = super.getStudenti();
         for (Studente studente : studenti) {
             if (mail.equals(studente.getMail()) && password.equals(studente.getPassword()))
                 return studente;
@@ -42,54 +29,16 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
         return null;
     }
 
-    @Override
-    public Studente[] getStudenti(){
-        /*try{
-            DB db = getDb("..\\..\\..\\..\\..\\..\\studenti.db");
-            HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
-            Studente[] studenti = new Studente[map.size()];
-            int j = 0;
-            for( String i: map.getKeys()){
-                studenti[j] = map.get(i);
-                j++;
-            }
-            return studenti;
-
-        } catch(Exception e){
-            return null;
-        }*/
-        return db.getStudenti();
-
-    }
-
     public Docente cercaDocente(String mail, String password){
-        Docente[] docenti = getDocenti();
+        Docente[] docenti = super.getDocenti();
         for (Docente docente : docenti) {
             if (mail.equals(docente.getMail()) && password.equals(docente.getPassword()))
                 return docente;
         }
         return null;
     }
-
-    public Docente[] getDocenti(){
-        try{
-            DB db = getDb("C:\\MapDB\\docenti.db");
-            HTreeMap<String, Docente> map = db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
-            Docente[] docenti = new Docente[map.size()];
-            int j = 0;
-            for( String i: map.getKeys()){
-                docenti[j] = map.get(i);
-                j++;
-            }
-            return docenti;
-
-        } catch(Exception e){
-            return null;
-        }
-    }
-
     public Segreteria cercaSegreteria(String mail, String password){
-        Segreteria[] segreteria = getSegreteria();
+        Segreteria[] segreteria = super.getSegretari();
         for (Segreteria value : segreteria) {
             if (mail.equals(value.getMail()) && password.equals(value.getPassword()))
                 return value;
@@ -97,36 +46,9 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
         return null;
     }
 
-    public Segreteria[] getSegreteria(){
-        try{
-            DB db = getDb("C:\\MapDB\\" +
-                    "segreteria.db");
-            HTreeMap<String, Segreteria> map = db.hashMap("segreteriaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSegreteria()).createOrOpen();
-            Segreteria[] segreteria = new Segreteria[map.size()];
-            int j = 0;
-            for( String i: map.getKeys()){
-                segreteria[j] = map.get(i);
-                j++;
-            }
-            return segreteria;
-
-        } catch(Exception e){
-            return null;
+   /* public Admin cercaAdmin(String mail, String password){
+        if(mail == "admin" && password == "admin"){
+            return
         }
-    }
-
-    private DB getDb(String nomeDB) {
-        ServletContext context = this.getServletContext();
-        synchronized (context) {
-            DB db = (DB)context.getAttribute("DB");
-            if(db == null){
-
-                db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().make();
-                Path path = Paths.get("studenti");
-                System.out.println(path);
-                context.setAttribute("DB", db);
-            }
-            return db;
-        }
-    }
+    }*/
 }

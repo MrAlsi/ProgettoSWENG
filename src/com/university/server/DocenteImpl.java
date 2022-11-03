@@ -13,47 +13,30 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class DocenteImpl  extends RemoteServiceServlet implements DocenteService {
+public class DocenteImpl extends Database implements DocenteService {
     @Override
     public Docente getInfoPersonali(int codDocente) {
         try{
-            DB db = getDb("C:\\MapDB\\docenti");
-            HTreeMap<String,Docente> map= db.hashMap("docentimap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
-            for(Docente d: map.getValues()){
-                if(d.codDocente==codDocente){
-                    return d;
+            Docente[] docenti = super.getDocenti();
+            for(Docente docente: docenti){
+                if(docente.codDocente==codDocente){
+                    return docente;
                 }
             }
             return null;
-        }catch (Exception e){
-            System.out.println("errore getinfodoc: "+e);
+        }catch(Exception e){
+            System.out.println("errore Docente - getinfoPersonali: "+e);
             return null;
         }
     }
 
     public boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame) {
-        try{
-            DB db = getDb("C:\\MapDB\\corsi");
-            HTreeMap<String, Corso> map = db.hashMap("corsoMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerCorso()).createOrOpen();
-            map.put(String.valueOf(map.size() + 1),
-                    new Corso( nome, dataInizio, dataFine, descrizione, coDocente, docente, esame));
-            db.commit();
+        try {
+            //super.creaCorso(nome, dataInizio, dataFine, descrizione, coDocente, docente, esame);
             return true;
         } catch (Exception e){
-            System.out.println("Exception: " + e);
             return false;
         }
     }
 
-    private DB getDb(String nomeDB) {
-        ServletContext context = this.getServletContext();
-        synchronized (context) {
-            DB db = (DB)context.getAttribute("DB");
-            if(db == null){
-                db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().make();
-                context.setAttribute("DB", db);
-            }
-            return db;
-        }
-    }
 }

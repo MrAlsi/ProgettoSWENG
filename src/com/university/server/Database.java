@@ -13,8 +13,12 @@ import org.mapdb.Serializer;
 import javax.servlet.ServletContext;
 
 public class Database extends RemoteServiceServlet implements DatabaseService {
+
+    public Studente[] studentis;
+
     @Override
     public void creaDB() {
+        studentis = getStudenti();
 
     }
     private DB getDb(String nomeDB) {
@@ -22,7 +26,7 @@ public class Database extends RemoteServiceServlet implements DatabaseService {
         synchronized (context) {
             DB db = (DB)context.getAttribute("DB");
             if(db == null){
-                db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().make();
+                db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().checksumHeaderBypass().make();
                 context.setAttribute("DB", db);
             }
             return db;
