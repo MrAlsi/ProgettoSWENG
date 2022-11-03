@@ -20,9 +20,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
+public class UtenteImpl extends Database implements UtenteService {
 
-    Database db = new Database();
     @Override
     public Utente login(String mail, String password) {
         String[] dominio = mail.split("@");
@@ -37,7 +36,7 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
     @Override
     public Studente cercaStudente(String mail, String password){
-        Studente[] studenti = getStudenti();
+        Studente[] studenti = super.getStudenti();
         for (Studente studente : studenti) {
             if (mail.equals(studente.getMail()) && password.equals(studente.getPassword()))
                 return studente;
@@ -61,7 +60,7 @@ public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
         } catch(Exception e){
             return null;
         }*/
-        return db.getStudenti();
+        return super.getStudenti();
 
     }
 

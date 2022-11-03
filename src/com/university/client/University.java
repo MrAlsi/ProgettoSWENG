@@ -178,7 +178,7 @@ public class University implements EntryPoint {
                         utenteServiceAsync.login(email__input.getText(), password__input.getText(), new AsyncCallback<Utente>() {
                             @Override
                             public void onFailure(Throwable caught) {
-                                Window.alert("Utente o password sbagliati " + caught + "fojao");
+                                Window.alert("Utente o password sbagliati " + caught);
                             }
 
                             @Override
