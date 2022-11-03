@@ -12,13 +12,8 @@ import org.mapdb.Serializer;
 import javax.servlet.ServletContext;
 
 public class Database extends RemoteServiceServlet implements DatabaseService {
-
-    public Studente[] studentis;
-
     @Override
     public void creaDB() {
-        studentis = getStudenti();
-
     }
     private DB getDb(String nomeDB) {
         ServletContext context = this.getServletContext();
