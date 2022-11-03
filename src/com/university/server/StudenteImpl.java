@@ -1,19 +1,10 @@
 package com.university.server;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.university.client.model.*;
 import com.university.client.services.StudenteService;
-import com.university.client.model.Frequenta;
-import com.university.client.model.Serializer.SerializerFrequenta;
-import com.university.client.model.Serializer.SerializerSostiene;
-import com.university.client.model.Sostiene;
-import com.university.client.model.Studente;
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
-import org.mapdb.HTreeMap;
-import org.mapdb.Serializer;
 
-import javax.servlet.ServletContext;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StudenteImpl extends Database implements StudenteService {
     /**
@@ -41,20 +32,31 @@ public class StudenteImpl extends Database implements StudenteService {
         return false;
     }
 
-    @Override
+
     public ArrayList<Sostiene> getVoti(int matricola) {
-        /*ArrayList<Sostiene> esamiSvolti = new ArrayList<>();
-        Sostiene[] sostenuti = caricaEsami();
-        assert sostenuti != null;
-        for(Sostiene s : sostenuti){
-            if(s.matricola == matricola){
-                esamiSvolti.add(s);
+        Sostiene[] sostenuti = super.getSostiene();
+        ArrayList<Sostiene> mieiEsami = new ArrayList<>();
+        for(Sostiene esame: sostenuti){
+            if(esame.matricola==matricola){
+                mieiEsami.add(esame);
             }
         }
-
-        return esamiSvolti;*/
-        return null;
+        return mieiEsami;
     }
 
-
+    @Override
+    public HashMap<Sostiene,Esame> getEsameSvolti(int matricola){
+        ArrayList<Sostiene> mieiEsami=getVoti(matricola);
+        Esame[] esamiTutti= super.getEsami();
+        HashMap<Sostiene,Esame> esamiSostenuti= new HashMap<>();
+        for(Esame esame: esamiTutti){
+            for(Sostiene sostenuto: mieiEsami){
+                if(esame.codEsame==sostenuto.codEsame){
+                    esamiSostenuti.put(sostenuto,esame);
+                    break;
+                }
+            }
+        }
+        return esamiSostenuti;
+    }
 }
