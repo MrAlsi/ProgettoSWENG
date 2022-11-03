@@ -43,4 +43,9 @@ public class Database extends RemoteServiceServlet implements DatabaseService {
         }
     }
 
+    @Override
+    public void creaDB() {
+
+    }
+
 }

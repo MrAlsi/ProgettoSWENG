@@ -98,11 +98,11 @@ public class Index implements Contenuto{
                 HTML paragrafo__2 = new HTML("" +
                         "<section id=\"paragrafo__2\">" +
                         "<div class=\"title__p2\"><b>CORSI: </b></div>" +
-                        "<div id=\"dipartimenti__p2\">" +  result[2] + "</div>" +
+                        "<div id=\"dipartimenti__p2\">" +  result[0] + "</div>" +
                         "<div class=\"title__p2\"><b>INSEGNANTI: </b></div>" +
                         "<div id=\"insegnanti__p2\">" +  result[1] + "</div>" +
                         "<div class=\"title__p2\"><b>STUDENTI: </b></div>" +
-                        "<div id=\"studenti__p2\"> " +  result[0] + "</div>" +
+                        "<div id=\"studenti__p2\"> " +  result[2] + "</div>" +
                         "</section>" +
                         "");
 

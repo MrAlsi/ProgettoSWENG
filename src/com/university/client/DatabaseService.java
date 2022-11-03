@@ -7,4 +7,6 @@ import com.university.client.model.Studente;
 @RemoteServiceRelativePath("Database")
 public interface DatabaseService extends RemoteService {
     Studente[] getStudenti();
+
+    void creaDB();
 }
