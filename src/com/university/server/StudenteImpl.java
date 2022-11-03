@@ -23,8 +23,31 @@ public class StudenteImpl extends Database implements StudenteService {
      * Restituisce tutti i corsi a cui non è iscritta la matricola
      */
     @Override
-    public ArrayList<Frequenta> getCorsiDisponibili(int matricola) {
-        return null;
+    public ArrayList<Corso> getCorsiDisponibili(int matricola) {
+        Corso [] tuttiCorsi= super.getCorsi();
+        ArrayList<Corso> corsiDisponibili= new ArrayList<>();
+        HashMap<String,Corso> corsi=new HashMap<>();
+        for(Corso corso: tuttiCorsi){
+            corsi.put(corso.nome,corso);
+        }
+        ArrayList<Frequenta> mieiCorsi=getMieiCorsi(matricola);
+        for(Frequenta frequenta: mieiCorsi){
+            if(!corsi.containsKey(frequenta.nomeCorso)){
+                corsiDisponibili.add(corsi.get(frequenta.nomeCorso));
+            }
+        }
+        return corsiDisponibili;
+    }
+    @Override
+    public ArrayList<Frequenta> getMieiCorsi(int matricola) {
+        Frequenta[] frequenta = super.getFrequenta();
+        ArrayList<Frequenta> mieiCorsi = new ArrayList<>();
+        for(Frequenta corso: frequenta){
+            if(corso.matricola==matricola){
+                mieiCorsi.add(corso);
+            }
+        }
+        return mieiCorsi;
     }
 
     @Override
