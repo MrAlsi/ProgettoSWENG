@@ -17,9 +17,9 @@ public interface StudenteServiceAsync {
 
     void getEsameSvolti(int matricola, AsyncCallback<HashMap<Sostiene, Esame>> async);
 
-    void getMieiCorsi(int matricola, AsyncCallback<ArrayList<Frequenta>> async);
-
     void iscrizioneCorso(Studente s, Corso c, AsyncCallback<Boolean> async);
 
     void iscrizioneEsame(Studente s, Esame e, AsyncCallback<Boolean> async);
+
+    void getMieiCorsi(int matricola, AsyncCallback<ArrayList<Corso>> async);
 }
