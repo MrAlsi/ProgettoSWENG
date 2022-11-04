@@ -6,12 +6,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.university.client.model.Sostiene;
 import com.university.client.model.Studente;
+import com.university.client.services.StudenteService;
+import com.university.client.services.StudenteServiceAsync;
 
 import java.util.ArrayList;
 
 public class SchermataStudente {
     Studente studente;
-    String[] info;
     private StudenteServiceAsync serviceStudente = GWT.create(StudenteService.class);
 
     public void accesso(Studente studente) {

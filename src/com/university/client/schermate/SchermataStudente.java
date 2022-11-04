@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class SchermataStudente {
     Studente studente;
-    String[] info;
     VerticalPanel user__container;
     VerticalPanel nav__user;
     private StudenteServiceAsync serviceStudente = GWT.create(StudenteService.class);

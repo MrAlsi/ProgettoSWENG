@@ -3,7 +3,6 @@ package com.university.server;
 import com.university.client.services.AdminService;
 import com.university.client.model.Docente;
 import com.university.client.model.Segreteria;
-import com.university.client.model.Serializer.SerializerDocente;
 import com.university.client.model.Serializer.SerializerSegreteria;
 import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.model.Studente;
@@ -15,7 +14,6 @@ import org.mapdb.Serializer;
 import javax.servlet.ServletContext;
 
 public class AdminImpl extends Database implements AdminService {
-
 
     /**         ~~ metodi per Studente ~~       **/
     @Override
@@ -34,10 +32,10 @@ public class AdminImpl extends Database implements AdminService {
     @Override
     public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {
         try{
-            Studente[] s = super.getStudenti();
+            super.creaStudente(nome, cognome, creaMailStudente(nome, cognome), password, dataNascita, super.getStudenti().length+1);
             return true;
         } catch (Exception e){
-            System.out.println("PP:" + e);
+            System.out.println("C: AdminImpl M: creaStudente " + e);
             return false;
         }
     }
@@ -62,23 +60,11 @@ public class AdminImpl extends Database implements AdminService {
         }
     }
 
-    /**
-     * Restituisce un array di oggetti studente con tutti gli studenti presenti nel DB
-     */
-    @Override
-    public int getNumeroStudenti(){
-        try{
-            DB db = getDb("C:\\MapDB\\studenti");
-            HTreeMap<String, Studente> map = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
-            return map.size();
-        } catch(Exception e){
-            return -1;
-        }
-    }
 
     /**
      * Dato una mail restituisce tutte le informazioni di quello studente
      */
+    /*
     @Override
     public String[] informazioniStudente(String mail) {
         Studente[] studenti = super.getStudenti();
@@ -96,20 +82,14 @@ public class AdminImpl extends Database implements AdminService {
         }
         return null;
     }
+*/
 
 
     /**         ~~ metodi per Docente ~~       **/
     @Override
     public boolean creaDocente(String nome, String cognome, String password) {
         try{
-            DB db = getDb("C:\\MapDB\\docenti.db");
-            HTreeMap<String, Docente> map = db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
-            map.put(String.valueOf(map.size() + 1), new Docente( nome,
-                                                                    cognome,
-                                                                    getMailDocente(nome, cognome),
-                                                                    password,
-                                                                    getDocenti().length));
-            db.commit();
+            super.creaDocenti(nome, cognome, getMailDocente(nome, cognome), password, super.getDocenti().length+1);
             return true;
         } catch (Exception e) {
             return false;
@@ -131,13 +111,30 @@ public class AdminImpl extends Database implements AdminService {
         }
     }
 
+    @Override
     public Docente[] getDocenti(){
         return super.getDocenti();
     }
 
     @Override
-    public String[] informazioniDocente(String mail) {
-        return null;
+    public String[] informazioniDocente(int codDocente) {
+        try {
+            Docente[] docenti = super.getDocenti();
+            String[] informazioniPersonali = new String[4];
+            for(Docente docente : docenti){
+                if(docente.codDocente == codDocente){
+                    informazioniPersonali[0] = docente.getNome();
+                    informazioniPersonali[1] = docente.getCognome();
+                    informazioniPersonali[2] = docente.getMail();
+                    informazioniPersonali[3] = Integer.toString(docente.getCodDocente());
+                    break;
+                }
+            }
+            return informazioniPersonali;
+        } catch(Exception e){
+            System.out.println("C: AdminImpl  M: informazioniDocente: " + e);
+            return null;
+        }
     }
 
 
@@ -146,23 +143,16 @@ public class AdminImpl extends Database implements AdminService {
     @Override
     public boolean creaSegreteria(String nome, String cognome, String password) {
         try{
-            DB db = getDb("C:\\MapDB\\segreteria.db");
-            HTreeMap<String, Segreteria> map = db.hashMap("segreteriaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSegreteria()).createOrOpen();
-            map.put(String.valueOf(map.size() + 1),
-                    new Segreteria(nome,
-                            cognome,
-                            creaMailSegreteria(nome, cognome),
-                            password));
-            db.commit();
+            super.creaSegratario(nome, cognome, creaMailSegreteria(nome, cognome), password);
             return true;
         } catch(Exception e){
-            System.out.println(e);
+            System.out.println("C: AdminImpl  M: creaSegreteria: " + e);
             return false;
         }
     }
     public String creaMailSegreteria(String nome, String cognome){
         int num = 0;
-        Segreteria[] segreteria = getSegreteria();
+        Segreteria[] segreteria = super.getSegretari();
         for(int i = 0; i < segreteria.length; i++){
             if(nome.equals(segreteria[i].getNome()) && cognome.equals(segreteria[i].getCognome())){
                 num++;
@@ -175,19 +165,9 @@ public class AdminImpl extends Database implements AdminService {
         }
     }
 
+    @Override
     public Segreteria[] getSegreteria(){
         return super.getSegretari();
     }
 
-    private DB getDb(String nomeDB) {
-        ServletContext context = this.getServletContext();
-        synchronized (context) {
-            DB db = (DB)context.getAttribute("DB");
-            if(db == null){
-                db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().make();
-                context.setAttribute("DB", db);
-            }
-            return db;
-        }
-    }
 }
