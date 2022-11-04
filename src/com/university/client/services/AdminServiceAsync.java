@@ -3,6 +3,8 @@ package com.university.client.services;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.university.client.model.Docente;
+import com.university.client.model.Segreteria;
 import com.university.client.model.Studente;
 
 public interface AdminServiceAsync {
@@ -12,11 +14,13 @@ public interface AdminServiceAsync {
 
     void creaSegreteria(String nome, String cognome, String password, AsyncCallback<Boolean> async);
 
-    void getStudenti(AsyncCallback<Studente[]> async);
-
     void informazioniStudente(String mail, AsyncCallback<String[]> async);
 
-    void informazioniDocente(String mail, AsyncCallback<String[]> async);
+    void informazioniDocente(int codDocente, AsyncCallback<String[]> async);
 
-    void getNumeroStudenti(AsyncCallback<Integer> async);
+    void getStudenti(AsyncCallback<Studente[]> async);
+
+    void getDocenti(AsyncCallback<Docente[]> async);
+
+    void getSegreteria(AsyncCallback<Segreteria[]> async);
 }
