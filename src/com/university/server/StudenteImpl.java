@@ -38,6 +38,7 @@ public class StudenteImpl extends Database implements StudenteService {
         }
         return corsiDisponibili;
     }
+
     @Override
     public ArrayList<Frequenta> getMieiCorsi(int matricola) {
         Frequenta[] frequenta = super.getFrequenta();
@@ -49,12 +50,6 @@ public class StudenteImpl extends Database implements StudenteService {
         }
         return mieiCorsi;
     }
-
-    @Override
-    public boolean iscrizioneCorso(String mail) {
-        return false;
-    }
-
 
     public ArrayList<Sostiene> getVoti(int matricola) {
         Sostiene[] sostenuti = super.getSostiene();
@@ -81,5 +76,30 @@ public class StudenteImpl extends Database implements StudenteService {
             }
         }
         return esamiSostenuti;
+    }
+
+    /**
+     * Iscrive uno studente ad un corso
+     */
+    @Override
+    public boolean iscrizioneCorso(Studente s, Corso c) {
+        try {
+            super.creaFrequenta(s.matricola, c.nome);
+            return true;
+        } catch(Exception e){
+            System.out.println("C: StudenteImpl  M: iscrizioneCorso: " + e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean iscrizioneEsame(Studente s, Esame e){
+        try{
+            super.creaSostiene(s.matricola, e.codEsame, -1);
+            return true;
+        } catch(Exception ex){
+            System.out.println("C: StudenteImpl  M: iscrizioneEsame: " + ex);
+            return false;
+        }
     }
 }

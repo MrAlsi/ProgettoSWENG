@@ -11,10 +11,9 @@ import java.util.HashMap;
 public interface StudenteService extends RemoteService {
     String[] getInformazioniPersonali(Studente studente);
     ArrayList<Corso> getCorsiDisponibili(int matricola);
-
     ArrayList<Frequenta> getMieiCorsi(int matricola);
-
-    boolean iscrizioneCorso(String mail);
     ArrayList<Sostiene> getVoti(int matricola);
     HashMap<Sostiene, Esame> getEsameSvolti(int matricola);
+    boolean iscrizioneCorso(Studente s, Corso c);
+    boolean iscrizioneEsame(Studente s, Esame e);
 }

@@ -64,7 +64,6 @@ public class AdminImpl extends Database implements AdminService {
     /**
      * Dato una mail restituisce tutte le informazioni di quello studente
      */
-    /*
     @Override
     public String[] informazioniStudente(String mail) {
         Studente[] studenti = super.getStudenti();
@@ -82,7 +81,6 @@ public class AdminImpl extends Database implements AdminService {
         }
         return null;
     }
-*/
 
 
     /**         ~~ metodi per Docente ~~       **/
