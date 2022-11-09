@@ -12,17 +12,30 @@ import org.mapdb.Serializer;
 import javax.servlet.ServletContext;
 
 public class Database extends RemoteServiceServlet implements DatabaseService {
+    HTreeMap<String, Studente> studentiDB;
     @Override
     public void creaDB() {
+
     }
-    private DB getDb(String nomeDB) {
+
+    @Override
+    public void studentiDB() {
+        DB db = getDb("C:\\MapDB\\corsi");
+        this.studentiDB = db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
+
+
+    }
+    public DB getDb(String nomeDB) {
         ServletContext context = this.getServletContext();
         synchronized (context) {
             DB db = (DB)context.getAttribute("DB");
-            if(db == null){
-                db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().checksumHeaderBypass().make();
-                context.setAttribute("DB", db);
+            if(db != null) {
+                db.close();
             }
+
+            db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().checksumHeaderBypass().make();
+            context.setAttribute("DB", db);
+
             return db;
         }
     }
@@ -87,13 +100,14 @@ public class Database extends RemoteServiceServlet implements DatabaseService {
     public Docente[] getDocenti() {
         try{
             DB db = getDb("C:\\MapDB\\docenti");
-            HTreeMap<String, Docente> map = db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
+            HTreeMap<String, Docente> map = db.hashMap("docenteMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
             Docente[] docenti = new Docente[map.size()];
             int j = 0;
             for( String i: map.getKeys()){
                 docenti[j] = map.get(i);
                 j++;
             }
+            db.close();
             return docenti;
 
         } catch(Exception e){

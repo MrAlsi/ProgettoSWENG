@@ -56,5 +56,6 @@
     </orderEntry>
     <orderEntry type="library" name="gwt-user" level="project" />
     <orderEntry type="library" name="gwt-user" level="project" />
+    <orderEntry type="library" name="bluecatcode.junit.4.10.extended" level="project" />
   </component>
 </module>

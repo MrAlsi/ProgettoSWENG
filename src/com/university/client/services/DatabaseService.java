@@ -29,6 +29,8 @@ public interface DatabaseService extends RemoteService {
 
     Segreteria[] getSegretari();
 
+    void studentiDB();
+
     Admin[] getAdmin();
 
     Corso[] getCorsi();

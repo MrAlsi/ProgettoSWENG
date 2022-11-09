@@ -5,5 +5,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("index")
 public interface IndexService extends RemoteService {
+   /* int getNumeroCorsi();
+    int getNumeroDocenti();
+    int getNumeroStudenti();*/
+
     int[] getDataHP();
 }
