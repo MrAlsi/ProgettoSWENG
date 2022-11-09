@@ -32,10 +32,8 @@ public class Database extends RemoteServiceServlet implements DatabaseService {
             if(db != null) {
                 db.close();
             }
-
             db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().checksumHeaderBypass().make();
             context.setAttribute("DB", db);
-
             return db;
         }
     }
