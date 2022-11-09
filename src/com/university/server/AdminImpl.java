@@ -43,6 +43,11 @@ public class AdminImpl extends Database implements AdminService {
         }
     }
 
+    @Override
+    public boolean creaDocente(String nome, String cognome, String password) {
+        return false;
+    }
+
     /**
      * Crea un nuovo oggetto studente e lo salva nel DB
      */
@@ -100,36 +105,6 @@ public class AdminImpl extends Database implements AdminService {
     }
 
 
-    /**         ~~ metodi per Docente ~~       **/
-    @Override
-    public boolean creaDocente(String nome, String cognome, String password) {
-        try{
-            super.creaDocenti(nome, cognome, getMailDocente(nome, cognome), password, super.getDocenti().length+1);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public String getMailDocente(String nome, String cognome){
-        int num = 0;
-        Docente[] docenti = getDocenti();
-        for(int i = 0; i < docenti.length; i++){
-            if(nome.equals(docenti[i].getNome()) && cognome.equals(docenti[i].getCognome())){
-                num++;
-            }
-        }
-        if(num>0){
-            return nome + "." + cognome + num + "@docente.university.com";
-        } else {
-            return nome + "." + cognome + "@docente.university.com";
-        }
-    }
-
-    @Override
-    public Docente[] getDocenti(){
-        return super.getDocenti();
-    }
 
     @Override
     public String[] informazioniDocente(int codDocente) {

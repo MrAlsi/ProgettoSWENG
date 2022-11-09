@@ -20,10 +20,10 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     private DB getDb(){
         ServletContext context = this.getServletContext();
         synchronized (context) {
-            DB db = (DB)context.getAttribute("DB");
+            DB db = (DB)context.getAttribute("studentiDb");
             if(db == null) {
                 db = DBMaker.fileDB("C:\\MapDB\\studente").make();
-                context.setAttribute("DB", db);
+                context.setAttribute("studentiDb", db);
             }
             return db;
         }
