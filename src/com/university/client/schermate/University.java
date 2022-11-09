@@ -21,6 +21,7 @@ public class University implements EntryPoint {
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
     private static DatabaseServiceAsync databaseServiceAsync = GWT.create(DatabaseService.class);
+    private static IndexServiceAsync indexServiceAsync = GWT.create(IndexService.class);
     final HTML login__background = new HTML("" +
             "<div class=\"login__background\">" +
             "</div>" +
@@ -83,6 +84,7 @@ public class University implements EntryPoint {
     }
 
     public void caricaLogin() {
+
         databaseServiceAsync.creaDB(new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -90,51 +92,59 @@ public class University implements EntryPoint {
             }
             @Override
             public void onSuccess(Void result) {
-                login__panel = new FormPanel();
-                login__panel.setAction("/login");
-                login__panel.setMethod(FormPanel.METHOD_POST);
-
-
-                VerticalPanel login__container = new VerticalPanel();
-                login__container.add(login__img);
-                login__container.getElement().setClassName("login__container");
-                final Label email__label = new Label("Email:");
-                email__label.getElement().setClassName("email__label");
-                login__container.add(email__label);
-                final TextBox email__input = new TextBox();
-                email__input.getElement().setClassName("email__input");
-                email__input.setName("Email");
-                login__container.add(email__input);
-
-                final Label password__label = new Label("Password:");
-                password__label.getElement().setClassName("password__label");
-                login__container.add(password__label);
-                final PasswordTextBox password__input = new PasswordTextBox();
-                password__input.getElement().setClassName("password__input");
-                password__input.setName("Password");
-                login__container.add(password__input);
-
-                Button login__btn = new Button("Login");
-                login__btn.getElement().setClassName("login__btn");
-                login__btn.addClickHandler(new ClickHandler() {
+                databaseServiceAsync.studentiDB(new AsyncCallback<Void>() {
                     @Override
-                    public void onClick(ClickEvent clickEvent) {
-                        login__panel.submit();
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Mannaggia al topocazzo");
                     }
-                });
 
-                login__panel.addSubmitHandler(new FormPanel.SubmitHandler() {
                     @Override
-                    public void onSubmit(FormPanel.SubmitEvent submitEvent) {
-                        if (email__input.getText().length() == 0 || password__input.getText().length() == 0) {
-                            Window.alert("Compilare tutti i campi.");
-                            submitEvent.cancel();
-                        }
-                    }
-                });
+                    public void onSuccess(Void result) {
+                        login__panel = new FormPanel();
+                        login__panel.setAction("/login");
+                        login__panel.setMethod(FormPanel.METHOD_POST);
 
 
-                adminServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
+                        VerticalPanel login__container = new VerticalPanel();
+                        login__container.add(login__img);
+                        login__container.getElement().setClassName("login__container");
+                        final Label email__label = new Label("Email:");
+                        email__label.getElement().setClassName("email__label");
+                        login__container.add(email__label);
+                        final TextBox email__input = new TextBox();
+                        email__input.getElement().setClassName("email__input");
+                        email__input.setName("Email");
+                        login__container.add(email__input);
+
+                        final Label password__label = new Label("Password:");
+                        password__label.getElement().setClassName("password__label");
+                        login__container.add(password__label);
+                        final PasswordTextBox password__input = new PasswordTextBox();
+                        password__input.getElement().setClassName("password__input");
+                        password__input.setName("Password");
+                        login__container.add(password__input);
+
+                        Button login__btn = new Button("Login");
+                        login__btn.getElement().setClassName("login__btn");
+                        login__btn.addClickHandler(new ClickHandler() {
+                            @Override
+                            public void onClick(ClickEvent clickEvent) {
+                                login__panel.submit();
+                            }
+                        });
+
+                        login__panel.addSubmitHandler(new FormPanel.SubmitHandler() {
+                            @Override
+                            public void onSubmit(FormPanel.SubmitEvent submitEvent) {
+                                if (email__input.getText().length() == 0 || password__input.getText().length() == 0) {
+                                    Window.alert("Compilare tutti i campi.");
+                                    submitEvent.cancel();
+                                }
+                            }
+                        });
+
+
+               /* adminServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {
 
@@ -144,60 +154,75 @@ public class University implements EntryPoint {
                     public void onSuccess(Boolean result) {
                         Window.alert("Utente creato");
                     }
-                });
+                });*/
 
-                //Condizioni se username e password sono corretti
-                login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
-                    @Override
-                    public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-
-                        utenteServiceAsync.login(email__input.getText(), password__input.getText(), new AsyncCallback<Utente>() {
+                        adminServiceAsync.creaDocente("emanuel", "alsina", "password", new AsyncCallback<Boolean>() {
                             @Override
                             public void onFailure(Throwable caught) {
-                                Window.alert("Utente o password sbagliati " + caught);
+
                             }
 
                             @Override
-                            public void onSuccess(Utente result) {
-                                //Window.alert("sei dentro");
-                                //Carica account
-                                String tipo = result.getTipo();
-                                switch (tipo) {
-                                    case "Studente":
-                                        //Carica pagina studente
-                                        SchermataStudente schermataStudente = new SchermataStudente();
-                                        schermataStudente.accesso((Studente) result);
-                                        //Window.alert("studente");
-                                        break;
-                                    case "Docente":
-                                        //Carica pagina docente
-                                        Window.alert("docente");
-                                        break;
-                                    case "Segreteria":
-                                        //Carica segreteria
-                                        Window.alert("segreteria.");
-                                        break;
-                                    default:
-                                        //Carica admin
-                                        Window.alert("Admin");
-                                        break;
-
-
-                                }
-                                //Window.alert(String.valueOf(result.));
-                                //Cambio pagina in PortaleStudente
+                            public void onSuccess(Boolean result) {
+                                Window.alert("Docente creato");
 
                             }
                         });
+
+                        //Condizioni se username e password sono corretti
+                        login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+                            @Override
+                            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+                                utenteServiceAsync.login(email__input.getText(), password__input.getText(), new AsyncCallback<Utente>() {
+                                    @Override
+                                    public void onFailure(Throwable caught) {
+                                        Window.alert("Utente o password sbagliati " + caught);
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Utente result) {
+                                        //Window.alert("sei dentro");
+                                        //Carica account
+                                        String tipo = result.getTipo();
+                                        switch (tipo) {
+                                            case "Studente":
+                                                //Carica pagina studente
+                                                SchermataStudente schermataStudente = new SchermataStudente();
+                                                schermataStudente.accesso((Studente) result);
+                                                //Window.alert("studente");
+                                                break;
+                                            case "Docente":
+                                                //Carica pagina docente
+                                                Window.alert("docente");
+                                                break;
+                                            case "Segreteria":
+                                                //Carica segreteria
+                                                Window.alert("segreteria.");
+                                                break;
+                                            default:
+                                                //Carica admin
+                                                Window.alert("Admin");
+                                                break;
+
+
+                                        }
+                                        //Window.alert(String.valueOf(result.));
+                                        //Cambio pagina in PortaleStudente
+
+                                    }
+                                });
+                            }
+                        });
+
+                        login__container.add(login__btn);
+
+                        login__panel.add(login__container);
+                        RootPanel.get("body").add(login__background);
+                        RootPanel.get("container").add(login__panel);
+
                     }
                 });
-
-                login__container.add(login__btn);
-
-                login__panel.add(login__container);
-                RootPanel.get("body").add(login__background);
-                RootPanel.get("container").add(login__panel);
-
             }
         });
     }

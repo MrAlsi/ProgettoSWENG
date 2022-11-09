@@ -1,6 +1,5 @@
 package com.university.server;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.*;
 import com.university.client.services.UtenteService;
 
@@ -20,6 +19,7 @@ public class UtenteImpl extends Database implements UtenteService {
         };
     }
 
+    @Override
     public Studente cercaStudente(String mail, String password) {
         Studente[] studenti = super.getStudenti();
         for (Studente studente : studenti) {
@@ -29,6 +29,7 @@ public class UtenteImpl extends Database implements UtenteService {
         return null;
     }
 
+    @Override
     public Docente cercaDocente(String mail, String password){
         Docente[] docenti = super.getDocenti();
         for (Docente docente : docenti) {
@@ -37,6 +38,7 @@ public class UtenteImpl extends Database implements UtenteService {
         }
         return null;
     }
+    @Override
     public Segreteria cercaSegreteria(String mail, String password){
         Segreteria[] segreteria = super.getSegretari();
         for (Segreteria value : segreteria) {

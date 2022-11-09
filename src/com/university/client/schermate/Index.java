@@ -8,6 +8,7 @@ import com.university.client.services.IndexServiceAsync;
 
 public class Index implements Contenuto {
     private static IndexServiceAsync indexServiceAsync = GWT.create(com.university.client.services.IndexService.class);
+    private static StudenteDBServiceAsync studenteDBServiceAsync = GWT.create(StudenteDBService.class);
     final static HTML sfondo = new HTML("" +
             "<section id=\"sfondo__div\">" +
                 "<img src=\"img/homepage__bg.jpg\" class=\"sfondo__img\">" +
@@ -68,6 +69,7 @@ public class Index implements Contenuto {
             "</section>" +
             "");
 
+
     @Override
     public void aggiungiContenuto() throws Exception {
 
@@ -75,7 +77,7 @@ public class Index implements Contenuto {
         VerticalPanel homepage__panel = new VerticalPanel();
         homepage__panel.addStyleName("homepage__panel");
 
-       indexServiceAsync.getDataHP(new AsyncCallback<int[]>() {
+        indexServiceAsync.getDataHP(new AsyncCallback<int[]>() {
             @Override
             public void onFailure(Throwable caught) {
 

@@ -37,4 +37,6 @@ public interface DatabaseServiceAsync {
     void creaDocenti(String nome, String cognome, String mail, String password, int codDocente, AsyncCallback<Boolean> async);
 
     void creaStudente(String nome, String cognome, String mail, String password, String dataNascita, int matricola, AsyncCallback<Boolean> async);
+
+    void studentiDB(AsyncCallback<Void> async);
 }

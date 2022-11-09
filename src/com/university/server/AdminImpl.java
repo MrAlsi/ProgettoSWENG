@@ -16,6 +16,23 @@ import javax.servlet.ServletContext;
 public class AdminImpl extends Database implements AdminService {
 
     /**         ~~ metodi per Studente ~~       **/
+
+    public DB getDB(String nomeDB){
+        ServletContext context = this.getServletContext();
+        synchronized (context) {
+            DB db = (DB)context.getAttribute("DB");
+            if(db == null){
+                db = DBMaker.fileDB(nomeDB).closeOnJvmShutdown().checksumHeaderBypass().make();
+                context.setAttribute("DB", db);
+            }
+            return db;
+        }
+    }
+
+    public void creaFile(){
+        DB db = getDb("C:\\MapDB\\Studenti");
+
+    }
     @Override
     public Studente[] getStudenti() {
         try{
