@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @RemoteServiceRelativePath("studenti")
-public interface StudenteService extends RemoteService {
+public interface StudenteService extends RemoteService {/*
     String[] getInformazioniPersonali(Studente studente);
     ArrayList<Corso> getCorsiDisponibili(int matricola);
     ArrayList<Sostiene> getVoti(int matricola);
@@ -17,5 +17,10 @@ public interface StudenteService extends RemoteService {
     ArrayList<Corso> getMieiCorsi(int matricola);
 
     boolean iscrizioneCorso(Studente s, Corso c);
-    boolean iscrizioneEsame(Studente s, Esame e);
+    boolean iscrizioneEsame(Studente s, Esame e);*/
+
+    boolean creaStudente(String nome, String cognome, String password, String dataNascita, int matricola);
+    boolean eliminaStudente(int matricola);
+    Studente[] getStudenti();
+    Studente getStudenteMatricola(int matricola);
 }
