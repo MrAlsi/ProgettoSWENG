@@ -8,9 +8,7 @@ import com.university.client.model.Esame;
 public interface EsameServiceAsync {
     void getEsame(int codEsame, AsyncCallback<Esame> async);
     void getEsami(AsyncCallback<Esame[]> async);
-    void creaEsame(String nomeCorso, String data, String ora, String durata, String aula, AsyncCallback<Boolean> async);
-
     void modificaEsame(int codEsame, String nomeCorso, String data, String ora, String durata, String aula, AsyncCallback<Boolean> async);
-
     void eliminaEsame(int codEsame, AsyncCallback<Boolean> async);
+    void creaEsame(String nomeCorso, String data, String ora, String durata, String aula, AsyncCallback<Boolean> async);
 }
