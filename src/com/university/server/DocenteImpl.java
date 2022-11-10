@@ -24,7 +24,7 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
         synchronized (context) {
             DB db = (DB)context.getAttribute("docentiDb");
             if(db == null) {
-                db = DBMaker.fileDB("C:\\MapDB\\docente").make();
+                db = DBMaker.fileDB("C:\\MapDB\\docente").closeOnJvmShutdown().checksumHeaderBypass().make();
                 context.setAttribute("docentiDb", db);
             }
             return db;
@@ -34,6 +34,12 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
     private void createOrOpenDB(){
         this.db = getDb();
         this.map = this.db.hashMap("docentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerDocente()).createOrOpen();
+    }
+
+    @Override
+    public int getNumeroDocenti() {
+        createOrOpenDB();
+        return map.size();
     }
 
     @Override

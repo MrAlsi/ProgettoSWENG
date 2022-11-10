@@ -25,4 +25,6 @@ public interface CorsoServiceAsync {
     void getCorso(String nome, AsyncCallback<Corso> async);
 
     void getCorsi(AsyncCallback<Corso[]> async);
+
+    void getNumeroCorsi(AsyncCallback<Integer> async);
 }

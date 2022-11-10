@@ -1,14 +1,15 @@
 package com.university.client.schermate;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
-import com.university.client.services.Contenuto;
-import com.university.client.services.IndexServiceAsync;
+import com.university.client.services.*;
 
 public class Index implements Contenuto {
-    private static IndexServiceAsync indexServiceAsync = GWT.create(com.university.client.services.IndexService.class);
-    private static StudenteDBServiceAsync studenteDBServiceAsync = GWT.create(StudenteDBService.class);
+    private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
+    private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
+    private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
     final static HTML sfondo = new HTML("" +
             "<section id=\"sfondo__div\">" +
                 "<img src=\"img/homepage__bg.jpg\" class=\"sfondo__img\">" +
@@ -73,47 +74,86 @@ public class Index implements Contenuto {
     @Override
     public void aggiungiContenuto() throws Exception {
 
+        int[] infoPaginaIniziale = new int[3];
+
         RootPanel.get("container").clear();
         VerticalPanel homepage__panel = new VerticalPanel();
         homepage__panel.addStyleName("homepage__panel");
 
-        indexServiceAsync.getDataHP(new AsyncCallback<int[]>() {
+        /*studenteServiceAsync.creaStudente("Gabriel", "Alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
-
+                Window.alert("arg");
             }
 
             @Override
-            public void onSuccess(int[] result) {
-                // SFONDO SCHERMATA PRINCIPALE
-                homepage__panel.add(sfondo);
+            public void onSuccess(Boolean result) {
+                Window.alert("Studente creato");
 
-                // PARAGRAFO 1 SCHERMATA PRINCIPALE
-                homepage__panel.add(paragrafo__1);
+            }
+        });*/
 
-                // PARAGRAFO 2 SCHERMATA PRINCIPALE
-                HTML paragrafo__2 = new HTML("" +
-                        "<section id=\"paragrafo__2\">" +
-                        "<div class=\"title__p2\"><b>CORSI: </b></div>" +
-                        "<div id=\"dipartimenti__p2\">" +  result[0] + "</div>" +
-                        "<div class=\"title__p2\"><b>INSEGNANTI: </b></div>" +
-                        "<div id=\"insegnanti__p2\">" +  result[1] + "</div>" +
-                        "<div class=\"title__p2\"><b>STUDENTI: </b></div>" +
-                        "<div id=\"studenti__p2\"> " +  result[2] + "</div>" +
-                        "</section>" +
-                        "");
+        corsoServiceAsync.getNumeroCorsi(new AsyncCallback<Integer>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Error: corsoServiceAsync.getNumeroCorsi " + caught);
+            }
 
-                homepage__panel.add(paragrafo__2);
+            @Override
+            public void onSuccess(Integer result) {
+                infoPaginaIniziale[0] = result;
+                docenteServiceAsync.getNumeroDocenti(new AsyncCallback<Integer>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Error: docenteServiceAsync.getNumeroDocenti " + caught);
 
-                // PARAGRAFO 3 SCHERMATA PRINCIPALE
-                homepage__panel.add(paragrafo__3);
+                    }
 
-                // FOOTER SCHERMATA PRINCIPALE
-                homepage__panel.add(footer);
+                    @Override
+                    public void onSuccess(Integer result) {
+                        infoPaginaIniziale[1] = result;
+                        studenteServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                Window.alert("Error: studenteServiceAsync.getNumeroStudenti " + caught);
+                            }
+                            @Override
+                            public void onSuccess(Integer result) {
+                                infoPaginaIniziale[2] = result;
+                                // SFONDO SCHERMATA PRINCIPALE
+                                homepage__panel.add(sfondo);
 
-                RootPanel.get("container").add(homepage__panel);
+                                // PARAGRAFO 1 SCHERMATA PRINCIPALE
+                                homepage__panel.add(paragrafo__1);
 
-           }
+                                // PARAGRAFO 2 SCHERMATA PRINCIPALE
+                                HTML paragrafo__2 = new HTML("" +
+                                        "<section id=\"paragrafo__2\">" +
+                                        "<div class=\"title__p2\"><b>CORSI: </b></div>" +
+                                        "<div id=\"dipartimenti__p2\">" +  infoPaginaIniziale[0] + "</div>" +
+                                        "<div class=\"title__p2\"><b>INSEGNANTI: </b></div>" +
+                                        "<div id=\"insegnanti__p2\">" +  infoPaginaIniziale[1] + "</div>" +
+                                        "<div class=\"title__p2\"><b>STUDENTI: </b></div>" +
+                                        "<div id=\"studenti__p2\"> " +  infoPaginaIniziale[2] + "</div>" +
+                                        "</section>" +
+                                        "");
+
+                                homepage__panel.add(paragrafo__2);
+
+                                // PARAGRAFO 3 SCHERMATA PRINCIPALE
+                                homepage__panel.add(paragrafo__3);
+
+                                // FOOTER SCHERMATA PRINCIPALE
+                                homepage__panel.add(footer);
+
+                                RootPanel.get("container").add(homepage__panel);
+                            }
+                        });
+                    }
+                });
+
+
+            }
         });
     }
 }

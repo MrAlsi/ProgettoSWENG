@@ -70,7 +70,7 @@ public class SchermataStudente {
     public void form__profilo(){
         //Qua metti il biding della sezione informazioni personali
         final Label[] lab = new Label[1];
-        serviceStudente.getInformazioniPersonali(studente, new AsyncCallback<String[]>() {
+        /*serviceStudente.getInformazioniPersonali(studente, new AsyncCallback<String[]>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -88,7 +88,7 @@ public class SchermataStudente {
                 user__container.add(user__info);
                 user__container.add(user__info);
             }
-        });
+        });*/
         RootPanel.get("container").add(user__container);
     }
 

@@ -23,11 +23,13 @@ public interface StudenteServiceAsync {
 
     void getMieiCorsi(int matricola, AsyncCallback<ArrayList<Corso>> async);*/
 
-    void creaStudente(String nome, String cognome, String password, String dataNascita, int matricola, AsyncCallback<Boolean> async);
+    void creaStudente(String nome, String cognome, String password, String dataNascita, AsyncCallback<Boolean> async);
 
     void eliminaStudente(int matricola, AsyncCallback<Boolean> async);
 
     void getStudenti(AsyncCallback<Studente[]> async);
 
-    void getStudenteMatricola(int matricola, AsyncCallback<Studente> async);
+    void getStudenteByMatricola(int matricola, AsyncCallback<Studente> async);
+
+    void getNumeroStudenti(AsyncCallback<Integer> async);
 }

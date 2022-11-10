@@ -9,8 +9,8 @@ import java.util.ArrayList;
 @RemoteServiceRelativePath("CorsoService")
 public interface CorsoService extends RemoteService {
 
+    int getNumeroCorsi();
     Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame);
-
     Corso[] getCorsi();
     Corso getCorso(String nome);
     Corso[] getMieiCorsi(int matricola);

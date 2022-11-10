@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
-
     DB db;
     HTreeMap<String, Corso> map;
 
@@ -24,16 +23,21 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         synchronized (context) {
             DB db = (DB)context.getAttribute("corsiDb");
             if(db == null) {
-                db = DBMaker.fileDB("C:\\MapDB\\corso").make();
+                db = DBMaker.fileDB("C:\\MapDB\\corso").closeOnJvmShutdown().checksumHeaderBypass().make();
                 context.setAttribute("corsiDb", db);
             }
             return db;
         }
     }
-
     private void createOrOpenDB(){
         this.db = getDb();
         this.map = this.db.hashMap("corsiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerCorso()).createOrOpen();
+    }
+
+    @Override
+    public int getNumeroCorsi() {
+        createOrOpenDB();
+        return map.size();
     }
 
     @Override

@@ -37,6 +37,10 @@
         <servlet-name>com.university.University DocenteService</servlet-name>
         <servlet-class>com.university.server.DocenteImpl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>com.university.University SegreteriaService</servlet-name>
+        <servlet-class>com.university.server.SegreteriaImpl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>com.university.University UniversityService</servlet-name>
         <url-pattern>/University/UniversityService</url-pattern>
@@ -70,7 +74,7 @@
         <url-pattern>/University/docente</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>com.university.University StudenteDBService</servlet-name>
-        <url-pattern>/University/studenteDB</url-pattern>
+        <servlet-name>com.university.University SegreteriaService</servlet-name>
+        <url-pattern>/University/segreteria</url-pattern>
     </servlet-mapping>
 </web-app>

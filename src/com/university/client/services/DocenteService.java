@@ -7,6 +7,7 @@ import com.university.client.model.Docente;
 @RemoteServiceRelativePath("docente")
 public interface DocenteService extends RemoteService {
     //Docente getInfoPersonali(int codDocente);
+    int getNumeroDocenti();
     Docente[] getDocenti();
     Docente getDocente(int codDocente);
     Boolean eliminaDocente(int codDocente);

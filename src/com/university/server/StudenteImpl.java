@@ -22,7 +22,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
         synchronized (context) {
             DB db = (DB)context.getAttribute("studentiDb");
             if(db == null) {
-                db = DBMaker.fileDB("C:\\MapDB\\studente").make();
+                db = DBMaker.fileDB("C:\\MapDB\\studente").closeOnJvmShutdown().checksumHeaderBypass().make();
                 context.setAttribute("studentiDb", db);
             }
             return db;
@@ -31,6 +31,12 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     private void createOrOpenDB(){
         this.db = getDb();
         this.map = this.db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
+    }
+
+    @Override
+    public int getNumeroStudenti() {
+        createOrOpenDB();
+        return map.size();
     }
 
     @Override
@@ -52,7 +58,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     }
 
     @Override
-    public Studente getStudenteMatricola(int matricola) {
+    public Studente getStudenteByMatricola(int matricola) {
         createOrOpenDB();
         for (String id : map.getKeys()) {
             if (map.get(id).getMatricola() == matricola) {
@@ -62,12 +68,13 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
         return null;
     }
 
+
     @Override
-    public boolean creaStudente(String nome, String cognome, String password, String dataNascita, int matricola) {
+    public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {
         try{
             createOrOpenDB();
             map.put(String.valueOf(map.size() + 1),
-                    new Studente( nome, cognome, creaMailStudente(nome, cognome), password, dataNascita, matricola));
+                    new Studente( nome, cognome, creaMailStudente(nome, cognome), password, dataNascita, getNumeroStudenti()+1));
             db.commit();
             return true;
         } catch (Exception e){
