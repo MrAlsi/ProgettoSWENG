@@ -68,6 +68,21 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
         return null;
     }
 
+    @Override
+    public Studente loginStudente(String mail, String password) {
+        try{
+            createOrOpenDB();
+            for (String id : map.getKeys()) {
+                if (map.get(id).getMail().equals(mail) && map.get(id).getPassword().equals(password)) {
+                    return map.get(id);
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err login studente: " + e);
+        }
+        return null;
+    }
+
 
     @Override
     public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {

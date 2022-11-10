@@ -16,8 +16,10 @@ public interface DocenteServiceAsync {
 
     void modificaDocente(String nome, String cognome, String mail, String password, int codDocente, AsyncCallback<Boolean> async);
 
-    void creaDocente(String nome, String cognome, String password, int codDocente, AsyncCallback<Boolean> async);
+    void creaDocente(String nome, String cognome, String password, AsyncCallback<Boolean> async);
 
     //Docente getInfoPersonali(int codDocente);
     void getNumeroDocenti(AsyncCallback<Integer> async);
+
+    void loginDocente(String mail, String password, AsyncCallback<Docente> async);
 }

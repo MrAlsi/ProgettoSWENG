@@ -12,4 +12,5 @@ public interface StudenteService extends RemoteService {
     boolean eliminaStudente(int matricola);
     Studente[] getStudenti();
     Studente getStudenteByMatricola(int matricola);
+    Studente loginStudente(String mail, String password);
 }
