@@ -4,10 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.university.client.model.Studente;
-import com.university.client.services.AdminService;
-import com.university.client.services.AdminServiceAsync;
-import com.university.client.services.DatabaseService;
-import com.university.client.services.DatabaseServiceAsync;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

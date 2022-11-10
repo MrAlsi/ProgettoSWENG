@@ -22,7 +22,6 @@ public class University implements EntryPoint {
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
-    private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
 
     final HTML login__background = new HTML("" +
             "<div class=\"login__background\">" +
@@ -128,18 +127,6 @@ public class University implements EntryPoint {
                 }
             }
         });
-        adminServiceAsync.creaDocente("emanuel", "alsina", "password", new AsyncCallback<Boolean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-
-            }
-
-            @Override
-            public void onSuccess(Boolean result) {
-                Window.alert("Docente creato");
-
-            }
-        });
 
         //Condizioni se username e password sono corretti
         login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
@@ -167,11 +154,11 @@ public class University implements EntryPoint {
                                     @Override
                                     public void onSuccess(Studente result) {
                                         if(result==null){
-                                            Window.alert("Utente o password sbagliatiii");
+                                            Window.alert("Utente o password sbagliati");
                                         } else {
                                             SchermataStudente schermataStudente = new SchermataStudente();
                                             schermataStudente.accesso(result);
-                                            Window.alert("studente");
+                                            //Window.alert("studente");
                                         }
                                     }
                                 });
@@ -202,6 +189,7 @@ public class University implements EntryPoint {
                                 break;
                             default:
                                 //Carica admin
+                                if(email__input.getText().equals("admin") && password__input.getText().equals("admin"))
                                 Window.alert("Admin");
                                 break;
 

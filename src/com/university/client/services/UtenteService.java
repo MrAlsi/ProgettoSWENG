@@ -9,12 +9,5 @@ import com.university.client.model.Utente;
 
 @RemoteServiceRelativePath("utenti")
 public interface UtenteService extends RemoteService {
-
     String login(String mail);
-
-    Studente cercaStudente(String mail, String password);
-
-    Docente cercaDocente(String mail, String password);
-
-    Segreteria cercaSegreteria(String mail, String password);
 }
