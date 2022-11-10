@@ -1,7 +1,9 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.university.client.model.Corso;
 import com.university.client.model.Docente;
+import com.university.client.model.Frequenta;
 import com.university.client.model.Serializer.SerializerDocente;
 import com.university.client.model.Serializer.SerializerSostiene;
 import com.university.client.model.Sostiene;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 public class SostieneImpl extends RemoteServiceServlet implements SostieneService {
 
     DB db;
-    HTreeMap<String, Sostiene> map;
+    HTreeMap<Integer, Sostiene> map;
 
     private DB getDb(){
         ServletContext context = this.getServletContext();
@@ -33,26 +35,79 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
 
     private void createOrOpenDB(){
         this.db = getDb();
-        this.map = this.db.hashMap("sostieneMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSostiene()).createOrOpen();
+        this.map = this.db.hashMap("sostieneMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerSostiene()).createOrOpen();
     }
 
+    //ottengo un array con tutte le istanze di sostiene
     @Override
     public Sostiene[] getSostiene() {
-        return new Sostiene[0];
+        try{
+            createOrOpenDB();
+            Sostiene[] sostenuti = new Sostiene[map.size()];
+            int j = 0;
+            for( int i: map.getKeys()){
+                sostenuti[j] = map.get(i);
+                j++;
+            }
+            return sostenuti;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
     }
 
+    //ottengo un array con gli esami sostenuti di uno studente
     @Override
-    public ArrayList<Sostiene> getSostieneStudente(int matricola) {
-        return null;
+    public Sostiene[] getSostieneStudente(int matricola) {
+        try{
+            createOrOpenDB();
+            Sostiene[] sostenuti = new Sostiene[map.size()];
+            int j = 0;
+            for( int i: map.getKeys()){
+                if (map.get(i).getMatricola() == matricola) {
+                    sostenuti[j] = map.get(i);
+                    j++;
+                }
+            }
+            return sostenuti;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
     }
 
+    //ottengo i voti di tutti gli studenti che hanno dato l'esame
     @Override
-    public ArrayList<Sostiene> getStudenti(int codEsame) {
-        return null;
+    public Sostiene[] getStudenti(int codEsame) {
+        try{
+            createOrOpenDB();
+            Sostiene[] sostenuti = new Sostiene[map.size()];
+            int j = 0;
+            for( int i: map.getKeys()){
+                if (map.get(i).codEsame == codEsame) {
+                    sostenuti[j] = map.get(i);
+                    j++;
+                }
+            }
+            return sostenuti;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
     }
 
+    //creo una nuova istanza di sostiene
     @Override
     public boolean creaSostiene(int matricola, int codEsame, int voto) {
-        return false;
+        try{
+            createOrOpenDB();
+            map.put((map.size() + 1),
+                    new Sostiene( matricola, codEsame,voto));
+            db.commit();
+            return true;
+        } catch (Exception e){
+            System.out.println("Exception: " + e);
+            return false;
+        }
     }
 }

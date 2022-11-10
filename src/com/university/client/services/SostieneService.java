@@ -12,9 +12,9 @@ public interface SostieneService extends RemoteService {
 
     Sostiene[] getSostiene();
 
-    ArrayList<Sostiene> getSostieneStudente(int matricola);
+    Sostiene[] getSostieneStudente(int matricola);
 
-    ArrayList<Sostiene> getStudenti(int codEsame);
+    Sostiene[] getStudenti(int codEsame);
 
     boolean creaSostiene(int matricola, int codEsame, int voto);
 }
