@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.university.client.model.Docente;
 import com.university.client.model.Studente;
+import com.university.client.model.Corso;
 import com.university.client.model.Utente;
 import com.university.client.services.*;
 
@@ -23,6 +24,7 @@ public class University implements EntryPoint {
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
     private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
+    private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
 
     final HTML login__background = new HTML("" +
             "<div class=\"login__background\">" +
@@ -128,7 +130,7 @@ public class University implements EntryPoint {
                 }
             }
         });
-        adminServiceAsync.creaDocente("emanuel", "alsina", "password", new AsyncCallback<Boolean>() {
+        adminServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -137,6 +139,45 @@ public class University implements EntryPoint {
             @Override
             public void onSuccess(Boolean result) {
                 Window.alert("Docente creato");
+
+            }
+        });
+
+        corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Corso creato");
+
+            }
+        });
+
+        corsoServiceAsync.creaCorso("Italiano", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Corso creato");
+
+            }
+        });
+
+        corsoServiceAsync.creaCorso("Matematica", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Corso creato");
 
             }
         });
@@ -171,7 +212,7 @@ public class University implements EntryPoint {
                                         } else {
                                             SchermataStudente schermataStudente = new SchermataStudente();
                                             schermataStudente.accesso(result);
-                                            Window.alert("studente");
+                                            //Window.alert("studente");
                                         }
                                     }
                                 });
@@ -188,9 +229,9 @@ public class University implements EntryPoint {
                                         if(result==null){
                                             Window.alert("Utente o password sbagliati");
                                         } else {
-                                            //SchermataDocente schermataDocente = new SchermataDocente();
-                                            //schermataStudente.accesso(result);
-                                            Window.alert("Docente");
+                                            SchermataDocente schermataDocente = new SchermataDocente();
+                                            schermataDocente.accesso(result);
+                                            //Window.alert("docente");
                                         }
                                     }
                                 });

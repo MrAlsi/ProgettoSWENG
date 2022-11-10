@@ -80,10 +80,10 @@ public class Index implements Contenuto {
         VerticalPanel homepage__panel = new VerticalPanel();
         homepage__panel.addStyleName("homepage__panel");
 
-        /*studenteServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
+        studenteServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("arg");
+                Window.alert("arg" + caught);
             }
 
             @Override
@@ -91,9 +91,9 @@ public class Index implements Contenuto {
                 Window.alert("Studente creato");
 
             }
-        });*/
+        });
 
-        docenteServiceAsync.creaDocente("emanuel", "alsina", "password", new AsyncCallback<Boolean>() {
+        docenteServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert("arg" + caught);
