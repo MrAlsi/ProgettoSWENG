@@ -12,8 +12,6 @@ public interface AdminServiceAsync {
 
     void creaDocente(String nome, String cognome, String password, AsyncCallback<Boolean> async);
 
-    void creaSegreteria(String nome, String cognome, String password, AsyncCallback<Boolean> async);
-
     void informazioniStudente(String mail, AsyncCallback<String[]> async);
 
     void informazioniDocente(int codDocente, AsyncCallback<String[]> async);
@@ -21,6 +19,4 @@ public interface AdminServiceAsync {
     void getStudenti(AsyncCallback<Studente[]> async);
 
     void getDocenti(AsyncCallback<Docente[]> async);
-
-    void getSegreteria(AsyncCallback<Segreteria[]> async);
 }

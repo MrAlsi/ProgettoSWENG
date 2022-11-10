@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface StudenteServiceAsync {
-    void getInformazioniPersonali(Studente studente, AsyncCallback<String[]> async);
+    /*void getInformazioniPersonali(Studente studente, AsyncCallback<String[]> async);
 
     void getVoti(int matricola, AsyncCallback<ArrayList<Sostiene>> async);
 
@@ -21,5 +21,15 @@ public interface StudenteServiceAsync {
 
     void iscrizioneEsame(Studente s, Esame e, AsyncCallback<Boolean> async);
 
-    void getMieiCorsi(int matricola, AsyncCallback<ArrayList<Corso>> async);
+    void getMieiCorsi(int matricola, AsyncCallback<ArrayList<Corso>> async);*/
+
+    void creaStudente(String nome, String cognome, String password, String dataNascita, AsyncCallback<Boolean> async);
+
+    void eliminaStudente(int matricola, AsyncCallback<Boolean> async);
+
+    void getStudenti(AsyncCallback<Studente[]> async);
+
+    void getStudenteByMatricola(int matricola, AsyncCallback<Studente> async);
+
+    void getNumeroStudenti(AsyncCallback<Integer> async);
 }

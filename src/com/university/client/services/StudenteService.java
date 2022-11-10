@@ -9,13 +9,9 @@ import java.util.HashMap;
 
 @RemoteServiceRelativePath("studenti")
 public interface StudenteService extends RemoteService {
-    String[] getInformazioniPersonali(Studente studente);
-    ArrayList<Corso> getCorsiDisponibili(int matricola);
-    ArrayList<Sostiene> getVoti(int matricola);
-    HashMap<Sostiene, Esame> getEsameSvolti(int matricola);
-
-    ArrayList<Corso> getMieiCorsi(int matricola);
-
-    boolean iscrizioneCorso(Studente s, Corso c);
-    boolean iscrizioneEsame(Studente s, Esame e);
+    int getNumeroStudenti();
+    boolean creaStudente(String nome, String cognome, String password, String dataNascita);
+    boolean eliminaStudente(int matricola);
+    Studente[] getStudenti();
+    Studente getStudenteByMatricola(int matricola);
 }

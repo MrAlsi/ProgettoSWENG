@@ -19,6 +19,5 @@ public interface AdminService extends RemoteService {
     String[] informazioniDocente(int codDocente);
 
     //Metodi per segreteria
-    boolean creaSegreteria(String nome, String cognome, String password);
-    Segreteria[] getSegreteria();
+
 }
