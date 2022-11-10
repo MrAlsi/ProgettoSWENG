@@ -1,6 +1,7 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.university.client.model.Corso;
 import com.university.client.model.Esame;
 import com.university.client.model.Serializer.SerializerEsame;
 import com.university.client.services.EsameService;
@@ -83,11 +84,29 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
 
     @Override
     public Esame getEsame(int codEsame) {
+        createOrOpenDB();
+        for (int id : map.getKeys()) {
+            if (map.get(id).getCodEsame() == codEsame) {
+                return map.get(id);
+            }
+        }
         return null;
     }
 
     @Override
     public Esame[] getEsami() {
-        return new Esame[0];
+        try{
+            createOrOpenDB();
+            Esame[] esami = new Esame[map.size()];
+            int j = 0;
+            for( int i: map.getKeys()){
+                esami[j] = map.get(i);
+                j++;
+            }
+            return esami;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
     }
 }

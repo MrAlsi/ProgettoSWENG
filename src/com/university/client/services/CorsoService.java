@@ -6,7 +6,7 @@ import com.university.client.model.Corso;
 
 import java.util.ArrayList;
 
-@RemoteServiceRelativePath("CorsoService")
+@RemoteServiceRelativePath("corso")
 public interface CorsoService extends RemoteService {
 
     int getNumeroCorsi();
@@ -16,7 +16,4 @@ public interface CorsoService extends RemoteService {
     Corso[] getCorsiDocente (int docente);
     boolean eliminaCorso(String nome);
     boolean modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame);
-    boolean aggiungiEsame(String nome, int esame);
-    boolean eliminaEsame(String nome);
-    boolean aggiungiCodocente(String nome, int codocente);
 }

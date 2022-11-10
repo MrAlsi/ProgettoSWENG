@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class FrequentaImpl extends RemoteServiceServlet implements FrequentaService {
 
     DB db;
-    HTreeMap<String, Frequenta> map;
+    HTreeMap<Integer, Frequenta> map;
 
     private DB getDb(){
         ServletContext context = this.getServletContext();
@@ -35,7 +35,7 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
 
     private void createOrOpenDB(){
         this.db = getDb();
-        this.map = this.db.hashMap("frequentaMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerFrequenta()).createOrOpen();
+        this.map = this.db.hashMap("frequentaMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerFrequenta()).createOrOpen();
     }
 
 
@@ -46,7 +46,7 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
             createOrOpenDB();
             Frequenta[] frequenta = new Frequenta[map.size()];
             int j = 0;
-            for( String i: map.getKeys()){
+            for( int i: map.getKeys()){
                 frequenta[j] = map.get(i);
                 j++;
             }
@@ -129,7 +129,7 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
     public boolean iscrivi(int matricola, String nomeCorso) {
         try{
             createOrOpenDB();
-            map.put(String.valueOf(map.size() + 1),
+            map.put((map.size() + 1),
                     new Frequenta( matricola, nomeCorso));
             db.commit();
             return true;
@@ -141,6 +141,19 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
 
     @Override
     public boolean cancellaIscrizione(int matricola, String nomeCorso) {
+        try{
+            createOrOpenDB();
+            for(int i:map.getKeys()){
+                if(map.get(i).getMatricola() == matricola && map.get(i).getNomeCorso().equals(nomeCorso)){
+                    map.remove(i);
+                    db.commit();
+                    return true;
+                }
+            }
+
+        }catch(Exception e){
+            System.out.println("Err: elimina iscrizione " + e);
+        }
         return false;
     }
 }

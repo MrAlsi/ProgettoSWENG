@@ -34,12 +34,14 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         this.map = this.db.hashMap("corsiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerCorso()).createOrOpen();
     }
 
+    //restituisce il numero di corsi
     @Override
     public int getNumeroCorsi() {
         createOrOpenDB();
         return map.size();
     }
 
+    //crea un nuovo corso
     @Override
     public Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
         try{
@@ -75,7 +77,7 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     public Corso getCorso(String nome) {
         createOrOpenDB();
         for (int id : map.getKeys()) {
-            if (map.get(id).getNome() == nome) {
+            if (map.get(id).getNome().equals(nome)) {
                 return map.get(id);
             }
         }
@@ -118,6 +120,8 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         return false;
     }
 
+
+    //questo metodo è da utilizzare anche per aggiungere/eliminare un esame e un codocente
     @Override
     public boolean modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
         try{
@@ -135,18 +139,5 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         }
         return false;
     }
-    @Override
-    public boolean aggiungiEsame(String nome, int esame) {
-        return false;
-    }
 
-    @Override
-    public boolean eliminaEsame(String nome) {
-        return false;
-    }
-
-    @Override
-    public boolean aggiungiCodocente(String nome, int codocente) {
-        return false;
-    }
 }

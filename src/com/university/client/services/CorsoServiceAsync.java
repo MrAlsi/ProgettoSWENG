@@ -8,12 +8,6 @@ import com.university.client.model.Corso;
 public interface CorsoServiceAsync {
     void creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame, AsyncCallback<Boolean> async);
 
-    void aggiungiCodocente(String nome, int codocente, AsyncCallback<Boolean> async);
-
-    void eliminaEsame(String nome, AsyncCallback<Boolean> async);
-
-    void aggiungiEsame(String nome, int esame, AsyncCallback<Boolean> async);
-
     void eliminaCorso(String nome, AsyncCallback<Boolean> async);
 
     void getCorsiDocente(int docente, AsyncCallback<Corso[]> async);
