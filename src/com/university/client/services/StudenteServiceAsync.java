@@ -32,4 +32,6 @@ public interface StudenteServiceAsync {
     void getStudenteByMatricola(int matricola, AsyncCallback<Studente> async);
 
     void getNumeroStudenti(AsyncCallback<Integer> async);
+
+    void loginStudente(String mail, String password, AsyncCallback<Studente> async);
 }

@@ -1,25 +1,41 @@
 package com.university.server;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.*;
 import com.university.client.services.UtenteService;
 
 
-public class UtenteImpl extends Database implements UtenteService {
+public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
 
     @Override
-    public Utente login(String mail, String password) {
+    public String login(String mail) {
         String[] dominio = mail.split("@");
         System.out.println(dominio[1]);
         //Switch per vedere il dominio e cercare in un determinato database
         return switch (dominio[1]) {
-            case "studente.university.com" -> cercaStudente(mail, password);
-            case "docente.university.com" -> cercaDocente(mail, password);
-            default -> cercaSegreteria(mail, password);
+            case "studente.university.com" -> "Studente";
+            case "docente.university.com" -> "Docente";
+            default -> "Segreteria";
             //default -> cercaAdmin(mail, password);
         };
     }
 
     @Override
+    public Studente cercaStudente(String mail, String password) {
+        return null;
+    }
+
+    @Override
+    public Docente cercaDocente(String mail, String password) {
+        return null;
+    }
+
+    @Override
+    public Segreteria cercaSegreteria(String mail, String password) {
+        return null;
+    }
+
+  /*  @Override
     public Studente cercaStudente(String mail, String password) {
         Studente[] studenti = super.getStudenti();
         for (Studente studente : studenti) {

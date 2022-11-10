@@ -12,5 +12,6 @@ public interface DocenteService extends RemoteService {
     Docente getDocente(int codDocente);
     Boolean eliminaDocente(int codDocente);
     Boolean modificaDocente(String nome, String cognome, String mail, String password, int codDocente);
-    Boolean creaDocente(String nome, String cognome, String password, int codDocente);
+    Boolean creaDocente(String nome, String cognome, String password);
+    Docente loginDocente(String mail, String password);
 }

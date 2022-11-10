@@ -81,11 +81,11 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
     }
 
     @Override
-    public Boolean creaDocente(String nome, String cognome, String password, int codDocente) {
+    public Boolean creaDocente(String nome, String cognome, String password) {
         try{
             createOrOpenDB();
             map.put(String.valueOf(map.size() + 1),
-                    new Docente( nome, cognome,getMailDocente(nome,cognome), password,codDocente));
+                    new Docente( nome, cognome,getMailDocente(nome,cognome), password, map.size()+1));
             db.commit();
             return true;
         } catch (Exception e){
@@ -93,6 +93,18 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
             return false;
         }
     }
+
+    @Override
+    public Docente loginDocente(String mail, String password) {
+        createOrOpenDB();
+        for (String id : map.getKeys()) {
+            if (map.get(id).getMail().equals(mail) && map.get(id).getPassword().equals(password)) {
+                return map.get(id);
+            }
+        }
+        return null;
+    }
+
     public String getMailDocente(String nome, String cognome){
         int num = 0;
         Docente[] docenti = getDocenti();
