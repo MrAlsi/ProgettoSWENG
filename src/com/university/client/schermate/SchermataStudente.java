@@ -68,32 +68,26 @@ public class SchermataStudente {
 
 
     public void form__profilo(){
-        //Qua metti il biding della sezione informazioni personali
-        final Label[] lab = new Label[1];
-        /*serviceStudente.getInformazioniPersonali(studente, new AsyncCallback<String[]>() {
+        serviceStudente.getStudenteByMatricola(studente.getMatricola(), new AsyncCallback<Studente>() {
             @Override
             public void onFailure(Throwable caught) {
 
             }
             @Override
-            public void onSuccess(String[] result) {
-                //In result dovresti avere tutti i dati personali dell'utente in un array
-                lab[0] = new Label(result[0]);
+            public void onSuccess(Studente result) {
                 user__container.clear();
-                HTML user__info = new HTML("<div class=\"content__studente\"><b>Nome: </b>" + result[1]
-                        + "<br /><b>Cognome: </b>" + result[2]
-                        + "<br /><b>E-mail: </b>" + result[0] + "</div>");
-                user__container.add(new HTML("<div class=\"user__title\">Informazioni personali</div>"));
-                user__container.add(user__info);
-                user__container.add(user__info);
+                HTML user__info = new HTML("<div class=\"content__profilo\"><b>Nome: </b>" + result.getNome()
+                        + "<br /><b>Cognome: </b>" + result.getCognome()
+                        + "<br /><b>E-mail: </b>" + result.getMail()
+                        + "<br /><b>Matricola: </b>" + result.getMatricola() + "</div>");
+                user__container.add(new HTML("<div class=\"user__title\">Profilo</div>"));
                 user__container.add(user__info);
             }
-        });*/
+        });
         RootPanel.get("container").add(user__container);
     }
 
     public void caricaEsamiSvolti(){
-        //Qua metti il biding della sezione informazioni personali
 
     }
 

@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.university.client.model.Docente;
 import com.university.client.model.Studente;
+import com.university.client.model.Corso;
 import com.university.client.model.Utente;
 import com.university.client.services.*;
 
@@ -22,7 +23,7 @@ public class University implements EntryPoint {
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
-
+    private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
     final HTML login__background = new HTML("" +
             "<div class=\"login__background\">" +
             "</div>" +
@@ -127,6 +128,57 @@ public class University implements EntryPoint {
                 }
             }
         });
+        docenteServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Docente creato");
+
+            }
+        });
+
+        corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Corso creato");
+
+            }
+        });
+
+        corsoServiceAsync.creaCorso("Italiano", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Corso creato");
+
+            }
+        });
+
+        corsoServiceAsync.creaCorso("Matematica", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Corso creato");
+
+            }
+        });
 
         //Condizioni se username e password sono corretti
         login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
@@ -175,9 +227,9 @@ public class University implements EntryPoint {
                                         if(result==null){
                                             Window.alert("Utente o password sbagliati");
                                         } else {
-                                            //SchermataDocente schermataDocente = new SchermataDocente();
-                                            //schermataStudente.accesso(result);
-                                            Window.alert("Docente");
+                                            SchermataDocente schermataDocente = new SchermataDocente();
+                                            schermataDocente.accesso(result);
+                                            //Window.alert("docente");
                                         }
                                     }
                                 });
