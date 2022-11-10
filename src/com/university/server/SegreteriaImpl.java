@@ -64,21 +64,62 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
 
     @Override
     public Segreteria[] getSegreteria(){
+        /*createOrOpenDB();
+
+        for(int i:map.getKeys()){
+
+        }
+        return map;*/
         return null;
     }
 
     @Override
     public boolean modificaSegreteria(String nome, String cognome, String mail, String password) {
+        try{
+            createOrOpenDB();
+            Segreteria segreteria = new Segreteria(nome, cognome, mail, password);
+            for(int i : map.getKeys()){
+                if(map.get(i).getMail().equals(mail)){
+                    map.replace(i, segreteria);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: modifica segreteria " + e);
+        }
         return false;
     }
 
     @Override
     public boolean eliminaSegreteria(String mail) {
+        try{
+            createOrOpenDB();
+            for(int i : map.getKeys()){
+                if(map.get(i).getMail().equals(mail)){
+                    map.remove(i);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: Elimina segreteria " + e);
+        }
         return false;
     }
 
     @Override
-    public Segreteria getInformazioni(String mail) {
+    public Segreteria getSegreteria(String mail) {
+        try{
+            createOrOpenDB();
+            for(int i : map.getKeys()){
+                if(map.get(i).getMail().equals(mail)){
+                    return map.get(i);
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: getSegreteria  " + e);
+        }
         return null;
     }
 }
