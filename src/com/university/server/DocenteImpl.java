@@ -120,31 +120,3 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
         }
     }
 }
-
-/*
-    @Override
-    public Docente getInfoPersonali(int codDocente) {
-        try{
-            Docente[] docenti = super.getDocenti();
-            for(Docente docente: docenti){
-                if(docente.codDocente==codDocente){
-                    return docente;
-                }
-            }
-            return null;
-        }catch(Exception e){
-            System.out.println("errore Docente - getinfoPersonali: "+e);
-            return null;
-        }
-    }
-
-
-
-    public boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame) {
-        try {
-            //super.creaCorso(nome, dataInizio, dataFine, descrizione, coDocente, docente, esame);
-            return true;
-        } catch (Exception e){
-            return false;
-        }
-    }*/

@@ -41,6 +41,10 @@
         <servlet-name>com.university.University FrequentaService</servlet-name>
         <servlet-class>com.university.server.FrequentaImpl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>com.university.University SostieneService</servlet-name>
+        <servlet-class>com.university.server.SostieneImpl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>com.university.University UniversityService</servlet-name>
         <url-pattern>/University/UniversityService</url-pattern>
@@ -77,5 +81,9 @@
     <servlet-mapping>
         <servlet-name>com.university.University FrequentaService</servlet-name>
         <url-pattern>/University/frequenta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University SostieneService</servlet-name>
+        <url-pattern>/University/sostiene</url-pattern>
     </servlet-mapping>
 </web-app>
