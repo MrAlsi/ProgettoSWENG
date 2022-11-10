@@ -64,13 +64,20 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
 
     @Override
     public Segreteria[] getSegreteria(){
-        /*createOrOpenDB();
-
-        for(int i:map.getKeys()){
-
+        try{
+            createOrOpenDB();
+            Segreteria[] segreteria = new Segreteria[map.size()];
+            int j = 0;
+            for(int i:map.getKeys()){
+                segreteria[j] = map.get(i);
+                j++;
+            }
+            return segreteria;
+        } catch(Exception e){
+            System.out.println("Err: getSegreteria  " + e);
+            return null;
         }
-        return map;*/
-        return null;
+
     }
 
     @Override

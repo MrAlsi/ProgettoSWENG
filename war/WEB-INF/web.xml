@@ -46,7 +46,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>com.university.University CorsoService</servlet-name>
-        <url-pattern>/University/CorsoService</url-pattern>
+        <url-pattern>/University/corso</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>com.university.University DocenteService</servlet-name>
