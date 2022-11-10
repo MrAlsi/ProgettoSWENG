@@ -1,7 +1,6 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.model.Frequenta;
 import com.university.client.services.CorsoService;
 import com.university.client.model.Corso;
 import com.university.client.model.Serializer.SerializerCorso;
@@ -11,12 +10,10 @@ import org.mapdb.HTreeMap;
 import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     DB db;
-    HTreeMap<String, Corso> map;
+    HTreeMap<Integer, Corso> map;
 
     private DB getDb(){
         ServletContext context = this.getServletContext();
@@ -31,7 +28,7 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     }
     private void createOrOpenDB(){
         this.db = getDb();
-        this.map = this.db.hashMap("corsiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerCorso()).createOrOpen();
+        this.map = this.db.hashMap("corsiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerCorso()).createOrOpen();
     }
 
     @Override
@@ -67,11 +64,36 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
 
     @Override
     public boolean eliminaCorso(String nome) {
+        try{
+            createOrOpenDB();
+            for(int i : map.getKeys()){
+                if(map.get(i).getNome().equals(nome)){
+                    map.remove(i);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: Elimina corso " + e);
+        }
         return false;
     }
 
     @Override
-    public boolean modificaCorso(String nome, String NuovoNome, String dataInizio, String dataFine, String descrizione, int codocente, int esame) {
+    public boolean modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
+        try{
+            createOrOpenDB();
+            Corso corso = new Corso(nome, dataInizio, dataFine, descrizione, codocente, docente, esame);
+            for(int i : map.getKeys()){
+                if(map.get(i).getNome() == nomeCodice){
+                    map.replace(i, corso);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: mdofica studente " + e);
+        }
         return false;
     }
 
