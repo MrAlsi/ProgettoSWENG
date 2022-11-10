@@ -1,6 +1,7 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.university.client.model.Docente;
 import com.university.client.model.Frequenta;
 import com.university.client.services.CorsoService;
 import com.university.client.model.Corso;
@@ -42,27 +43,63 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
 
     @Override
     public Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
-        return null;
+        try{
+            createOrOpenDB();
+            map.put(String.valueOf(map.size() + 1),
+                    new Corso( nome, dataInizio,dataFine, descrizione, codocente,docente,esame));
+            db.commit();
+            return true;
+        } catch (Exception e){
+            System.out.println("Exception: " + e);
+            return false;
+        }
     }
 
     @Override
     public Corso[] getCorsi() {
-        return new Corso[0];
+        try{
+            createOrOpenDB();
+            Corso[] corsi = new Corso[map.size()];
+            int j = 0;
+            for( String i: map.getKeys()){
+                corsi[j] = map.get(i);
+                j++;
+            }
+            return corsi;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
     }
 
     @Override
     public Corso getCorso(String nome) {
+        createOrOpenDB();
+        for (String id : map.getKeys()) {
+            if (map.get(id).getNome() == nome) {
+                return map.get(id);
+            }
+        }
         return null;
     }
 
     @Override
-    public Corso[] getMieiCorsi(int matricola) {
-        return new Corso[0];
-    }
-
-    @Override
     public Corso[] getCorsiDocente(int docente) {
-        return new Corso[0];
+        try{
+            createOrOpenDB();
+            Corso[] corsi = new Corso[map.size()];
+            int j = 0;
+            for( String i: map.getKeys()){
+                if (map.get(i).getDocente() == docente) {
+                    corsi[j] = map.get(i);
+                    j++;
+                }
+            }
+            return corsi;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
     }
 
     @Override
@@ -74,7 +111,6 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     public boolean modificaCorso(String nome, String NuovoNome, String dataInizio, String dataFine, String descrizione, int codocente, int esame) {
         return false;
     }
-
     @Override
     public boolean aggiungiEsame(String nome, int esame) {
         return false;
