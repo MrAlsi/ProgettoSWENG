@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     DB db;
-    HTreeMap<String, Corso> map;
+    HTreeMap<Integer, Corso> map;
 
     private DB getDb(){
         ServletContext context = this.getServletContext();
@@ -31,62 +31,119 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     }
     private void createOrOpenDB(){
         this.db = getDb();
-        this.map = this.db.hashMap("corsiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerCorso()).createOrOpen();
+        this.map = this.db.hashMap("corsiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerCorso()).createOrOpen();
     }
 
+    //restituisce il numero di corsi
     @Override
     public int getNumeroCorsi() {
         createOrOpenDB();
         return map.size();
     }
 
+    //crea un nuovo corso
     @Override
     public Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
-        return null;
+        try{
+            createOrOpenDB();
+            map.put(map.size() + 1,
+                    new Corso( nome, dataInizio,dataFine, descrizione, codocente,docente,esame));
+            db.commit();
+            return true;
+        } catch (Exception e){
+            System.out.println("Exception: " + e);
+            return false;
+        }
     }
 
+    //restituisce tutti i corsi
     @Override
     public Corso[] getCorsi() {
-        return new Corso[0];
+        try{
+            createOrOpenDB();
+            Corso[] corsi = new Corso[map.size()];
+            int j = 0;
+            for( int i: map.getKeys()){
+                corsi[j] = map.get(i);
+                j++;
+            }
+            return corsi;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
     }
 
+    //restituisce un solo corso
     @Override
     public Corso getCorso(String nome) {
+        createOrOpenDB();
+        for (int id : map.getKeys()) {
+            if (map.get(id).getNome().equals(nome)) {
+                return map.get(id);
+            }
+        }
         return null;
     }
 
-    @Override
-    public Corso[] getMieiCorsi(int matricola) {
-        return new Corso[0];
-    }
 
+    //restituisce i corsi di un docente
     @Override
     public Corso[] getCorsiDocente(int docente) {
-        return new Corso[0];
+        try{
+            createOrOpenDB();
+            Corso[] corsi = new Corso[map.size()];
+            int j = 0;
+            for( int i: map.getKeys()){
+                if (map.get(i).getDocente() == docente) {
+                    corsi[j] = map.get(i);
+                    j++;
+                }
+            }
+            return corsi;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
     }
 
+
+    //elimina un corso
     @Override
     public boolean eliminaCorso(String nome) {
+        try{
+            createOrOpenDB();
+            for(int i : map.getKeys()){
+                if(map.get(i).getNome().equals(nome)){
+                    map.remove(i);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: Elimina corso " + e);
+        }
         return false;
     }
 
+
+    //questo metodo è da utilizzare anche per aggiungere/eliminare un esame e un codocente
     @Override
-    public boolean modificaCorso(String nome, String NuovoNome, String dataInizio, String dataFine, String descrizione, int codocente, int esame) {
+    public boolean modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
+        try{
+            createOrOpenDB();
+            Corso corso = new Corso(nome, dataInizio, dataFine, descrizione, codocente, docente, esame);
+            for(int i : map.getKeys()){
+                if(map.get(i).getNome().equals(nomeCodice)){
+                    map.replace(i, corso);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: modifica studente " + e);
+        }
         return false;
     }
 
-    @Override
-    public boolean aggiungiEsame(String nome, int esame) {
-        return false;
-    }
-
-    @Override
-    public boolean eliminaEsame(String nome) {
-        return false;
-    }
-
-    @Override
-    public boolean aggiungiCodocente(String nome, int codocente) {
-        return false;
-    }
 }

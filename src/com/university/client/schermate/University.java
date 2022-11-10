@@ -23,9 +23,7 @@ public class University implements EntryPoint {
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
-    private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
     private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
-
     final HTML login__background = new HTML("" +
             "<div class=\"login__background\">" +
             "</div>" +
@@ -130,7 +128,7 @@ public class University implements EntryPoint {
                 }
             }
         });
-        adminServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
+        docenteServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -208,7 +206,7 @@ public class University implements EntryPoint {
                                     @Override
                                     public void onSuccess(Studente result) {
                                         if(result==null){
-                                            Window.alert("Utente o password sbagliatiii");
+                                            Window.alert("Utente o password sbagliati");
                                         } else {
                                             SchermataStudente schermataStudente = new SchermataStudente();
                                             schermataStudente.accesso(result);
@@ -243,6 +241,7 @@ public class University implements EntryPoint {
                                 break;
                             default:
                                 //Carica admin
+                                if(email__input.getText().equals("admin") && password__input.getText().equals("admin"))
                                 Window.alert("Admin");
                                 break;
 

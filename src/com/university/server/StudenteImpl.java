@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class StudenteImpl extends RemoteServiceServlet implements StudenteService {
     DB db;
-    HTreeMap<String,Studente> map;
+    HTreeMap<Integer,Studente> map;
 
     private DB getDb(){
         ServletContext context = this.getServletContext();
@@ -30,7 +30,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     }
     private void createOrOpenDB(){
         this.db = getDb();
-        this.map = this.db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerStudente()).createOrOpen();
+        this.map = this.db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerStudente()).createOrOpen();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
             createOrOpenDB();
             Studente[] studenti = new Studente[map.size()];
             int j = 0;
-            for( String i: map.getKeys()){
+            for( int i: map.getKeys()){
                 studenti[j] = map.get(i);
                 j++;
             }
@@ -60,7 +60,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     @Override
     public Studente getStudenteByMatricola(int matricola) {
         createOrOpenDB();
-        for (String id : map.getKeys()) {
+        for (int id : map.getKeys()) {
             if (map.get(id).getMatricola() == matricola) {
                 return map.get(id);
             }
@@ -72,7 +72,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     public Studente loginStudente(String mail, String password) {
         try{
             createOrOpenDB();
-            for (String id : map.getKeys()) {
+            for (int id : map.getKeys()) {
                 if (map.get(id).getMail().equals(mail) && map.get(id).getPassword().equals(password)) {
                     return map.get(id);
                 }
@@ -88,7 +88,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {
         try{
             createOrOpenDB();
-            map.put(String.valueOf(map.size() + 1),
+            map.put((map.size() + 1),
                     new Studente( nome, cognome, creaMailStudente(nome, cognome), password, dataNascita, getNumeroStudenti()+1));
             db.commit();
             return true;
@@ -99,8 +99,40 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     }
 
     @Override
-    public boolean eliminaStudente(int matricola) {
+    public boolean modificaStudente(String nome, String cognome, String mail, String password, String dataNascita, int matricola) {
+        try{
+            createOrOpenDB();
+            Studente studente = new Studente(nome, cognome, mail, password, dataNascita, matricola);
+            for(int i : map.getKeys()){
+                if(map.get(i).getMatricola() == matricola){
+                    map.replace(i, studente);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: mdofica studente " + e);
+        }
         return false;
+    }
+
+    @Override
+    public boolean eliminaStudente(int matricola) {
+        try{
+            createOrOpenDB();
+            for(int i : map.getKeys()){
+                if(map.get(i).getMatricola() == matricola){
+                    map.remove(i);
+                    db.commit();
+                    return true;
+
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: Elimina studente " + e);
+        }
+        return false;
+
     }
 
     /**
