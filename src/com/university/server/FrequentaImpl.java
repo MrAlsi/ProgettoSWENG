@@ -112,7 +112,7 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
             Frequenta[] frequenta = getFrequenta();
             ArrayList<Frequenta> studenti = new ArrayList<>();
             for(Frequenta studente: frequenta) {
-                if (studente.nomeCorso == nomeCorso) {
+                if (studente.nomeCorso.equals(nomeCorso)) {
                     studenti.add(studente);
                 }
             }

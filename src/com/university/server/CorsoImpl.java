@@ -56,6 +56,7 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         }
     }
 
+    //restituisce tutti i corsi
     @Override
     public Corso[] getCorsi() {
         try{
@@ -73,6 +74,7 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         }
     }
 
+    //restituisce un solo corso
     @Override
     public Corso getCorso(String nome) {
         createOrOpenDB();
@@ -84,6 +86,8 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         return null;
     }
 
+
+    //restituisce i corsi di un docente
     @Override
     public Corso[] getCorsiDocente(int docente) {
         try{
@@ -103,6 +107,8 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         }
     }
 
+
+    //elimina un corso
     @Override
     public boolean eliminaCorso(String nome) {
         try{
@@ -128,7 +134,7 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
             createOrOpenDB();
             Corso corso = new Corso(nome, dataInizio, dataFine, descrizione, codocente, docente, esame);
             for(int i : map.getKeys()){
-                if(map.get(i).getNome() == nomeCodice){
+                if(map.get(i).getNome().equals(nomeCodice)){
                     map.replace(i, corso);
                     db.commit();
                     return true;
