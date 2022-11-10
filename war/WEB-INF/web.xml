@@ -26,10 +26,6 @@
         <servlet-class>com.university.server.CorsoImpl</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>com.university.University IndexService</servlet-name>
-        <servlet-class>com.university.server.IndexImpl</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>com.university.University DatabaseService</servlet-name>
         <servlet-class>com.university.server.Database</servlet-class>
     </servlet>
@@ -61,10 +57,7 @@
         <servlet-name>com.university.University CorsoService</servlet-name>
         <url-pattern>/University/CorsoService</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>com.university.University IndexService</servlet-name>
-        <url-pattern>/University/index</url-pattern>
-    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>com.university.University DatabaseService</servlet-name>
         <url-pattern>/University/database</url-pattern>
