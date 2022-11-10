@@ -28,6 +28,14 @@
         <servlet-name>com.university.University FrequentaService</servlet-name>
         <servlet-class>com.university.server.FrequentaImpl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>com.university.University EsameService</servlet-name>
+        <servlet-class>com.university.server.EsameImpl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>com.university.University SostieneService</servlet-name>
+        <servlet-class>com.university.server.SostieneImpl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>com.university.University UtenteService</servlet-name>
         <url-pattern>/University/utenti</url-pattern>
@@ -60,4 +68,4 @@
         <servlet-name>com.university.University SostieneService</servlet-name>
         <url-pattern>/University/sostiene</url-pattern>
     </servlet-mapping>
-</web-app>
+  </web-app>
