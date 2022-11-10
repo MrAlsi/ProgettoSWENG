@@ -97,6 +97,7 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
             for(int i : map.getKeys()){
                 if(map.get(i).codDocente == codDocente){
                     map.replace(i, docente);
+                    db.commit();
                     return true;
                 }
             }

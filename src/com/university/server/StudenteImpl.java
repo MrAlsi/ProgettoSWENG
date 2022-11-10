@@ -99,6 +99,24 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
     }
 
     @Override
+    public boolean modificaStudente(String nome, String cognome, String mail, String password, String dataNascita, int matricola) {
+        try{
+            createOrOpenDB();
+            Studente studente = new Studente(nome, cognome, mail, password, dataNascita, matricola);
+            for(int i : map.getKeys()){
+                if(map.get(i).getMatricola() == matricola){
+                    map.replace(i, studente);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: Elimina studente " + e);
+        }
+        return false;
+    }
+
+    @Override
     public boolean eliminaStudente(int matricola) {
         try{
             createOrOpenDB();
