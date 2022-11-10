@@ -130,34 +130,6 @@ public class AdminImpl extends Database implements AdminService {
 
     /**         ~~ metodi per Segreteria ~~       **/
 
-    @Override
-    public boolean creaSegreteria(String nome, String cognome, String password) {
-        try{
-            super.creaSegratario(nome, cognome, creaMailSegreteria(nome, cognome), password);
-            return true;
-        } catch(Exception e){
-            System.out.println("C: AdminImpl  M: creaSegreteria: " + e);
-            return false;
-        }
-    }
-    public String creaMailSegreteria(String nome, String cognome){
-        int num = 0;
-        Segreteria[] segreteria = super.getSegretari();
-        for(int i = 0; i < segreteria.length; i++){
-            if(nome.equals(segreteria[i].getNome()) && cognome.equals(segreteria[i].getCognome())){
-                num++;
-            }
-        }
-        if(num>0){
-            return nome + "." + cognome + num + "@segreteria.university.com";
-        } else {
-            return nome + "." + cognome + "@segreteria.university.com";
-        }
-    }
 
-    @Override
-    public Segreteria[] getSegreteria(){
-        return super.getSegretari();
-    }
 
 }

@@ -3,8 +3,6 @@ package com.university.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Segreteria;
 import com.university.client.model.Serializer.SerializerSegreteria;
-import com.university.client.model.Serializer.SerializerStudente;
-import com.university.client.model.Studente;
 import com.university.client.services.SegreteriaService;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -15,7 +13,7 @@ import javax.servlet.ServletContext;
 
 public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaService {
     DB db;
-    HTreeMap<String, Segreteria> map;
+    HTreeMap<Integer, Segreteria> map;
 
     private DB getDb(){
         ServletContext context = this.getServletContext();
@@ -30,11 +28,43 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
     }
     private void createOrOpenDB(){
         this.db = getDb();
-        this.map = this.db.hashMap("segretariMap").counterEnable().keySerializer(Serializer.STRING).valueSerializer(new SerializerSegreteria()).createOrOpen();
+        this.map = this.db.hashMap("segretariMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerSegreteria()).createOrOpen();
     }
     @Override
     public boolean creaSegretaria(String nome, String cognome, String password) {
-        return false;
+        try{
+            createOrOpenDB();
+            map.put((map.size() + 1),
+                    new Segreteria(nome, cognome, creaMailSegreteria(nome, cognome), password));
+            db.commit();
+            return true;
+        } catch(Exception e){
+            System.out.println("C: AdminImpl  M: creaSegreteria: " + e);
+            return false;
+        }
+    }
+    public String creaMailSegreteria(String nome, String cognome){
+        try {
+            int num = 0;
+            for (int i : map.getKeys()) {
+                if (map.get(i).getNome() == nome && map.get(i).getCognome() == cognome) {
+                    num++;
+                }
+            }
+            if (num > 0) {
+                return nome + "." + cognome + num + "@segreteria.university.com";
+            } else {
+                return nome + "." + cognome + "@segreteria.university.com";
+            }
+        } catch(Exception e){
+            System.out.println("Err: creaMailSegreteria  " + e);
+            return null;
+        }
+    }
+
+    @Override
+    public Segreteria[] getSegreteria(){
+        return null;
     }
 
     @Override
