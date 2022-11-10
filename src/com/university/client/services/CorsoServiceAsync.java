@@ -18,8 +18,6 @@ public interface CorsoServiceAsync {
 
     void getCorsiDocente(int docente, AsyncCallback<Corso[]> async);
 
-    void getMieiCorsi(int matricola, AsyncCallback<Corso[]> async);
-
     void getCorso(String nome, AsyncCallback<Corso> async);
 
     void getCorsi(AsyncCallback<Corso[]> async);
