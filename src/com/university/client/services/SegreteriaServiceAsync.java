@@ -13,4 +13,6 @@ public interface SegreteriaServiceAsync {
     void eliminaSegreteria(String mail, AsyncCallback<Boolean> async);
 
     void getInformazioni(String mail, AsyncCallback<Segreteria> async);
+
+    void getSegreteria(AsyncCallback<Segreteria[]> async);
 }
