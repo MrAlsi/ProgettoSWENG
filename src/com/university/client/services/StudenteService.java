@@ -4,8 +4,6 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.university.client.model.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
 @RemoteServiceRelativePath("studenti")
 public interface StudenteService extends RemoteService {
