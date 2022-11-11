@@ -68,15 +68,6 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
                     sostenuti.add(esame);
                 }
             }
-            /*
-            //Sostiene[] sostenuti = new Sostiene[map.size()];
-            int j = 0;
-            for( int i: map.getKeys()){
-                if (map.get(i).getMatricola() == matricola) {
-                    sostenuti[j] = map.get(i);
-                    j++;
-                }
-            }*/
             return sostenuti.toArray(new Sostiene[0]);
         } catch(Exception e){
             System.out.println("Errore: "+ e);
@@ -96,14 +87,6 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
                     sostenuti.add(esame);
                 }
             }
-            /*Sostiene[] sostenuti = new Sostiene[map.size()];
-            int j = 0;
-            for( int i: map.getKeys()){
-                if (map.get(i).codEsame == codEsame) {
-                    sostenuti[j] = map.get(i);
-                    j++;
-                }
-            }*/
             return sostenuti.toArray(new Sostiene[0]);
         } catch(Exception e){
             System.out.println("Errore: "+ e);

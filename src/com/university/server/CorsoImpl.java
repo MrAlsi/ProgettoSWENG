@@ -99,15 +99,6 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
                     corsi.add(corso);
                 }
             }
-            /*
-            //Corso[] corsi = new Corso[map.size()];
-            int j = 0;
-            for( int i: map.getKeys()){
-                if (map.get(i).getDocente() == docente) {
-                    corsi[j] = map.get(i);
-                    j++;
-                }
-            }*/
             return corsi.toArray(new Corso[0]);
         } catch(Exception e){
             System.out.println("Errore: "+ e);
