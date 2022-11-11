@@ -61,15 +61,23 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     public Sostiene[] getSostieneStudente(int matricola) {
         try{
             createOrOpenDB();
-            Sostiene[] sostenuti = new Sostiene[map.size()];
+            ArrayList<Sostiene> sostenuti=new ArrayList<>();
+            Sostiene[] sostiene= getSostiene();
+            for(Sostiene esame: sostiene){
+                if(esame.getMatricola()==matricola){
+                    sostenuti.add(esame);
+                }
+            }
+            /*
+            //Sostiene[] sostenuti = new Sostiene[map.size()];
             int j = 0;
             for( int i: map.getKeys()){
                 if (map.get(i).getMatricola() == matricola) {
                     sostenuti[j] = map.get(i);
                     j++;
                 }
-            }
-            return sostenuti;
+            }*/
+            return sostenuti.toArray(new Sostiene[0]);
         } catch(Exception e){
             System.out.println("Errore: "+ e);
             return null;
@@ -81,15 +89,22 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     public Sostiene[] getStudenti(int codEsame) {
         try{
             createOrOpenDB();
-            Sostiene[] sostenuti = new Sostiene[map.size()];
+            ArrayList<Sostiene> sostenuti=new ArrayList<>();
+            Sostiene[] sostiene= getSostiene();
+            for(Sostiene esame: sostiene){
+                if(esame.getCodEsame() == codEsame){
+                    sostenuti.add(esame);
+                }
+            }
+            /*Sostiene[] sostenuti = new Sostiene[map.size()];
             int j = 0;
             for( int i: map.getKeys()){
                 if (map.get(i).codEsame == codEsame) {
                     sostenuti[j] = map.get(i);
                     j++;
                 }
-            }
-            return sostenuti;
+            }*/
+            return sostenuti.toArray(new Sostiene[0]);
         } catch(Exception e){
             System.out.println("Errore: "+ e);
             return null;
