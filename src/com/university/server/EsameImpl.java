@@ -11,6 +11,8 @@ import org.mapdb.HTreeMap;
 import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EsameImpl extends RemoteServiceServlet implements EsameService {
     DB db;
@@ -104,6 +106,28 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
                 j++;
             }
             return esami;
+        } catch(Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
+    }
+
+    //restituisce gli esami di un corso
+    @Override
+    public Esame[] getEsamiCorso(Corso[] corsiDocente) {
+        try{
+            createOrOpenDB();
+
+            ArrayList<Esame> esami = new ArrayList<>();
+            Esame[] tuttiEsami = getEsami();
+            for(Corso corso : Arrays.asList(corsiDocente)){
+                for(Esame esame : tuttiEsami){
+                    if(esame.getCodEsame() == corso.getEsame()){
+                        esami.add(esame);
+                    }
+                }
+            }
+            return esami.toArray(new Esame[0]);
         } catch(Exception e){
             System.out.println("Errore: "+ e);
             return null;

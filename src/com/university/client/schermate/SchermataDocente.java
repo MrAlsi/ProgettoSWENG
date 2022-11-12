@@ -18,6 +18,9 @@ import com.university.client.services.DocenteService;
 import com.university.client.model.Corso;
 import com.university.client.services.CorsoServiceAsync;
 import com.university.client.services.CorsoService;
+import com.university.client.model.Esame;
+import com.university.client.services.EsameServiceAsync;
+import com.university.client.services.EsameService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +32,7 @@ public class SchermataDocente {
     VerticalPanel nav__user;
     private DocenteServiceAsync serviceDocente = GWT.create(DocenteService.class);
     private CorsoServiceAsync serviceCorso = GWT.create(CorsoService.class);
+    private EsameServiceAsync serviceEsame = GWT.create(EsameService.class);
 
 
     public void accesso(Docente docente) {
@@ -63,6 +67,14 @@ public class SchermataDocente {
         btn__corsi.addClickHandler(clickEvent -> {
             try {
                 form__corsi();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        btn__esami.addClickHandler(clickEvent -> {
+            try {
+                form__esami();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -114,12 +126,49 @@ public class SchermataDocente {
 
                 user__container.add(new HTML("<div class=\"user__title\">Gestione Corsi</div>"));
 
-                CellTable<Corso> tabella__corsi = tabella__corsi(result, "Sembra che tu non appartenga a nessun corso, creane uno!");
-                user__container.add(tabella__corsi);
-
                 Button btnCreaCorso = new Button("Crea corso");
                 btnCreaCorso.addStyleName("creaCorso__btn");
                 user__container.add(btnCreaCorso);
+
+                CellTable<Corso> tabella__corsi = tabella__corsi(result, "Sembra che tu non appartenga a nessun corso, creane uno!");
+                user__container.add(tabella__corsi);
+
+            }
+        });
+    }
+
+    public void form__esami() throws Exception {
+        user__container.clear();
+        serviceCorso.getCorsiDocente(docente.getCodDocente(), new AsyncCallback<Corso[]>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                Window.alert("Failure on getCorsiDocente: " + throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Corso[] result) {
+
+                serviceEsame.getEsamiCorso(result, new AsyncCallback<Esame[]>() {
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Window.alert("Failure on getCorsiDocente: " + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(Esame[] esami) {
+
+                        user__container.add(new HTML("<div class=\"user__title\">Gestione Esami</div>"));
+
+                        Button btnCreaEsame = new Button("Crea esame");
+                        btnCreaEsame.addStyleName("creaEsame__btn");
+                        user__container.add(btnCreaEsame);
+
+                        CellTable<Esame> tabella__esami = tabella__esami(esami, "Sembra che tu non abbia ancora esami in programma, creane uno!");
+                        user__container.add(tabella__esami);
+
+                    }
+                });
             }
         });
     }
@@ -172,7 +221,7 @@ public class SchermataDocente {
         };
 
         tabella__corsi.addColumn(colonna__modifica, "");
-        colonna__modifica.setCellStyleNames("tabella__btn");
+        colonna__modifica.setCellStyleNames("modificaCorso__btn");
 
         /*
         colonna__modifica.setFieldUpdater(new FieldUpdater<Corso, String>() {
@@ -188,7 +237,7 @@ public class SchermataDocente {
         Column<Corso, String> colonna__elimina = new Column<Corso, String>(cella__elimina) {
             @Override
             public String getValue(Corso object) {
-                return "Cancella";
+                return "Elimina";
             }
         };
 
@@ -221,5 +270,111 @@ public class SchermataDocente {
         tabella__corsi.setRowCount(result.length, true);
         tabella__corsi.setRowData(0, Arrays.asList(result));
         return tabella__corsi;
+    }
+
+    private CellTable<Esame> tabella__esami(Esame[] result, String msg) {
+
+        CellTable<Esame> tabella__esami = new CellTable<>();
+        tabella__esami.addStyleName("tabella__esami");
+        tabella__esami.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
+        tabella__esami.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Esame> colonna__corso = new TextColumn<Esame>() {
+            @Override
+            public String getValue(Esame object) {
+
+                return object.getNomeCorso();
+            }
+        };
+        tabella__esami.addColumn(colonna__corso, "Corso");
+
+
+        TextColumn<Esame> colonna__data = new TextColumn<Esame>() {
+            @Override
+            public String getValue(Esame object) {
+                return object.getData() + " - " + object.getOra();
+            }
+        };
+        tabella__esami.addColumn(colonna__data, "Data");
+
+
+        TextColumn<Esame> colonna__durata = new TextColumn<Esame>() {
+            @Override
+            public String getValue(Esame object) {
+
+                return object.getDurata();
+            }
+        };
+        tabella__esami.addColumn(colonna__durata, "Durata");
+
+
+        TextColumn<Esame> colonna__aula = new TextColumn<Esame>() {
+            @Override
+            public String getValue(Esame object) {
+
+                return object.getAula();
+            }
+        };
+        tabella__esami.addColumn(colonna__aula, "Aula");
+
+
+        ButtonCell cella__modifica = new ButtonCell();
+        Column<Esame, String> colonna__modifica = new Column<Esame, String>(cella__modifica) {
+            @Override
+            public String getValue(Esame object) {
+                return "Modifica";
+            }
+        };
+
+        tabella__esami.addColumn(colonna__modifica, "");
+        colonna__modifica.setCellStyleNames("modificaEsame__btn");
+
+        /*
+        colonna__modifica.setFieldUpdater(new FieldUpdater<Corso, String>() {
+            @Override
+            public void update(Corso object) {
+                user__container.clear();
+                user__container.add(new HTML("<div class=\"user__title\">Modifica corso</div>"));
+                user__container.add((new form__modificaCorso(docente, object)).getForm());
+            }
+        }); */
+
+        ButtonCell cella__elimina = new ButtonCell();
+        Column<Esame, String> colonna__elimina = new Column<Esame, String>(cella__elimina) {
+            @Override
+            public String getValue(Esame object) {
+                return "Elimina";
+            }
+        };
+
+        tabella__esami.addColumn(colonna__elimina, "");
+        colonna__elimina.setCellStyleNames("eliminaEsame__btn");
+
+        /*
+        colonna__elimina.setFieldUpdater(new FieldUpdater<Corso, String>() {
+            @Override
+            public void update(Corso object) {
+                serviceCorso.eliminaCorso(object.getNome(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Window.alert("Errore durante la rimozione del corso: " + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean check) {
+                        Window.alert("Corso rimosso con successo!");
+                        try {
+                            form__corsi();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+        */
+        tabella__esami.setRowCount(result.length, true);
+        tabella__esami.setRowData(0, Arrays.asList(result));
+        return tabella__esami;
     }
 }
