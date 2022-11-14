@@ -560,16 +560,16 @@ table.nav__user tbody {
     width: 170px;
 }
 
-.tabella__esami {
+.tabella__esami, .tabella__corsi, .tabella__libretto, .tabella__esamiPrenotati, .tabella__mieiCorsi {
     font-size: 17px;
     margin: 1rem 10rem 5rem 10rem
 }
 
-.tabella__esami thead {
+.tabella__esami, .tabella__corsi, .tabella__libretto, .tabella__esamiPrenotati, .tabella__mieiCorsi  thead {
     background: var(--color-white);
 }
 
-.tabella__esami tbody tr td {
+.tabella__esami, .tabella__corsi, .tabella__libretto, .tabella__esamiPrenotati, .tabella__mieiCorsi tbody tr td {
     font-size: 15px;
     height: 30px;
     width: 170px;
