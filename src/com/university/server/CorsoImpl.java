@@ -92,15 +92,14 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     public Corso[] getCorsiDocente(int docente) {
         try{
             createOrOpenDB();
-            Corso[] corsi = new Corso[map.size()];
-            int j = 0;
-            for( int i: map.getKeys()){
-                if (map.get(i).getDocente() == docente) {
-                    corsi[j] = map.get(i);
-                    j++;
+            ArrayList<Corso> corsi=new ArrayList<>();
+            Corso[] tuttiCorsi= getCorsi();
+            for(Corso corso: tuttiCorsi){
+                if(corso.getDocente()==docente){
+                    corsi.add(corso);
                 }
             }
-            return corsi;
+            return corsi.toArray(new Corso[0]);
         } catch(Exception e){
             System.out.println("Errore: "+ e);
             return null;

@@ -10,7 +10,6 @@ public interface CorsoServiceAsync {
 
     void eliminaCorso(String nome, AsyncCallback<Boolean> async);
 
-    void getCorsiDocente(int docente, AsyncCallback<Corso[]> async);
 
     void getCorso(String nome, AsyncCallback<Corso> async);
 
@@ -19,4 +18,6 @@ public interface CorsoServiceAsync {
     void getNumeroCorsi(AsyncCallback<Integer> async);
 
     void modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame, AsyncCallback<Boolean> async);
+
+    void getCorsiDocente(int docente, AsyncCallback<Corso[]> async);
 }

@@ -88,7 +88,7 @@ public class Index implements Contenuto {
 
             @Override
             public void onSuccess(Boolean result) {
-                Window.alert("Studente creato");
+                //Window.alert("Studente creato");
 
             }
         });
@@ -101,7 +101,7 @@ public class Index implements Contenuto {
 
             @Override
             public void onSuccess(Boolean result) {
-                Window.alert("Docente creato");
+                //Window.alert("Docente creato");
 
             }
         });
