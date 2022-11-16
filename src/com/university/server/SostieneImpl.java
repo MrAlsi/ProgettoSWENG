@@ -84,7 +84,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             ArrayList<Sostiene> sostenuti = new ArrayList<>();
             Sostiene[] sostiene = getSostiene();
             for (Sostiene esame : sostiene) {
-                if (esame.getMatricola() == matricola && map.get(i).voto != -1) {
+                if (esame.getMatricola() == matricola && esame.voto != -1) {
                     sostenuti.add(esame);
                 }
             }
@@ -104,7 +104,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             //Sostiene[] sostiene= getSostiene();
             for (int i : map.getKeys()) {
                 if (map.get(i).getCodEsame() == codEsame) {
-                    sostenuti.add(esame);
+                    sostenuti.add(map.get(i));
                 }
             }
             return sostenuti.toArray(new Sostiene[0]);
