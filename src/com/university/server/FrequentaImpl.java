@@ -3,9 +3,8 @@ package com.university.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Corso;
 import com.university.client.model.Frequenta;
+import com.university.client.model.Serializer.SerializerCorso;
 import com.university.client.model.Serializer.SerializerFrequenta;
-import com.university.client.model.Serializer.SerializerStudente;
-import com.university.client.model.Studente;
 import com.university.client.services.FrequentaService;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -15,6 +14,7 @@ import org.mapdb.Serializer;
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FrequentaImpl extends RemoteServiceServlet implements FrequentaService {
 
@@ -39,6 +39,38 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
     }
 
 
+    //chiamata al db corsi
+    private DB getCorsiDB(){
+        ServletContext context = this.getServletContext();
+        synchronized (context) {
+            DB db = (DB)context.getAttribute("corsiDb");
+            if(db == null) {
+                db = DBMaker.fileDB("C:\\MapDB\\corso").closeOnJvmShutdown().checksumHeaderBypass().make();
+                context.setAttribute("corsiDb", db);
+            }
+            return db;
+        }
+    }
+
+    //metodo che mi permette di avere qui in frequenza anche il db dei corsi
+    private Corso[] traduciCorso(){
+        try{
+            DB dbCorsi=getCorsiDB();
+            HTreeMap<Integer, Corso> mapCorsi = dbCorsi.hashMap("corsiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerCorso()).createOrOpen();
+            Corso[] corsi = new Corso [mapCorsi.size()];
+            int j=0;
+            for(int i: mapCorsi.getKeys()){
+               corsi[j]=mapCorsi.get(i);
+               j++;
+            }
+            return corsi;
+        }catch (Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
+    }
+
+
     //metodo per prendere tutte le istanze di frequenta
     @Override
     public Frequenta[] getFrequenta() {
@@ -60,11 +92,11 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
 
     //metodo che mostra i corsi a cui lo studente non è ancora iscritto
     @Override
-    public ArrayList<Corso> getCorsiDisponibili(int matricola) {
+    public Corso[] getCorsiDisponibili(int matricola) {
         try {
             createOrOpenDB();
             //prendo tutti i corsi
-            Corso[] tuttiCorsi = new Corso[map.size()];
+            Corso[] tuttiCorsi = traduciCorso();
             ArrayList<Corso> corsiDisponibili = new ArrayList<>();
             HashMap<String, Corso> corsi = new HashMap<>();
             for (Corso corso : tuttiCorsi) {
@@ -72,12 +104,16 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
             }
             //prendo i corsi a cui sono iscritto
             ArrayList<Frequenta> mieiCorsi = getMieiCorsi(matricola);
-            for (Frequenta frequenta : mieiCorsi) {
-                if (!corsi.containsKey(frequenta.nomeCorso)) {
-                    corsiDisponibili.add(corsi.get(frequenta.nomeCorso));
+            if(mieiCorsi.size()!=0) {
+                for (Frequenta frequenta : mieiCorsi) {
+                    if (!corsi.containsKey(frequenta.nomeCorso)) {
+                        corsiDisponibili.add(corsi.get(frequenta.nomeCorso));
+                    }
                 }
+                return corsiDisponibili.toArray(new Corso[0]);
+            }else{
+                return tuttiCorsi;
             }
-            return corsiDisponibili;
         } catch (Exception e) {
             System.out.println("Errore: " + e);
             return null;

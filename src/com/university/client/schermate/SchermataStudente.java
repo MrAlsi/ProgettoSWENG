@@ -513,77 +513,66 @@ public class SchermataStudente {
     private CellTable<Corso> tabella__corsi(Corso[] corsi, String msg) {
 
         List<Corso> corsiDisponibili = new ArrayList<>();
-            serviceFrequenta.getMieiCorsi(studente.getMatricola(), new AsyncCallback<ArrayList<Frequenta>>() {
-                @Override
-                public void onFailure(Throwable throwable) {
-                    Window.alert("Failure on getMieiCorsi: " + throwable.getMessage());
-                }
-                @Override
-                public void onSuccess(ArrayList<Frequenta> corsiFrequentati) {
-
-                    Boolean check;
-                    for(int i = 0; i < corsi.length; i++) {
-                        check = false;
-                        for(int j = 0; j < corsiFrequentati.size(); j++) {
-                            if(corsi[i].getNome().equals(corsiFrequentati.get(j).getNomeCorso())){
-                                check = true;
-                            }
-                        }
-                        if(!check) {
-                            corsiDisponibili.add(corsi[i]);
-                        }
-                    }
-                }
-            });
-
         CellTable<Corso> tabella__corsi = new CellTable<>();
         tabella__corsi.addStyleName("tabella__corsi");
         tabella__corsi.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
         tabella__corsi.setEmptyTableWidget(new Label(msg));
+            serviceFrequenta.getCorsiDisponibili(studente.getMatricola(), new AsyncCallback<Corso[]>() {
+                @Override
+                public void onFailure(Throwable throwable) {
+                    Window.alert("Failure on getMieiCorsi: " + throwable.getMessage());
+                }
 
-        TextColumn<Corso> colonna__nome = new TextColumn<Corso>() {
-            @Override
-            public String getValue(Corso object) {
-                return object.getNome();
-            }
-        };
-        tabella__corsi.addColumn(colonna__nome, "Nome");
+                @Override
+                public void onSuccess(Corso[] result) {
+                    for(Corso corso: result){
+                        corsiDisponibili.add(corso);
+                    }
+                    TextColumn<Corso> colonna__nome = new TextColumn<Corso>() {
+                        @Override
+                        public String getValue(Corso object) {
+                            return object.getNome();
+                        }
+                    };
+                    tabella__corsi.addColumn(colonna__nome, "Nome");
 
-        TextColumn<Corso> colonna__periodo = new TextColumn<Corso>() {
-            @Override
-            public String getValue(Corso object) {
-                return object.getDataInizio() + " - " + object.getDataFine();
-            }
-        };
-        tabella__corsi.addColumn(colonna__periodo, "Periodo");
+                    TextColumn<Corso> colonna__periodo = new TextColumn<Corso>() {
+                        @Override
+                        public String getValue(Corso object) {
+                            return object.getDataInizio() + " - " + object.getDataFine();
+                        }
+                    };
+                    tabella__corsi.addColumn(colonna__periodo, "Periodo");
 
-        TextColumn<Corso> colonna__descrizione = new TextColumn<Corso>() {
-            @Override
-            public String getValue(Corso object) {
-                return object.getDescrizione();
-            }
-        };
-        tabella__corsi.addColumn(colonna__descrizione, "Descrizione");
+                    TextColumn<Corso> colonna__descrizione = new TextColumn<Corso>() {
+                        @Override
+                        public String getValue(Corso object) {
+                            return object.getDescrizione();
+                        }
+                    };
+                    tabella__corsi.addColumn(colonna__descrizione, "Descrizione");
 
-        TextColumn<Corso> colonna__docente = new TextColumn<Corso>() {
-            @Override
-            public String getValue(Corso object) {
-                return String.valueOf(object.getDocente());
-            }
-        };
-        tabella__corsi.addColumn(colonna__docente, "Docente");
+                    TextColumn<Corso> colonna__docente = new TextColumn<Corso>() {
+                        @Override
+                        public String getValue(Corso object) {
+                            return String.valueOf(object.getDocente());
+                        }
+                    };
+                    tabella__corsi.addColumn(colonna__docente, "Docente");
 
-        TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
-            @Override
-            public String getValue(Corso object) {
-                return String.valueOf(object.getCoDocente());
-            }
-        };
-        tabella__corsi.addColumn(colonna__coDocente, "Co-Docente");
+                    TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
+                        @Override
+                        public String getValue(Corso object) {
+                            return String.valueOf(object.getCoDocente());
+                        }
+                    };
+                    tabella__corsi.addColumn(colonna__coDocente, "Co-Docente");
 
 
-        tabella__corsi.setRowCount(corsiDisponibili.size(), true);
-        tabella__corsi.setRowData(0, corsiDisponibili);
+                    tabella__corsi.setRowCount(corsiDisponibili.size(), true);
+                    tabella__corsi.setRowData(0, corsiDisponibili);
+                }
+            });
         return tabella__corsi;
     }
 

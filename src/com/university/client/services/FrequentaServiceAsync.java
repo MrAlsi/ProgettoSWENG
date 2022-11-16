@@ -11,7 +11,6 @@ public interface FrequentaServiceAsync {
 
     void getMieiCorsi(int matricola, AsyncCallback<ArrayList<Frequenta>> async);
 
-    void getCorsiDisponibili(int matricola, AsyncCallback<ArrayList<Corso>> async);
 
     void getFrequenta(AsyncCallback<Frequenta[]> async);
 
@@ -20,4 +19,6 @@ public interface FrequentaServiceAsync {
     void iscrivi(int matricola, String nomeCorso, AsyncCallback<Boolean> async);
 
     void cancellaIscrizione(int matricola, String nomeCorso, AsyncCallback<Boolean> async);
+
+    void getCorsiDisponibili(int matricola, AsyncCallback<Corso[]> async);
 }

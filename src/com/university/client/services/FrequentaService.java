@@ -12,7 +12,7 @@ public interface FrequentaService extends RemoteService {
 
     Frequenta[] getFrequenta ();
 
-    ArrayList<Corso> getCorsiDisponibili (int matricola);
+    Corso[] getCorsiDisponibili (int matricola);
 
     ArrayList<Frequenta> getMieiCorsi (int matricola);
 
