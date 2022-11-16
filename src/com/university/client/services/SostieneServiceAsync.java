@@ -9,12 +9,24 @@ import java.util.ArrayList;
 
 public interface SostieneServiceAsync {
     void getSostiene(AsyncCallback<Sostiene[]> async);
-
-
-
     void creaSostiene(int matricola, int codEsame, int voto, AsyncCallback<Boolean> async);
 
-    void getSostieneStudente(int matricola, AsyncCallback<Sostiene[]> async);
-
     void getStudenti(int codEsame, AsyncCallback<Sostiene[]> async);
+
+    void esamiSostenuti(AsyncCallback<Sostiene[]> async);
+
+    void inserisciVoto(int esame, int matricola, int voto, AsyncCallback<Boolean> async);
+
+    void accettaVoto(int esame, int matricola, AsyncCallback<Boolean> async);
+
+    void calcolaMedia(Sostiene[] s, AsyncCallback<Long> async);
+
+    //Restituisce tutti gli oggetti sostiene di un determinato studente senza voto
+    void getSostieneStudenteSenzaVoto(int matricola, AsyncCallback<Sostiene[]> async);
+
+    //Restituisce tutti gli oggetti sostiene di un determinato studente con voto
+    void getSostieneStudenteConVoto(int matricola, AsyncCallback<Sostiene[]> async);
+
+    //Metodo per eliminare un oggetto sostiene
+    void eliminaSostiene(int esame, int matricola, AsyncCallback<Boolean> async);
 }

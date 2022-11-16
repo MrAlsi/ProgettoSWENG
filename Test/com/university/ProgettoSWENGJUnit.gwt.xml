@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  When updating your version of GWT, you should also update this DTD reference,
+  so that your app can take advantage of the latest GWT module capabilities.
+-->
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.9.0//EN"
+        "http://gwtproject.org/doctype/2.9.0/gwt-module.dtd">
+<module rename-to='progettosweng'>
+    <!-- Inherit our applications main module.                      -->
+    <inherits name='com.university.University'/>
+
+    <!-- Specify the path to any remote services.                   -->
+    <servlet path="/progettosweng/utenti" class="com.unibo.progettosweng.server.UtenteServiceImpl" />
+    <servlet path="/progettosweng/esami" class="com.unibo.progettosweng.server.EsameServiceImpl" />
+    <servlet path="/progettosweng/registrazioni" class="com.unibo.progettosweng.server.RegistrazioneServiceImpl" />
+    <servlet path="/progettosweng/corsi" class="com.unibo.progettosweng.server.CorsoServiceImpl" />
+    <servlet path="/progettosweng/iscrizioni" class="com.unibo.progettosweng.server.IscrizioneServiceImpl" />
+    <servlet path="/progettosweng/valutazioni" class="com.unibo.progettosweng.server.ValutazioneServiceImpl" />
+
+</module>
