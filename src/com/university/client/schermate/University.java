@@ -23,9 +23,8 @@ public class University implements EntryPoint {
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
-    private static AdminServiceAsync adminServiceAsync = GWT.create(AdminService.class);
     private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
-
+    private static EsameServiceAsync esameServiceAsync = GWT.create(EsameService.class);
     final HTML login__background = new HTML("" +
             "<div class=\"login__background\">" +
             "</div>" +
@@ -130,7 +129,7 @@ public class University implements EntryPoint {
                 }
             }
         });
-        adminServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
+        docenteServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -138,12 +137,12 @@ public class University implements EntryPoint {
 
             @Override
             public void onSuccess(Boolean result) {
-                Window.alert("Docente creato");
+                //Window.alert("Docente creato");
 
             }
         });
 
-        corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+        corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 0 , new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -151,12 +150,12 @@ public class University implements EntryPoint {
 
             @Override
             public void onSuccess(Boolean result) {
-                Window.alert("Corso creato");
+                //Window.alert("Corso creato");
 
             }
         });
 
-        corsoServiceAsync.creaCorso("Italiano", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+        corsoServiceAsync.creaCorso("Italiano", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 2 , new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -164,12 +163,12 @@ public class University implements EntryPoint {
 
             @Override
             public void onSuccess(Boolean result) {
-                Window.alert("Corso creato");
+                //Window.alert("Corso creato");
 
             }
         });
 
-        corsoServiceAsync.creaCorso("Matematica", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+        corsoServiceAsync.creaCorso("Matematica", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 3 , new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -177,7 +176,33 @@ public class University implements EntryPoint {
 
             @Override
             public void onSuccess(Boolean result) {
-                Window.alert("Corso creato");
+                //Window.alert("Corso creato");
+
+            }
+        });
+
+       esameServiceAsync.creaEsame("Matematica", "19-01-2023", "14:00", "3 ore", "Fratelli Giovanni",  new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Corso creato");
+
+            }
+        });
+
+        esameServiceAsync.creaEsame("Italiano", "19-01-2023", "13:00", "3 ore", "Fratelli pini",  new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Corso creato");
 
             }
         });
@@ -208,7 +233,7 @@ public class University implements EntryPoint {
                                     @Override
                                     public void onSuccess(Studente result) {
                                         if(result==null){
-                                            Window.alert("Utente o password sbagliatiii");
+                                            Window.alert("Utente o password sbagliati");
                                         } else {
                                             SchermataStudente schermataStudente = new SchermataStudente();
                                             schermataStudente.accesso(result);
@@ -243,6 +268,7 @@ public class University implements EntryPoint {
                                 break;
                             default:
                                 //Carica admin
+                                if(email__input.getText().equals("admin") && password__input.getText().equals("admin"))
                                 Window.alert("Admin");
                                 break;
 
