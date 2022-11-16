@@ -15,18 +15,17 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class SostieneImpl extends RemoteServiceServlet implements SostieneService {
 
     DB db;
     HTreeMap<Integer, Sostiene> map;
 
-    private DB getDb(){
+    private DB getDb() {
         ServletContext context = this.getServletContext();
         synchronized (context) {
-            DB db = (DB)context.getAttribute("sostieneDb");
-            if(db == null) {
+            DB db = (DB) context.getAttribute("sostieneDb");
+            if (db == null) {
                 db = DBMaker.fileDB("C:\\MapDB\\sostiene").closeOnJvmShutdown().checksumHeaderBypass().make();
                 context.setAttribute("sostieneDb", db);
             }
@@ -34,7 +33,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
     }
 
-    private void createOrOpenDB(){
+    private void createOrOpenDB() {
         this.db = getDb();
         this.map = this.db.hashMap("sostieneMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerSostiene()).createOrOpen();
     }
@@ -42,17 +41,17 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     //ottengo un array con tutte le istanze di sostiene
     @Override
     public Sostiene[] getSostiene() {
-        try{
+        try {
             createOrOpenDB();
             Sostiene[] sostenuti = new Sostiene[map.size()];
             int j = 0;
-            for( int i: map.getKeys()){
+            for (int i : map.getKeys()) {
                 sostenuti[j] = map.get(i);
                 j++;
             }
             return sostenuti;
-        } catch(Exception e){
-            System.out.println("Errore: "+ e);
+        } catch (Exception e) {
+            System.out.println("Errore: " + e);
             return null;
         }
     }
@@ -60,52 +59,12 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     //ottengo un array con gli esami sostenuti di uno studente
     @Override
     public Sostiene[] getSostieneStudenteSenzaVoto(int matricola) {
-        try{
-            createOrOpenDB();
-            Sostiene[] sostenuti = new Sostiene[map.size()];
-            int j = 0;
-            for( int i: map.getKeys()){
-                if (map.get(i).getMatricola() == matricola && map.get(i).voto==-1) {
-                    sostenuti[j] = map.get(i);
-                    j++;
-                }
-            }
-            return sostenuti;
-        } catch(Exception e){
-            System.out.println("Errore: "+ e);
-            return null;
-        }
-    }
-
-    //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui non è stato assegnato un voto
-    @Override
-    public Sostiene[] getSostieneStudenteConVoto(int matricola) {
-        try{
-            createOrOpenDB();
-            Sostiene[] sostenuti = new Sostiene[map.size()];
-            int j = 0;
-            for( int i: map.getKeys()){
-                if (map.get(i).getMatricola() == matricola && map.get(i).voto!=-1) {
-                    sostenuti[j] = map.get(i);
-                    j++;
-                }
-            }
-            return sostenuti;
-        } catch(Exception e){
-            System.out.println("Errore: "+ e);
-            return null;
-        }
-    }
-
-    //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui è stato assegnato un voto
-    @Override
-    public Sostiene[] getStudenti(int codEsame) {
         try {
             createOrOpenDB();
             Sostiene[] sostenuti = new Sostiene[map.size()];
             int j = 0;
             for (int i : map.getKeys()) {
-                if (map.get(i).codEsame == codEsame) {
+                if (map.get(i).getMatricola() == matricola && map.get(i).voto == -1) {
                     sostenuti[j] = map.get(i);
                     j++;
                 }
@@ -117,20 +76,58 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
     }
 
+    //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui non è stato assegnato un voto
+    @Override
+    public Sostiene[] getSostieneStudenteConVoto(int matricola) {
+        try {
+            createOrOpenDB();
+            ArrayList<Sostiene> sostenuti = new ArrayList<>();
+            Sostiene[] sostiene = getSostiene();
+            for (Sostiene esame : sostiene) {
+                if (esame.getMatricola() == matricola && map.get(i).voto != -1) {
+                    sostenuti.add(esame);
+                }
+            }
+            return sostenuti.toArray(new Sostiene[0]);
+        } catch (Exception e) {
+            System.out.println("Errore: " + e);
+            return null;
+        }
+    }
+
+    //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui è stato assegnato un voto
+    @Override
+    public Sostiene[] getStudenti(int codEsame) {
+        try {
+            createOrOpenDB();
+            ArrayList<Sostiene> sostenuti = new ArrayList<>();
+            //Sostiene[] sostiene= getSostiene();
+            for (int i : map.getKeys()) {
+                if (map.get(i).getCodEsame() == codEsame) {
+                    sostenuti.add(esame);
+                }
+            }
+            return sostenuti.toArray(new Sostiene[0]);
+        } catch (Exception e) {
+            System.out.println("Errore: " + e);
+            return null;
+        }
+    }
+
     // Metodo per aggiungere il voto allo studente
     @Override
     public boolean inserisciVoto(int esame, int matricola, int voto) {
-        try{
+        try {
             createOrOpenDB();
             Sostiene esameConVoto = new Sostiene(esame, matricola, voto, false);
-            for(int i : map.getKeys()){
-                if(map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola){
+            for (int i : map.getKeys()) {
+                if (map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola) {
                     map.replace(i, esameConVoto);
                     db.commit();
                     return true;
                 }
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Err: inserisci voto: " + e);
         }
         return false;
@@ -138,16 +135,16 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
 
     @Override
     public boolean accettaVoto(int esame, int matricola) {
-        try{
+        try {
             createOrOpenDB();
-            for(int i : map.getKeys()){
-                if(map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola){
+            for (int i : map.getKeys()) {
+                if (map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola) {
                     map.replace(i, new Sostiene(esame, matricola, map.get(i).voto, true));
                     db.commit();
                     return true;
                 }
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Err: accetta voto: " + e);
         }
         return false;
@@ -155,16 +152,16 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
 
     @Override
     public boolean eliminaSostiene(int esame, int matricola) {
-        try{
+        try {
             createOrOpenDB();
-            for(int i : map.getKeys()){
-                if(map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola){
+            for (int i : map.getKeys()) {
+                if (map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola) {
                     map.remove(i);
                     db.commit();
                     return true;
                 }
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Err: accetta voto: " + e);
         }
         return false;
@@ -172,33 +169,32 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
 
     @Override
     public Sostiene[] esamiSostenuti() {
-        try{
+        try {
             createOrOpenDB();
             ArrayList<Sostiene> esamiSostenuti = new ArrayList<>();
-            for(int i : map.getKeys()){
-                if(!map.get(i).getAccettato()){
+            for (int i : map.getKeys()) {
+                if (!map.get(i).getAccettato()) {
                     esamiSostenuti.add(map.get(i));
                 }
             }
             return esamiSostenuti.toArray(new Sostiene[0]);
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Err: accetta voto: " + e);
         }
         return null;
     }
 
 
-
     //creo una nuova istanza di sostiene
     @Override
     public boolean creaSostiene(int matricola, int codEsame, int voto) {
-        try{
+        try {
             createOrOpenDB();
             map.put((map.size() + 1),
                     new Sostiene( matricola, codEsame,-1, false));
             db.commit();
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Exception: " + e);
             return false;
         }
@@ -207,9 +203,9 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     @Override
     public long calcolaMedia(Sostiene[] s) {
         int totale = 0;
-        for(Sostiene esami : s){
+        for (Sostiene esami : s) {
             totale += esami.voto;
         }
-        return totale/s.length;
+        return totale / s.length;
     }
 }

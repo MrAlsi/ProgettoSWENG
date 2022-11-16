@@ -141,7 +141,7 @@ public class University implements EntryPoint {
             }
         });
 
-        corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 3, 3, 0 , new AsyncCallback<Boolean>() {
+        corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 0 , new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
