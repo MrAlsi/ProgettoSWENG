@@ -556,8 +556,6 @@ table.nav__user tbody {
 
 .tabella__corsi tbody tr td {
     font-size: 15px;
-    height: 30px;
-    width: 170px;
 }
 
 .tabella__esami, .tabella__corsi, .tabella__libretto, .tabella__esamiPrenotati, .tabella__mieiCorsi {
@@ -571,8 +569,7 @@ table.nav__user tbody {
 
 .tabella__esami, .tabella__corsi, .tabella__libretto, .tabella__esamiPrenotati, .tabella__mieiCorsi tbody tr td {
     font-size: 15px;
-    height: 30px;
-    width: 170px;
+
 }
 
 .gwt-Button.creaCorso__btn {

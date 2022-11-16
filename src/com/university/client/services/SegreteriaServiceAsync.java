@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.university.client.model.Segreteria;
+import com.university.client.model.Studente;
 
 public interface SegreteriaServiceAsync {
     void creaSegretaria(String nome, String cognome, String password, AsyncCallback<Boolean> async);
@@ -15,4 +16,6 @@ public interface SegreteriaServiceAsync {
     void getSegreteria(AsyncCallback<Segreteria[]> async);
 
     void getSegreteria(String mail, AsyncCallback<Segreteria> async);
+
+    void loginSegreteria(String mail, String password, AsyncCallback<Segreteria> async);
 }
