@@ -111,7 +111,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
                 }
             }
         } catch(Exception e){
-            System.out.println("Err: mdofica studente " + e);
+            System.out.println("Err: modifica studente " + e);
         }
         return false;
     }
