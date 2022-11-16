@@ -1,23 +1,15 @@
-package com.university.server;
+package com.university.client.services;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.university.client.services.StudenteService;
-import com.university.client.services.StudenteServiceAsync;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StudenteImplTest extends GWTTestCase {
-
+class StudenteServiceTest extends GWTTestCase{
     StudenteServiceAsync service;
-
-    @Override
-    public String getModuleName() {
-        return "com.university";
-    }
 
     public void gwtSetUp(){
         // Create the service that we will test.
@@ -26,9 +18,15 @@ class StudenteImplTest extends GWTTestCase {
         target.setServiceEntryPoint(GWT.getModuleBaseURL() + "progettosweng/studenti");
     }
 
+    @Override
+    public String getModuleName() {
+        return "com.university";
+    }
+
     @Test
     public synchronized void getNumeroStudenti() throws Exception {
         delayTestFinish(10000);
+        gwtSetUp();
         service.getNumeroStudenti(new AsyncCallback<Integer>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -51,6 +49,6 @@ class StudenteImplTest extends GWTTestCase {
     }
 
     @Test
-    void creaStudente() {
+    void loginStudente() {
     }
 }
