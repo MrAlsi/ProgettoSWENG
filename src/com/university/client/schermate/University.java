@@ -23,6 +23,7 @@ public class University implements EntryPoint {
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
+    private static SegreteriaServiceAsync segreteriaServiceAsync = GWT.create(SegreteriaService.class);
     private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
     private static EsameServiceAsync esameServiceAsync = GWT.create(EsameService.class);
     final HTML login__background = new HTML("" +
@@ -142,6 +143,19 @@ public class University implements EntryPoint {
             }
         });
 
+        segreteriaServiceAsync.creaSegretaria("Claudia", "Guanciale", "pecorino", new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                Window.alert("Segreteria creata");
+            }
+        });
+
+
         corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 0 , new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -256,7 +270,7 @@ public class University implements EntryPoint {
                                         } else {
                                             SchermataDocente schermataDocente = new SchermataDocente();
                                             schermataDocente.accesso(result);
-                                            //Window.alert("docente");
+                                            Window.alert("docente");
                                         }
                                     }
                                 });
@@ -264,6 +278,8 @@ public class University implements EntryPoint {
                                 break;
                             case "Segreteria":
                                 //Carica segreteria
+                                //segreteriaServiceAsync.
+
                                 Window.alert("segreteria.");
                                 break;
                             default:
