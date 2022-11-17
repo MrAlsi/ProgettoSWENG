@@ -127,6 +127,7 @@ public class University implements EntryPoint {
                 }
             }
         });
+        /*
         docenteServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -216,7 +217,7 @@ public class University implements EntryPoint {
                 //Window.alert("Corso creato");
 
             }
-        });
+        });*/
 
         //Condizioni se username e password sono corretti
         login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
@@ -294,8 +295,11 @@ public class University implements EntryPoint {
                                 break;
                             default:
                                 //Carica admin
-                                if(email__input.getText().equals("admin") && password__input.getText().equals("admin"))
-                                Window.alert("Admin");
+                                if(email__input.getText().equals("admin") && password__input.getText().equals("admin")){
+                                    SchermataAdmin schermataAdmin=new SchermataAdmin();
+                                    schermataAdmin.accesso();
+                                }
+                                    //Window.alert("Admin");
                                 break;
 
 
