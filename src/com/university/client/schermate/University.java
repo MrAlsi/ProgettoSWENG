@@ -7,10 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.university.client.model.Docente;
-import com.university.client.model.Studente;
-import com.university.client.model.Corso;
-import com.university.client.model.Utente;
+import com.university.client.model.*;
 import com.university.client.services.*;
 
 /**
@@ -22,6 +19,8 @@ public class University implements EntryPoint {
     FormPanel creaStudente;
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
+
+    private static SegreteriaServiceAsync segreteriaServiceAsync = GWT.create(SegreteriaService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
     private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
     private static EsameServiceAsync esameServiceAsync = GWT.create(EsameService.class);
@@ -138,6 +137,19 @@ public class University implements EntryPoint {
             @Override
             public void onSuccess(Boolean result) {
                 //Window.alert("Docente creato");
+
+            }
+        });
+
+        segreteriaServiceAsync.creaSegretaria("carlotta", "carboni", "password", new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Segreteria creata");
 
             }
         });
@@ -263,8 +275,23 @@ public class University implements EntryPoint {
 
                                 break;
                             case "Segreteria":
-                                //Carica segreteria
-                                Window.alert("segreteria.");
+                                segreteriaServiceAsync.loginSegreteria(email__input.getText(), password__input.getText(), new AsyncCallback<Segreteria>() {
+                                    @Override
+                                    public void onFailure(Throwable caught) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Segreteria result) {
+                                        if(result==null){
+                                            Window.alert("Utente o password sbagliati");
+                                        } else {
+                                            SchermataSegreteria schermataSegreteria = new SchermataSegreteria();
+                                            schermataSegreteria.accesso(result);
+                                            //Window.alert("docente");
+                                        }
+                                    }
+                                });
                                 break;
                             default:
                                 //Carica admin

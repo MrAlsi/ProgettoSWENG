@@ -1,6 +1,7 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.university.client.model.Docente;
 import com.university.client.model.Segreteria;
 import com.university.client.model.Serializer.SerializerSegreteria;
 import com.university.client.services.SegreteriaService;
@@ -20,7 +21,7 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
         synchronized (context) {
             DB db = (DB)context.getAttribute("segreteriaDb");
             if(db == null) {
-                db = DBMaker.fileDB("C:\\MapDB\\segreteria").make();
+                db = DBMaker.fileDB("C:\\MapDB\\segreteria").closeOnJvmShutdown().checksumHeaderBypass().make();;
                 context.setAttribute("studentiDb", db);
             }
             return db;
@@ -44,21 +45,17 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
         }
     }
     public String creaMailSegreteria(String nome, String cognome){
-        try {
-            int num = 0;
-            for (int i : map.getKeys()) {
-                if (map.get(i).getNome() == nome && map.get(i).getCognome() == cognome) {
-                    num++;
-                }
+        int num = 0;
+        Segreteria[] segreteria = getSegreteria();
+        for(int i = 0; i < segreteria.length; i++){
+            if(nome.equals(segreteria[i].getNome()) && cognome.equals(segreteria[i].getCognome())){
+                num++;
             }
-            if (num > 0) {
-                return nome + "." + cognome + num + "@segreteria.university.com";
-            } else {
-                return nome + "." + cognome + "@segreteria.university.com";
-            }
-        } catch(Exception e){
-            System.out.println("Err: creaMailSegreteria  " + e);
-            return null;
+        }
+        if(num>0){
+            return nome + "." + cognome + num + "@segreteria.university.com";
+        } else {
+            return nome + "." + cognome + "@segreteria.university.com";
         }
     }
 
@@ -126,6 +123,17 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
             }
         } catch(Exception e){
             System.out.println("Err: getSegreteria  " + e);
+        }
+        return null;
+    }
+
+    @Override
+    public Segreteria loginSegreteria(String mail, String password) {
+        createOrOpenDB();
+        for (int id : map.getKeys()) {
+            if (map.get(id).getMail().equals(mail) && map.get(id).getPassword().equals(password)) {
+                return map.get(id);
+            }
         }
         return null;
     }
