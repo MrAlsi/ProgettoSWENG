@@ -135,9 +135,8 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
 
     public String getMailDocente(String nome, String cognome){
         int num = 0;
-        Docente[] docenti = getDocenti();
-        for(int i = 0; i < docenti.length; i++){
-            if(nome.equals(docenti[i].getNome()) && cognome.equals(docenti[i].getCognome())){
+        for(int i : map.getKeys()){
+            if(nome.equals(map.get(i).getNome()) && cognome.equals(map.get(i).getCognome())){
                 num++;
             }
         }

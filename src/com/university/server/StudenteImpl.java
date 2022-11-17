@@ -142,9 +142,8 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
      */
     public String creaMailStudente(String nome, String cognome){
         int num = 0;
-        Studente[] studenti = getStudenti();
-        for(int i = 0; i < studenti.length; i++){
-            if(nome.equals(studenti[i].getNome()) && cognome.equals(studenti[i].getCognome())){
+        for(int i : map.getKeys()){
+            if(nome.equals(map.get(i).getNome()) && cognome.equals(map.get(i).getCognome())){
                 num++;
             }
         }
