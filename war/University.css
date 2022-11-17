@@ -403,6 +403,7 @@ form {
     margin-top: 10rem;
     background: linear-gradient(145deg, #e7f3f7, #c2ccd0);
     box-shadow: 41px 41px 82px #b8c1c4, -41px -41px 82px #f8ffff;
+    margin-bottom: 50vh;
 }
 
 .login__img {
@@ -473,15 +474,20 @@ form {
 /*======== PANNELLO USER =========*/
 .user__container {
     margin-top: 10rem;
-    width: 100rem;
+    width: 80rem;
     background-color: #e8e8e8;
     height: 70vh;
     border-radius: 5rem;
     box-shadow:   8px 8px 22px #cacaca, -8px -8px 22px #ffffff;
+    margin-bottom: 10rem;
 }
 
 .user__container tbody tr:nth-child(1) td:nth-child(1) {
     height: 100px;
+}
+
+.user__container table {
+    margin: 0rem 4rem 4rem 4rem;
 }
 
 .user__title {
@@ -494,19 +500,12 @@ form {
 }
 
 .content__profilo {
-    padding-left: calc(50rem - 10vw);
 }
 
-.user__container tbody {
-    vertical-align: auto;
-}
-
-.user__container tr {
-
-}
-
-.user__container td {
-    min-height: 0px;
+.tabella__libretto  tr, .tabella__corsi  tr, .tabella__esami  tr,
+.tabella__pianificaProve  tr, .tabella__esamiPrenotati  tr,
+.tabella__mieiCorsi  tr, .tabella__studenti tr {
+    height: 10rem;
 }
 
 .nav__user {
@@ -517,10 +516,8 @@ form {
     margin-top: 15vh;
     background-color: #e8e8e8;
     box-shadow: 12px 12px 26px #cccccc, -12px -12px 26px #ffffff;
-}
-
-table.nav__user tbody {
-    float: left;
+    align-items: center;
+    text-align: center;
 }
 
 .gwt-Button.nav__user__btn {
@@ -545,33 +542,6 @@ table.nav__user tbody {
     box-shadow: inset 5px 5px 10px #e2e2e2, inset -5px -5px 10px #fefefe;
 }
 
-.tabella__corsi {
-    font-size: 17px;
-    margin: 1rem 10rem 5rem 10rem
-}
-
-.tabella__corsi thead {
-    background: var(--color-white);
-}
-
-.tabella__corsi tbody tr td {
-    font-size: 15px;
-}
-
-.tabella__esami, .tabella__corsi, .tabella__libretto, .tabella__esamiPrenotati, .tabella__mieiCorsi {
-    font-size: 17px;
-    margin: 1rem 10rem 5rem 10rem
-}
-
-.tabella__esami, .tabella__corsi, .tabella__libretto, .tabella__esamiPrenotati, .tabella__mieiCorsi  thead {
-    background: var(--color-white);
-}
-
-.tabella__esami, .tabella__corsi, .tabella__libretto, .tabella__esamiPrenotati, .tabella__mieiCorsi tbody tr td {
-    font-size: 15px;
-
-}
-
 .gwt-Button.creaCorso__btn {
     margin: 30px;
     color: var(--color-bg-variant);
@@ -582,7 +552,6 @@ table.nav__user tbody {
     background: linear-gradient(145deg, #f8f8f8, #d1d1d1);
     box-shadow: 4px 4px 9px #c5c5c5, -4px -4px 9px #ffffff;
     border-width: 0;
-    margin-left: calc(50% - 60px);
 }
 
 .creaCorso__btn:hover {
@@ -605,7 +574,6 @@ table.nav__user tbody {
     background: linear-gradient(145deg, #f8f8f8, #d1d1d1);
     box-shadow: 4px 4px 9px #c5c5c5, -4px -4px 9px #ffffff;
     border-width: 0;
-    margin-left: calc(50% - 60px);
 }
 
 .creaEsame__btn:hover {
@@ -617,6 +585,7 @@ table.nav__user tbody {
     background: #e8e8e8;
     box-shadow: inset 6px 6px 12px #c5c5c5, inset -6px -6px 12px #ffffff;
 }
+
 
 .modificaCorso__btn button {
     background: var(--color-bg-variant);
@@ -631,6 +600,16 @@ table.nav__user tbody {
 .eliminaCorso__btn button {
     background: var(--color-primary-variant);
     color: var(--color-bg);
+    z-index: 1;
+    height: 5rem;
+    width: 11rem;
+    border: none;
+    border-radius: 12px;
+}
+
+.valutazioni__btn button {
+    background: var(--color-bg);
+    color: var(--color-bg-variant);
     z-index: 1;
     height: 5rem;
     width: 11rem;
@@ -658,3 +637,39 @@ table.nav__user tbody {
     border-radius: 12px;
 }
 
+
+/* =================== MEDIA QUERY ======================= */
+
+@media screen and (max-width: 1350px) {
+
+    .card__p1{
+        width: 25%;
+    }
+
+    .user__container {
+        width: 80rem;
+        margin-left: 10rem;
+    }
+
+    .nav__user{
+        left: 20px;
+        transform: scale(0.9);
+    }
+}
+
+@media screen and (max-width: 1080px) {
+
+    .card__p1{
+        width: 30%;
+    }
+
+    .user__container {
+        width: 65rem;
+        margin-left: 20rem;
+    }
+
+    .nav__user{
+        left: 10px;
+        transform: scale(0.8);
+    }
+}

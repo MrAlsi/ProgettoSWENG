@@ -31,6 +31,7 @@ public class SchermataStudente {
         RootPanel.get("container").clear();
 
         user__container = new VerticalPanel();
+        user__container.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         user__container.getElement().setId("user__container");
         user__container.addStyleName("user__container");
 
@@ -307,7 +308,7 @@ public class SchermataStudente {
 
 
         CellTable<Esame> tabella__pianificaProve = new CellTable<>();
-        tabella__pianificaProve.addStyleName("tabella__libretto");
+        tabella__pianificaProve.addStyleName("tabella__pianificaProve");
         tabella__pianificaProve.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
         tabella__pianificaProve.setEmptyTableWidget(new Label(msg));
 

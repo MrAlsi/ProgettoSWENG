@@ -19,7 +19,6 @@ public class University implements EntryPoint {
     FormPanel creaStudente;
     private static UtenteServiceAsync utenteServiceAsync = GWT.create(UtenteService.class);
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
-
     private static SegreteriaServiceAsync segreteriaServiceAsync = GWT.create(SegreteriaService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
     private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
@@ -141,7 +140,7 @@ public class University implements EntryPoint {
             }
         });
 
-        segreteriaServiceAsync.creaSegretaria("carlotta", "carboni", "password", new AsyncCallback<Boolean>() {
+        segreteriaServiceAsync.creaSegretaria("Claudia", "Guanciale", "pecorino", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -149,10 +148,10 @@ public class University implements EntryPoint {
 
             @Override
             public void onSuccess(Boolean result) {
-                //Window.alert("Segreteria creata");
-
+                Window.alert("Segreteria creata");
             }
         });
+
 
         corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 0 , new AsyncCallback<Boolean>() {
             @Override

@@ -22,7 +22,7 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
             DB db = (DB)context.getAttribute("segreteriaDb");
             if(db == null) {
                 db = DBMaker.fileDB("C:\\MapDB\\segreteria").closeOnJvmShutdown().checksumHeaderBypass().make();;
-                context.setAttribute("studentiDb", db);
+                context.setAttribute("segreteriaDb", db);
             }
             return db;
         }
@@ -40,15 +40,15 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
             db.commit();
             return true;
         } catch(Exception e){
-            System.out.println("C: AdminImpl  M: creaSegreteria: " + e);
+            System.out.println("C: SegreteriaImpl  M: creaSegreteria: " + e);
             return false;
         }
     }
     public String creaMailSegreteria(String nome, String cognome){
         int num = 0;
-        Segreteria[] segreteria = getSegreteria();
-        for(int i = 0; i < segreteria.length; i++){
-            if(nome.equals(segreteria[i].getNome()) && cognome.equals(segreteria[i].getCognome())){
+        //Segreteria[] segreteria = getSegreteria();
+        for(int i : map.getKeys()) {
+            if (nome.equals(map.get(i).getNome()) && cognome.equals(map.get(i).getCognome())) {
                 num++;
             }
         }
