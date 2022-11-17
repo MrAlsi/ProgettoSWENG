@@ -25,7 +25,7 @@ public class SchermataAdmin {
 
     public void formSegreteria(){
         FormPanel creaSegreteria =new FormPanel();
-        creaSegreteria.setAction("/creanuvaSegreteria");
+        creaSegreteria.setAction("/creanuovaSegreteria");
         creaSegreteria.setMethod(FormPanel.METHOD_POST);
         VerticalPanel segreteriaContainer = new VerticalPanel();
         final Label nome__label = new Label("Nome: ");

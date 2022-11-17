@@ -17,8 +17,8 @@ public class SerializerCorso implements Serializer<Corso>, Serializable {
         dataOutput2.writeUTF(corso.getDataInizio());
         dataOutput2.writeUTF(corso.getDataFine());
         dataOutput2.writeUTF(corso.getDescrizione());
-        dataOutput2.writeInt(corso.getDocente());
         dataOutput2.writeInt(corso.getCoDocente());
+        dataOutput2.writeInt(corso.getDocente());
         dataOutput2.writeInt(corso.getEsame());
     }
 

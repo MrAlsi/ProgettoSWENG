@@ -43,11 +43,11 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
 
     //crea un nuovo corso
     @Override
-    public Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
+    public Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente) {
         try{
             createOrOpenDB();
             map.put(map.size() + 1,
-                    new Corso( nome, dataInizio,dataFine, descrizione, codocente,docente,esame));
+                    new Corso( nome, dataInizio,dataFine, descrizione, codocente,docente, -1));
             db.commit();
             return true;
         } catch (Exception e){
