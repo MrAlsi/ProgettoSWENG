@@ -47,13 +47,18 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         try{
             createOrOpenDB();
             map.put(map.size() + 1,
-                    new Corso( nome, dataInizio,dataFine, descrizione, codocente,docente, -1));
+                    new Corso( nome, pulisciData(dataInizio), pulisciData(dataFine), descrizione, codocente,docente, -1));
             db.commit();
             return true;
         } catch (Exception e){
             System.out.println("Exception: " + e);
             return false;
         }
+    }
+
+    public String pulisciData(String data){
+        String[] date = data.split(" ");
+        return date[2] + " " + date[1] + " " + date[5];
     }
 
     //restituisce tutti i corsi

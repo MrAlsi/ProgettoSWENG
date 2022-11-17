@@ -5,6 +5,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
@@ -13,7 +14,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.user.datepicker.client.DatePicker;
 import com.university.client.model.Docente;
 import com.university.client.services.DocenteServiceAsync;
 import com.university.client.services.DocenteService;
@@ -24,9 +24,7 @@ import com.university.client.model.Esame;
 import com.university.client.services.EsameServiceAsync;
 import com.university.client.services.EsameService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class SchermataDocente {
     Docente docente;
@@ -243,7 +241,6 @@ public class SchermataDocente {
         }); */
 
         ButtonCell cella__elimina = new ButtonCell();
-
         Column<Corso, String> colonna__elimina = new Column<Corso, String>(cella__elimina) {
             @Override
             public String getValue(Corso object) {
@@ -251,6 +248,26 @@ public class SchermataDocente {
             }
         };
 
+        colonna__elimina.setFieldUpdater(new FieldUpdater<Corso, String>() {
+            @Override
+            public void update(int index, Corso object, String value) {
+                serviceCorso.eliminaCorso(object.getNome(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore nel elimina");
+                    }
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Window.alert("Corso eliminato");
+                        try {
+                            form__corsi();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+        });
         tabella__corsi.addColumn(colonna__elimina, "");
         colonna__elimina.setCellStyleNames("eliminaCorso__btn");
 
@@ -414,11 +431,13 @@ public class SchermataDocente {
         corsoContainer.add(nome__textBox);
         final Label dataI__label = new Label("Data inzio corso: ");
         corsoContainer.add(dataI__label);
-        final DateBox dataI__picker = new DateBox();
-        corsoContainer.add(dataI__picker);
+        final DateBox dataI__dateBox = new DateBox();
+        dataI__dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("dd/MM/yyyy")));
+        corsoContainer.add(dataI__dateBox);
         final Label dataF__label = new Label("Data fine corso: ");
         corsoContainer.add(dataF__label);
         final DateBox dataF__picker = new DateBox();
+        dataI__dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("dd/MM/yyyy")));
         corsoContainer.add(dataF__picker);
         final Label descrizione__label = new Label("Descrizione: ");
         corsoContainer.add(descrizione__label);
@@ -456,10 +475,21 @@ public class SchermataDocente {
         creaCorso.addSubmitHandler(new FormPanel.SubmitHandler() {
             @Override
             public void onSubmit(FormPanel.SubmitEvent event) {
-                if (nome__textBox.getText().length() == 0 || descrizione__text.getText().length() == 0 || dataF__picker.getValue() == null || dataI__picker.getValue() == null ||
+                //Controllo su che tutti i campi siano pieni
+                if (nome__textBox.getText().length() == 0 || descrizione__text.getText().length() == 0 || dataF__picker.getValue() == null || dataI__dateBox.getValue() == null ||
                         descrizione__text.getText().length() == 0) {
                     Window.alert("Compilare tutti i campi!");
                     event.cancel();
+                }
+
+                //Controllo sulla data di fine e inizio
+                if(dataI__dateBox.getValue().after(dataF__picker.getValue())) {
+                    if (!(nome__textBox.getText().contains("viaggi nel tempo"))) {
+                        //Window.alert("T1: " + dataI__dateBox.getValue().after(dataF__picker.getValue()) + "\nT2: " + !(nome__textBox.getText().contains("viaggi nel tempo")));
+                        Window.alert("Data di fine corso non può essere prima di data inizio corso, a meno che non sia un" +
+                            " corso sul come viaggiare nel tempo");
+                        event.cancel();
+                    }
                 }
             }
         });
@@ -467,7 +497,7 @@ public class SchermataDocente {
         creaCorso.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                serviceCorso.creaCorso(nome__textBox.getText(), dataI__picker.getValue().toString(), dataF__picker.getValue().toString(),
+                serviceCorso.creaCorso(nome__textBox.getText(), dataI__dateBox.getValue().toString(), dataF__picker.getValue().toString(),
                 descrizione__text.getText(), Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]), docente.getCodDocente(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -477,6 +507,7 @@ public class SchermataDocente {
                     @Override
                     public void onSuccess(Boolean result) {
                         Window.alert("corso creato");
+
                     }
                 });
             }
