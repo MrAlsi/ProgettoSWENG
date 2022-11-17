@@ -12,11 +12,11 @@ public class SerializerFrequenta implements Serializer<Frequenta>, Serializable 
     @Override
     public void serialize(DataOutput2 dataOutput2, Frequenta frequenta) throws IOException {
         dataOutput2.writeInt(frequenta.getMatricola());
-        dataOutput2.writeInt(frequenta.getCodCorso());
+        dataOutput2.writeUTF(frequenta.getNomeCorso());
     }
 
     @Override
     public Frequenta deserialize(DataInput2 dataInput2, int i) throws IOException {
-        return new Frequenta(dataInput2.readInt(), dataInput2.readInt());
+        return new Frequenta(dataInput2.readInt(), dataInput2.readUTF());
     }
 }

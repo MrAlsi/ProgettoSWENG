@@ -1,15 +1,675 @@
-/** Add css rules here for your application. */
+/*======== PALETTE =========*/
+:root {
+    --color-bg: #D8E3E7;
+    --color-bg-variant: #39848e;
+    --color-primary: #126E82;
+    --color-primary-variant: #132C33;
+    --color-white: #e8e8e8;
+    --color-dark: rgb(34 34 34);
 
-h1 {
-    color: white;
+    --transition: all 400ms ease;
+
 }
 
-body, td, a, div, .p {
-    font-family: arial, sans-serif
-}
 
-#navbar{
-    background-color: #9f0000;
+/*========== BODY =========*/
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700");
+
+body {
     width: 100%;
-    height: 20%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    background-color: var(--color-white) !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body, table td, select, button {
+    font-family: Roboto, sans-serif;
+}
+
+/* ========= NAVBAR ========== */
+
+a {
+    text-decoration: none;
+    font-size: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1.5rem;
+}
+
+a:hover #home__GWTbtn {
+    animation: left-edge 0.5s linear 1;
+    filter: invert(72%) sepia(20%) saturate(747%) hue-rotate(174deg)
+    brightness(96%) contrast(97%);
+}
+
+a:hover #dipartimenti__GWTbtn {
+    animation: left-edge 0.5s linear 1;
+    filter: invert(72%) sepia(20%) saturate(747%) hue-rotate(174deg)
+    brightness(96%) contrast(97%);
+}
+
+a:hover #login__GWTbtn {
+    animation: left-edge 0.5s linear 1;
+    filter: invert(72%) sepia(20%) saturate(747%) hue-rotate(174deg)
+    brightness(96%) contrast(97%);
+}
+
+a:hover #contatti__GWTbtn {
+    animation: left-edge 0.5s linear 1;
+    filter: invert(72%) sepia(20%) saturate(747%) hue-rotate(174deg)
+    brightness(96%) contrast(97%);
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 40px;
+    width: auto;
+    height: 60px;
+    padding: 0 15px;
+    border-radius: 30px;
+    background: rgb(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+#home__GWTbtn {
+    width: 32px;
+    height: 32px;
+    background: url('./img/home__icon.png') no-repeat;
+    filter: invert(0.1);
+    border: none
+}
+
+#dipartimenti__GWTbtn {
+    width: 32px;
+    height: 32px;
+    background: url('./img/dipartimenti__icon.png') no-repeat;
+    filter: invert(0.1);
+    border: none
+}
+
+#login__GWTbtn {
+    width: 32px;
+    height: 32px;
+    background: url('./img/utente__icon.png') no-repeat;
+    filter: invert(0.1);
+    border: none
+}
+
+#contatti__GWTbtn {
+    width: 32px;
+    height: 32px;
+    background: url('./img/contatti__icon.png') no-repeat;
+    filter: invert(0.1);
+    border: none
+}
+
+
+@keyframes left-edge {
+    0% {
+        transform: rotate(0deg);
+    }
+    35% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(10deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+
+/*========= HOMEPAGE ===========*/
+
+/*SFONDO*/
+
+.sfondo__img {
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    vertical-align: top;
+}
+
+#sfondo__div {
+    position: relative;
+    text-align: center;
+    background: var(--color-dark);
+    overflow: hidden;
+    height: auto;
+}
+
+.titolo {
+    color: var(--color-white);
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    font-family: Roboto, sans-serif;
+    letter-spacing: 20px;
+    animation: fade__in 5s;
+}
+
+.sottotitolo {
+    color: var(--color-bg);
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 45px;
+    font-family: Roboto, sans-serif;
+    letter-spacing: 5px;
+    animation: fade__in 5s;
+}
+
+.homepage__panel {
+    width: 100%;
+    height: 100vh;
+}
+
+@keyframes fade__in{
+    0%, 5% {
+        opacity: 0;
+    }
+    50%, 100% {
+        opacity: 1;
+    }
+}
+
+/*PARAGRAFO 1*/
+#paragrafo__1 {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    background-color: var(--color-bg);
+    justify-content: center;
+}
+
+.card__p1 {
+    position: relative;
+    width: 15%;
+    height: fit-content;
+    min-height: 48vh;
+    border-radius: 20px;
+    margin: 3rem;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-white);
+    transition: transform .5s ease
+}
+
+.card__img {
+    width: 100%;
+    height: 40%;
+    object-fit: fill;
+    border-radius: 20px 20px 0px 0px;
+}
+
+.card__titolo {
+    margin-top: 10px;
+    font-size: 22px;
+    padding: 0rem 1rem;
+}
+
+.card__descrizione {
+    margin: 10px 0px;
+    font-size: 14px;
+    padding: 0rem 1rem;
+}
+
+.card__p1:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/*PARAGRAFO 2*/
+#paragrafo__2 {
+    width: 100%;
+    height: 10vh;
+    background-color: var(--color-bg-variant);
+    justify-content: center;
+    display: flex;
+    padding: 10px 0px;
+    align-items: center;
+}
+
+.title__p2 {
+    color: var(--color-primary);
+    font-size: 36px;
+    padding: 0px 5px;
+}
+
+#dipartimenti__p2 {
+    color: var(--color-primary);
+    font-size: 36px;
+    padding: 0px 50px 0px 0px;
+}
+
+#insegnanti__p2 {
+    color: var(--color-primary);
+    font-size: 36px;
+    padding: 0px 50px 0px 0px;
+}
+
+#studenti__p2 {
+    color: var(--color-primary);
+    font-size: 36px;
+    padding: 0px 50px 0px 0px;
+}
+
+
+/*PARAGRAFO 3*/
+#paragrafo__3 {
+    width: 100%;
+    height: 90vh;
+    background-color: var(--color-bg);
+    justify-content: center;
+    padding: 3rem 0rem;
+}
+
+#paragrafo__3 h2 {
+    font-size: 32px;
+    color: var(--color-primary-variant);
+    margin: 0rem 5rem;
+    text-align: center;
+}
+
+#paragrafo__3 h5 {
+    font-size: 18px;
+    color: var(--color-primary);
+    margin: 0rem 5rem;
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.container__p3 {
+    display: grid;
+    grid-template-columns: 35% 50%;
+    gap: 15%;
+    align-items: center;
+}
+
+.dipartimenti__img__container {
+    width: 90%;
+    aspect-ratio: 1/1;
+    border-radius: 2rem;
+    background: linear-gradient(
+            45deg,
+            transparent,
+            var(--color-primary),
+            transparent
+    );
+    display: grid;
+    place-items: center;
+    margin-top: 5rem;
+    margin-left: 10rem;
+}
+
+.dipartimenti__img {
+    border-radius: 2rem;
+    overflow: hidden;
+    transform: rotate(10deg);
+    transition: var(--transition);
+}
+
+.dipartimenti__img__tag {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+
+.dipartimenti__img:hover {
+    transform: rotate(0deg);
+}
+
+.dipartimenti__text__container {
+    margin-right: 10rem;
+}
+
+.dipartimenti__text__container p {
+    margin: 1.5rem 0 1.5rem;
+    color: var(--color-primary);
+    font-size: 22px;
+}
+
+/*======== FOOTER =========*/
+#footer {
+    background-color: var(--color-primary-variant);
+    width: 100%;
+    height: fit-content;
+    padding: 5rem 0 5rem;
+    font-size: 15px;
+    color: var(--color-primary);
+    display: grid;
+    grid-template-columns: 1fr 4fr 4fr 1fr;
+}
+
+.footer__container__left {
+    grid-column: 2/3;
+}
+
+.footer__container__right {
+    grid-column: 3/4;
+    margin-left: 40rem;
+}
+
+.footer__title {
+    color: var(--color-white);
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-top: 25px;
+    letter-spacing: 2px;
+}
+
+.footer__description {
+    margin-top: 25px;
+}
+
+.footer__contacts {
+    color: var(--color-white);
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+.footer__details {
+    margin-bottom: 10px;
+}
+
+/*======== LOGIN =========*/
+
+form {
+    display: flex;
+    width: fit-content;
+    height: 60rem;
+    justify-content: center;
+    border-radius: 30px;
+    margin-top: 10rem;
+    background: linear-gradient(145deg, #e7f3f7, #c2ccd0);
+    box-shadow: 41px 41px 82px #b8c1c4, -41px -41px 82px #f8ffff;
+    margin-bottom: 50vh;
+}
+
+.login__img {
+    width: 100%;
+    object-fit: fill;
+    border-radius: 30px 30px 0px 0px;
+    margin-bottom: -15rem;
+}
+
+.email__label {
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: -1rem;
+}
+
+.email__input {
+    transform: translate(100%, 0rem);
+    width: 20rem;
+    height: 3rem;
+    border-radius: 10px;
+    border-width: 0px;
+    background: #e0e0e0;
+    box-shadow: inset 5px 5px 8px #b5bfc2,
+    inset -5px -5px 8px #fbffff;
+    outline: none;
+    padding: 0px 10px;
+}
+
+.password__label {
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: -1rem;
+}
+
+.password__input {
+    transform: translate(100%, 0rem);
+    width: 20rem;
+    height: 3rem;
+    border-radius: 10px;
+    border-width: 0px;
+    background: #e0e0e0;
+    box-shadow: inset 5px 5px 8px #b5bfc2,
+    inset -5px -5px 8px #fbffff;
+    outline: none;
+    padding: 0px 10px;
+}
+
+.login__btn {
+    transform: translate(100%, 0rem);
+    width: 20rem;
+    height: 5rem;
+    box-shadow: 5px 5px 8px #b5bfc2, -5px -5px 8px #fbffff;
+    color: var(--color-primary);
+    background: linear-gradient(145deg, #e7f3f7, #c2ccd0);
+    border-width: 0px;
+    border-radius: 10px;
+}
+
+.login__btn:hover {
+    background: linear-gradient(145deg, #c2ccd0, #e7f3f7);
+}
+
+.login__btn:active {
+    background: #d8e3e7;
+    box-shadow: inset 7px 7px 12px #c2ccd0, inset -7px -7px 12px #eefafe;
+}
+
+/*======== PANNELLO USER =========*/
+.user__container {
+    margin-top: 10rem;
+    width: 80rem;
+    background-color: #e8e8e8;
+    height: 70vh;
+    border-radius: 5rem;
+    box-shadow:   8px 8px 22px #cacaca, -8px -8px 22px #ffffff;
+    margin-bottom: 10rem;
+}
+
+.user__container tbody tr:nth-child(1) td:nth-child(1) {
+    height: 100px;
+}
+
+.user__container table {
+    margin: 0rem 4rem 4rem 4rem;
+}
+
+.user__title {
+    font-size: 30px;
+    color: var(--color-primary-variant);
+    margin: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid;
+    text-align: center;
+}
+
+.content__profilo {
+}
+
+.tabella__libretto  tr, .tabella__corsi  tr, .tabella__esami  tr,
+.tabella__pianificaProve  tr, .tabella__esamiPrenotati  tr,
+.tabella__mieiCorsi  tr, .tabella__studenti tr {
+    height: 10rem;
+}
+
+.nav__user {
+    position: fixed;
+    height: fit-content;
+    left: 5%;
+    border-radius: 3rem;
+    margin-top: 15vh;
+    background-color: #e8e8e8;
+    box-shadow: 12px 12px 26px #cccccc, -12px -12px 26px #ffffff;
+    align-items: center;
+    text-align: center;
+}
+
+.gwt-Button.nav__user__btn {
+    width: 90%;
+    height: 6vh;
+    border-radius: 15px;
+    color: var(--color-primary);
+    font-size: 18px;
+    border-width: 0px;
+    margin: 1.5rem;
+    background-color: var(--color-white);
+    text-align: inherit;
+    padding: 0rem 1.5rem;
+}
+
+.nav__user__btn:hover {
+    background-color: #e3e3e3;
+}
+
+.nav__user__btn:active {
+    background-color: #f0f0f0;
+    box-shadow: inset 5px 5px 10px #e2e2e2, inset -5px -5px 10px #fefefe;
+}
+
+.gwt-Button.creaCorso__btn {
+    margin: 30px;
+    color: var(--color-bg-variant);
+    font-size: 16px;
+    width: 120px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #f8f8f8, #d1d1d1);
+    box-shadow: 4px 4px 9px #c5c5c5, -4px -4px 9px #ffffff;
+    border-width: 0;
+}
+
+.creaCorso__btn:hover {
+    background: linear-gradient(145deg, #d1d1d1, #f8f8f8);
+    box-shadow:  6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+.creaCorso__btn:active {
+    background: #e8e8e8;
+    box-shadow: inset 6px 6px 12px #c5c5c5, inset -6px -6px 12px #ffffff;
+}
+
+.gwt-Button.creaEsame__btn {
+    margin: 30px;
+    color: var(--color-bg-variant);
+    font-size: 16px;
+    width: 120px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #f8f8f8, #d1d1d1);
+    box-shadow: 4px 4px 9px #c5c5c5, -4px -4px 9px #ffffff;
+    border-width: 0;
+}
+
+.creaEsame__btn:hover {
+    background: linear-gradient(145deg, #d1d1d1, #f8f8f8);
+    box-shadow:  6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+.creaEsame__btn:active {
+    background: #e8e8e8;
+    box-shadow: inset 6px 6px 12px #c5c5c5, inset -6px -6px 12px #ffffff;
+}
+
+
+.modificaCorso__btn button {
+    background: var(--color-bg-variant);
+    color: var(--color-primary-variant);
+    z-index: 1;
+    height: 5rem;
+    width: 11rem;
+    border: none;
+    border-radius: 12px;
+}
+
+.eliminaCorso__btn button {
+    background: var(--color-primary-variant);
+    color: var(--color-bg);
+    z-index: 1;
+    height: 5rem;
+    width: 11rem;
+    border: none;
+    border-radius: 12px;
+}
+
+.valutazioni__btn button {
+    background: var(--color-bg);
+    color: var(--color-bg-variant);
+    z-index: 1;
+    height: 5rem;
+    width: 11rem;
+    border: none;
+    border-radius: 12px;
+}
+
+.modificaEsame__btn button {
+    background: var(--color-bg-variant);
+    color: var(--color-primary-variant);
+    z-index: 1;
+    height: 5rem;
+    width: 11rem;
+    border: none;
+    border-radius: 12px;
+}
+
+.eliminaEsame__btn button {
+    background: var(--color-primary-variant);
+    color: var(--color-bg);
+    z-index: 1;
+    height: 5rem;
+    width: 11rem;
+    border: none;
+    border-radius: 12px;
+}
+
+
+/* =================== MEDIA QUERY ======================= */
+
+@media screen and (max-width: 1350px) {
+
+    .card__p1{
+        width: 25%;
+    }
+
+    .user__container {
+        width: 80rem;
+        margin-left: 10rem;
+    }
+
+    .nav__user{
+        left: 20px;
+        transform: scale(0.9);
+    }
+}
+
+@media screen and (max-width: 1080px) {
+
+    .card__p1{
+        width: 30%;
+    }
+
+    .user__container {
+        width: 65rem;
+        margin-left: 20rem;
+    }
+
+    .nav__user{
+        left: 10px;
+        transform: scale(0.8);
+    }
 }

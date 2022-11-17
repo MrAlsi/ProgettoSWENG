@@ -9,7 +9,7 @@ public class Studente extends Utente implements Serializable {
     public int matricola;
 
     public Studente(String nome, String cognome, String mail, String password, String dataNascita, int matricola) {
-        super(nome, cognome, mail, password);
+        super(nome, cognome, mail, password, "Studente");
         this.dataNascita = dataNascita;
         this.matricola = matricola;
     }

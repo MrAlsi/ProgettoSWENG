@@ -18,6 +18,6 @@ public class SerializerSostiene implements Serializer<Sostiene>, Serializable {
 
     @Override
     public Sostiene deserialize(DataInput2 dataInput2, int i) throws IOException {
-        return null;
+        return new Sostiene(dataInput2.readInt(), dataInput2.readInt(), dataInput2.readInt(), dataInput2.readBoolean());
     }
 }

@@ -8,21 +8,21 @@ import java.io.Serializable;
  */
 public class Frequenta implements Serializable {
     public int matricola;
-    public int codCorso;
+    public String nomeCorso;
 
     public Frequenta(){
     }
 
-    public Frequenta(int matricola, int codCorso) {
+    public Frequenta(int matricola, String nomeCorso) {
         this.matricola = matricola;
-        this.codCorso = codCorso;
+        this.nomeCorso = nomeCorso;
     }
 
     public int getMatricola() {
         return matricola;
     }
 
-    public int getCodCorso() {
-        return codCorso;
+    public String getNomeCorso() {
+        return nomeCorso;
     }
 }
