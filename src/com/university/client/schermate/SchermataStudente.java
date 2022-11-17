@@ -139,7 +139,7 @@ public class SchermataStudente {
 
     public void form__libretto() throws Exception {
         user__container.clear();
-        serviceSostiene.getSostieneStudente(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
+        serviceSostiene.getSostieneStudenteConVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
                 Window.alert("Failure on getSostieneStudente: " + throwable.getMessage());
@@ -179,7 +179,7 @@ public class SchermataStudente {
     public void form__esamiPrenotati() throws Exception {
 
         user__container.clear();
-        serviceSostiene.getSostieneStudente(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
+        serviceSostiene.getSostieneStudenteSenzaVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
                 Window.alert("Failure on getSostieneStudente: " + throwable.getMessage());
