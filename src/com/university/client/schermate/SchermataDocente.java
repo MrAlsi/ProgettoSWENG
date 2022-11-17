@@ -235,6 +235,7 @@ public class SchermataDocente {
         }); */
 
         ButtonCell cella__elimina = new ButtonCell();
+
         Column<Corso, String> colonna__elimina = new Column<Corso, String>(cella__elimina) {
             @Override
             public String getValue(Corso object) {
@@ -244,6 +245,7 @@ public class SchermataDocente {
 
         tabella__corsi.addColumn(colonna__elimina, "");
         colonna__elimina.setCellStyleNames("eliminaCorso__btn");
+
 
         /*
         colonna__elimina.setFieldUpdater(new FieldUpdater<Corso, String>() {
