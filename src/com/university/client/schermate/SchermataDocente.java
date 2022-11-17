@@ -39,6 +39,7 @@ public class SchermataDocente {
         RootPanel.get("container").clear();
 
         user__container = new VerticalPanel();
+        user__container.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         user__container.getElement().setId("user__container");
         user__container.addStyleName("user__container");
 
@@ -316,6 +317,19 @@ public class SchermataDocente {
             }
         };
         tabella__esami.addColumn(colonna__aula, "Aula");
+
+
+
+        ButtonCell cella__valutazioni = new ButtonCell();
+        Column<Esame, String> colonna__valutazioni = new Column<Esame, String>(cella__valutazioni) {
+            @Override
+            public String getValue(Esame object) {
+                return "Valutazioni";
+            }
+        };
+
+        tabella__esami.addColumn(colonna__valutazioni, "");
+        colonna__valutazioni.setCellStyleNames("valutazioni__btn");
 
 
         ButtonCell cella__modifica = new ButtonCell();
