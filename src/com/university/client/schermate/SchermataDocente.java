@@ -12,6 +12,8 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.datepicker.client.DatePicker;
 import com.university.client.model.Docente;
 import com.university.client.services.DocenteServiceAsync;
 import com.university.client.services.DocenteService;
@@ -129,6 +131,12 @@ public class SchermataDocente {
 
                 Button btnCreaCorso = new Button("Crea corso");
                 btnCreaCorso.addStyleName("creaCorso__btn");
+                btnCreaCorso.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        formCreaCorso();
+                    }
+                });
                 user__container.add(btnCreaCorso);
 
                 CellTable<Corso> tabella__corsi = tabella__corsi(result, "Sembra che tu non appartenga a nessun corso, creane uno!");
@@ -392,5 +400,91 @@ public class SchermataDocente {
         tabella__esami.setRowCount(result.length, true);
         tabella__esami.setRowData(0, Arrays.asList(result));
         return tabella__esami;
+    }
+
+    public void formCreaCorso() {
+        RootPanel.get("container").clear();
+        FormPanel creaCorso = new FormPanel();
+        creaCorso.setAction("/creanuovoCorso");
+        creaCorso.setMethod(FormPanel.METHOD_POST);
+        VerticalPanel corsoContainer = new VerticalPanel();
+        final Label nome__label = new Label("Nome: ");
+        corsoContainer.add(nome__label);
+        final TextBox nome__textBox = new TextBox();
+        corsoContainer.add(nome__textBox);
+        final Label dataI__label = new Label("Data inzio corso: ");
+        corsoContainer.add(dataI__label);
+        final DateBox dataI__picker = new DateBox();
+        corsoContainer.add(dataI__picker);
+        final Label dataF__label = new Label("Data fine corso: ");
+        corsoContainer.add(dataF__label);
+        final DateBox dataF__picker = new DateBox();
+        corsoContainer.add(dataF__picker);
+        final Label descrizione__label = new Label("Descrizione: ");
+        corsoContainer.add(descrizione__label);
+        final TextArea descrizione__text = new TextArea();
+        corsoContainer.add(descrizione__text);
+        final Label codocente__label = new Label("Codocente: ");
+        corsoContainer.add(codocente__label);
+        final ListBox codocente__list = new ListBox();
+        serviceDocente.getDocenti(new AsyncCallback<Docente[]>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Errore in getDocentiService" + caught);
+            }
+
+            @Override
+            public void onSuccess(Docente[] result) {
+                for (int i = 0; i < result.length; i++) {
+                    if (result[i].getCodDocente() != docente.getCodDocente()) {
+                        codocente__list.addItem(result[i].codDocente + ": " + result[i].getNome() + " " + result[i].getCognome());
+                    }
+                }
+            }
+        });
+
+        corsoContainer.add(codocente__list);
+
+        final Button crea__btn = new Button("Crea");
+        crea__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                creaCorso.submit();
+            }
+        });
+
+        creaCorso.addSubmitHandler(new FormPanel.SubmitHandler() {
+            @Override
+            public void onSubmit(FormPanel.SubmitEvent event) {
+                if (nome__textBox.getText().length() == 0 || descrizione__text.getText().length() == 0 || dataF__picker.getValue() == null || dataI__picker.getValue() == null ||
+                        descrizione__text.getText().length() == 0) {
+                    Window.alert("Compilare tutti i campi!");
+                    event.cancel();
+                }
+            }
+        });
+
+        creaCorso.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+            @Override
+            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                serviceCorso.creaCorso(nome__textBox.getText(), dataI__picker.getValue().toString(), dataF__picker.getValue().toString(),
+                descrizione__text.getText(), Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]), docente.getCodDocente(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore nel creare il corso "+ caught);
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Window.alert("corso creato");
+                    }
+                });
+            }
+        });
+
+        corsoContainer.add(crea__btn);
+
+        creaCorso.add(corsoContainer);
+        RootPanel.get("container").add(creaCorso);
     }
 }
