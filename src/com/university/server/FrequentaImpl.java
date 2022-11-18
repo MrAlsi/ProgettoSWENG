@@ -60,8 +60,8 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
             Corso[] corsi = new Corso [mapCorsi.size()];
             int j=0;
             for(int i: mapCorsi.getKeys()){
-               corsi[j]=mapCorsi.get(i);
-               j++;
+                corsi[j]=mapCorsi.get(i);
+                j++;
             }
             return corsi;
         }catch (Exception e){
@@ -96,24 +96,60 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
         try {
             createOrOpenDB();
             //prendo tutti i corsi
+            Boolean check;
             Corso[] tuttiCorsi = traduciCorso();
             ArrayList<Corso> corsiDisponibili = new ArrayList<>();
             HashMap<String, Corso> corsi = new HashMap<>();
+
             for (Corso corso : tuttiCorsi) {
                 corsi.put(corso.nome, corso);
             }
-            //prendo i corsi a cui sono iscritto
+
             ArrayList<Frequenta> mieiCorsi = getMieiCorsi(matricola);
-            if(mieiCorsi.size()!=0) {
+
+            for (Corso corso : corsi.values()) {
+                check = false;
                 for (Frequenta frequenta : mieiCorsi) {
-                    if (!corsi.containsKey(frequenta.nomeCorso)) {
-                        corsiDisponibili.add(corsi.get(frequenta.nomeCorso));
+                    if (corso.getNome().equals(frequenta.getNomeCorso())) {
+                        check = true;
                     }
                 }
-                return corsiDisponibili.toArray(new Corso[0]);
-            }else{
-                return tuttiCorsi;
+                if(!check){
+                    corsiDisponibili.add(corso);
+                }
             }
+            return corsiDisponibili.toArray(new Corso[0]);
+        } catch (Exception e) {
+            System.out.println("Errore: " + e);
+            return null;
+        }
+    }
+
+    //metodo per prendere i corsi di uno studente in formato Corso[]
+    public Corso[] getCorsiStudente(int matricola) {
+        try {
+            createOrOpenDB();
+
+            Corso[] tuttiCorsi = traduciCorso();
+            ArrayList<Corso> corsiDisponibili = new ArrayList<>();
+            HashMap<String, Corso> corsi = new HashMap<>();
+
+            ArrayList<Frequenta> mieiCorsi = getMieiCorsi(matricola);
+
+            //smisto i doppioni attraverso un hashmap
+            for (Corso corso : tuttiCorsi) {
+                for (Frequenta frequenta : mieiCorsi) {
+                    if(corso.getNome().equals(frequenta.getNomeCorso())) {
+                        corsi.put(corso.nome, corso);
+                    }
+                }
+            }
+
+            for(Corso corso : corsi.values()){
+                corsiDisponibili.add(corso);
+            }
+
+            return corsiDisponibili.toArray(new Corso[0]);
         } catch (Exception e) {
             System.out.println("Errore: " + e);
             return null;
@@ -127,7 +163,7 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
             createOrOpenDB();
             Frequenta[] frequenta = getFrequenta();
             ArrayList<Frequenta> mieiCorsi = new ArrayList<>();
-            for(Frequenta corso: frequenta) {
+            for(Frequenta corso : frequenta) {
                 if (corso.matricola == matricola) {
                     mieiCorsi.add(corso);
                 }
