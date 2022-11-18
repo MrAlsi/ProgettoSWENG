@@ -1,9 +1,12 @@
 package com.university.client.schermate;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -30,6 +33,7 @@ public class SchermataAdmin {
     }
 
     public void listaStudenti(){
+        RootPanel.get("container").clear();
         studenteServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -91,6 +95,53 @@ public class SchermataAdmin {
             }
         };
         tabellaStudente.addColumn(colonna__mail,"Email");
+
+
+        ButtonCell cella__modifica= new ButtonCell();
+        Column<Studente, String> colonna__modifica=new Column<Studente, String>(cella__modifica) {
+            @Override
+            public String getValue(Studente object) {
+                return "Modifica";
+            }
+        };
+        tabellaStudente.addColumn(colonna__modifica,"");
+        colonna__modifica.setCellStyleNames("modificaStudente__btn");
+
+        ButtonCell cella__elimina= new ButtonCell();
+        Column<Studente, String> colonna__elimina=new Column<Studente, String>(cella__elimina) {
+            @Override
+            public String getValue(Studente object) {
+                return "Elimina";
+            }
+        };
+
+        colonna__elimina.setFieldUpdater(new FieldUpdater<Studente, String>() {
+            @Override
+            public void update(int index, Studente object, String value) {
+                studenteServiceAsync.eliminaStudente(object.getMatricola(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore durante l'eliminazione dello studente "+caught);
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Window.alert("Studente eliminato");
+                        try{
+                            listaStudenti();
+                        }catch (Exception e){
+                            Window.alert("oi"+ e);
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+        });
+
+
+        tabellaStudente.addColumn(colonna__elimina,"");
+        colonna__elimina.setCellStyleNames("eliminaStudente__btn");
+
         tabellaStudente.setRowCount(studenti.size());
         tabellaStudente.setRowData(0,studenti);
         return tabellaStudente;
