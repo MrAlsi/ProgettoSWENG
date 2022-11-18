@@ -212,6 +212,14 @@ public class SchermataAdmin {
                 return "Modifica";
             }
         };
+
+        colonna__modifica.setFieldUpdater(new FieldUpdater<Studente, String>() {
+            @Override
+            public void update(int index, Studente object, String value) {
+                formModificaStudente(object.getNome(), object.getCognome(), object.getPassword(), object.getMail(),
+                        object.getDataNascita(), object.getMatricola());
+            }
+        });
         tabellaStudente.addColumn(colonna__modifica,"");
         colonna__modifica.setCellStyleNames("modificaStudente__btn");
 
@@ -438,5 +446,74 @@ public class SchermataAdmin {
 
         creaStudente.add(studenteContainer);
         RootPanel.get("container").add(creaStudente);
+    }
+
+    public void formModificaStudente(String nome, String cognome, String password, String mail, String dataNascita, int matricola){
+        RootPanel.get("container").clear();
+        FormPanel modificaStudente =new FormPanel();
+        modificaStudente.setAction("/creanuvoStudente");
+        modificaStudente.setMethod(FormPanel.METHOD_POST);
+        VerticalPanel studenteContainer= new VerticalPanel();
+        final Label nome__label = new Label("Nome: ");
+        studenteContainer.add(nome__label);
+        final TextBox nome__textBox = new TextBox();
+        nome__textBox.setValue(nome);
+        studenteContainer.add(nome__textBox);
+        final Label cognome__label = new Label("Cognome: ");
+        studenteContainer.add(cognome__label);
+        final TextBox cognome__textBox = new TextBox();
+        cognome__textBox.setValue(cognome);
+        studenteContainer.add(cognome__textBox);
+        final Label password__label = new Label("Password: ");
+        studenteContainer.add(password__label);
+        final TextBox password__textBox = new TextBox();
+        password__textBox.setValue(password);
+        studenteContainer.add(password__textBox);
+        final Label data__label = new Label("Data di nascita: ");
+        studenteContainer.add(data__label);
+        final TextBox data__textBox = new TextBox();
+        data__textBox.setValue(dataNascita);
+        studenteContainer.add(data__textBox);
+
+        final Button crea__btn = new Button("Crea");
+        crea__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                modificaStudente.submit();
+            }
+        });
+
+        modificaStudente.addSubmitHandler(new FormPanel.SubmitHandler() {
+            @Override
+            public void onSubmit(FormPanel.SubmitEvent event) {
+                if(nome__textBox.getText().length()==0 || cognome__textBox.getText().length()==0 ||
+                        password__textBox.getText().length()==0 || data__textBox.getText().length()==0){
+                    Window.alert("Compilare tutti i campi!");
+                    event.cancel();
+                }
+            }
+        });
+
+        modificaStudente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+            @Override
+            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+                studenteServiceAsync.modificaStudente(nome__textBox.getText(), cognome__textBox.getText(), mail, password__textBox.getText(), data__textBox.getText(), matricola, new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore nel creare lo studente: "+caught);
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Window.alert("Studente modificato");
+                    }
+                });
+            }
+        });
+        studenteContainer.add(crea__btn);
+
+        modificaStudente.add(studenteContainer);
+        RootPanel.get("container").add(modificaStudente);
     }
 }

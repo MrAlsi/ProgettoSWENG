@@ -239,7 +239,7 @@ public class SchermataDocente {
                 try {
                     formModificaCorso(object.getNome(), object.getDataInizio(),
                                         object.getDataFine(), object.getDescrizione(),
-                                        object.getCoDocente());
+                                        object.getCoDocente(), object.getEsame());
                 } catch (ParseException e) {
                     System.out.println("ERRORE:  " + e);
                     throw new RuntimeException(e);
@@ -495,7 +495,7 @@ public class SchermataDocente {
         RootPanel.get("container").add(creaCorso);
     }
 
-    public void formModificaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente) throws ParseException {
+    public void formModificaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int esame) throws ParseException {
         RootPanel.get("container").clear();
         FormPanel modificaCorso = new FormPanel();
         modificaCorso.setAction("/modificaCorso");
@@ -595,7 +595,7 @@ public class SchermataDocente {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
                 serviceCorso.modificaCorso(nome, nome__textBox.getText(), dataI__dateBox.getValue().toString(), dataF__dataBox.getValue().toString(),
-                        descrizione__text.getText(), Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]), docente.getCodDocente(), -1, new AsyncCallback<Boolean>() {
+                        descrizione__text.getText(), Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]), docente.getCodDocente(), esame, new AsyncCallback<Boolean>() {
                             @Override
                             public void onFailure(Throwable caught) {
                                 Window.alert("Errore nel creare il corso "+ caught);
