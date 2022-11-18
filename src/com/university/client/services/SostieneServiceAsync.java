@@ -29,4 +29,7 @@ public interface SostieneServiceAsync {
 
     //Metodo per eliminare un oggetto sostiene
     void eliminaSostiene(int esame, int matricola, AsyncCallback<Boolean> async);
+
+    //Restituisce tutti gli esami che devono ancora essere sostenuti
+    void esamiNonSostenuti(AsyncCallback<Sostiene[]> async);
 }
