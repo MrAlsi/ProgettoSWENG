@@ -1,12 +1,10 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.model.Corso;
-import com.university.client.model.Docente;
-import com.university.client.model.Frequenta;
+import com.university.client.model.*;
 import com.university.client.model.Serializer.SerializerDocente;
+import com.university.client.model.Serializer.SerializerEsame;
 import com.university.client.model.Serializer.SerializerSostiene;
-import com.university.client.model.Sostiene;
 import com.university.client.services.SostieneService;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -37,6 +35,9 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         this.db = getDb();
         this.map = this.db.hashMap("sostieneMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerSostiene()).createOrOpen();
     }
+
+
+
 
     //ottengo un array con tutte le istanze di sostiene
     @Override
@@ -210,5 +211,33 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             totale += esami.voto;
         }
         return totale / s.length;
+    }
+
+    private DB getEsamiDB(){
+        ServletContext context = this.getServletContext();
+        synchronized (context) {
+            DB db = (DB)context.getAttribute("esamiDb");
+            if(db == null) {
+                db = DBMaker.fileDB("C:\\MapDB\\esami").closeOnJvmShutdown().checksumHeaderBypass().make();
+                context.setAttribute("esamiDb", db);
+            }
+            return db;
+        }
+    }
+    @Override
+    public Esame traduciEsame(int codEsame) {
+        DB dbEsami = getEsamiDB();
+        HTreeMap<Integer, Esame> mapEsami = dbEsami.hashMap("esamiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerEsame()).createOrOpen();
+        for(int i : mapEsami.getKeys()){
+            if(mapEsami.get(i).getCodEsame() == codEsame){
+                return mapEsami.get(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Studente traduciStudente(int matricola) {
+        return null;
     }
 }

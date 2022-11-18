@@ -34,9 +34,8 @@ public class SchermataAdmin {
         //formStudenti();
         //formDocenti();
         //formSegreteria();
-        listaStudenti();
-        //listaDocenti();
-
+        //listaStudenti();
+        listaDocenti();
     }
 
     //visualizza docenti
@@ -104,6 +103,13 @@ public class SchermataAdmin {
                 return "Modifica";
             }
         };
+
+        colonna__modifica.setFieldUpdater(new FieldUpdater<Docente, String>() {
+            @Override
+            public void update(int index, Docente object, String value) {
+                formModificaDocente(object.getNome(), object.getCognome(), object.getPassword(), object.getMail(), object.getCodDocente());
+            }
+        });
         tabellaDocente.addColumn(colonna__modifica,"");
         colonna__modifica.setCellStyleNames("modificaDocente__btn");
 
@@ -505,6 +511,70 @@ public class SchermataAdmin {
         });
         docenteContainer.add(crea__btn);
 
+        creaDocente.add(docenteContainer);
+        RootPanel.get("container").add(creaDocente);
+    }
+
+    public void formModificaDocente(String nome, String cognome, String password, String mail, int codDocente){
+        RootPanel.get("container").clear();
+        FormPanel creaDocente =new FormPanel();
+        creaDocente.setAction("/creanuvoDocente");
+        creaDocente.setMethod(FormPanel.METHOD_POST);
+        VerticalPanel docenteContainer = new VerticalPanel();
+        final Label nome__label = new Label("Nome: ");
+        docenteContainer.add(nome__label);
+        final TextBox nome__textBox = new TextBox();
+        nome__textBox.setValue(nome);
+        docenteContainer.add(nome__textBox);
+        final Label cognome__label = new Label("Cognome: ");
+        docenteContainer.add(cognome__label);
+        final TextBox cognome__textBox = new TextBox();
+        cognome__textBox.setValue(cognome);
+        docenteContainer.add(cognome__textBox);
+        final Label password__label = new Label("Password: ");
+        docenteContainer.add(password__label);
+        final TextBox password__textBox = new TextBox();
+        password__textBox.setValue(password);
+        docenteContainer.add(password__textBox);
+
+
+        final Button crea__btn = new Button("Crea");
+        crea__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                creaDocente.submit();
+            }
+        });
+
+        creaDocente.addSubmitHandler(new FormPanel.SubmitHandler() {
+            @Override
+            public void onSubmit(FormPanel.SubmitEvent event) {
+                if(nome__textBox.getText().length()==0 || cognome__textBox.getText().length()==0 ||
+                        password__textBox.getText().length()==0){
+                    Window.alert("Compilare tutti i campi!");
+                    event.cancel();
+                }
+            }
+        });
+
+        creaDocente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+            @Override
+            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                docenteServiceAsync.modificaDocente(nome__textBox.getText(), cognome__textBox.getText(), mail, password__textBox.getText(), codDocente, new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore nel creare il docente: "+caught);
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Window.alert("Docente modificato");
+                        //lista docenti
+                    }
+                });
+            }
+        });
+        docenteContainer.add(crea__btn);
         creaDocente.add(docenteContainer);
         RootPanel.get("container").add(creaDocente);
     }
