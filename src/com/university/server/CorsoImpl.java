@@ -136,7 +136,7 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     public boolean modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
         try{
             createOrOpenDB();
-            Corso corso = new Corso(nome, dataInizio, dataFine, descrizione, codocente, docente, esame);
+            Corso corso = new Corso(nome, pulisciData(dataInizio), pulisciData(dataFine), descrizione, codocente, docente, esame);
             for(int i : map.getKeys()){
                 if(map.get(i).getNome().equals(nomeCodice)){
                     map.replace(i, corso);

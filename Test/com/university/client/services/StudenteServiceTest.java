@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StudenteServiceTest extends GWTTestCase{
     StudenteServiceAsync service;
-
     public void gwtSetUp(){
         // Create the service that we will test.
         service = GWT.create(StudenteService.class);

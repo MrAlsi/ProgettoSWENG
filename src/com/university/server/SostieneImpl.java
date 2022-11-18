@@ -133,6 +133,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return false;
     }
 
+    //Metodo per accettare un voto da parte della segreteria
     @Override
     public boolean accettaVoto(int esame, int matricola) {
         try {
@@ -150,6 +151,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return false;
     }
 
+    //Metodo per eliminare un oggetto sostiene
     @Override
     public boolean eliminaSostiene(int esame, int matricola) {
         try {
@@ -167,6 +169,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return false;
     }
 
+    //Metodo per avere tutti gli esami a cui manca l'accettazione della segreteria
     @Override
     public Sostiene[] esamiSostenuti() {
         try {
