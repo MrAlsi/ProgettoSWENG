@@ -3,7 +3,9 @@ package com.university.client.services;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.university.client.model.Esame;
 import com.university.client.model.Sostiene;
+import com.university.client.model.Studente;
 
 import java.util.ArrayList;
 
@@ -40,4 +42,6 @@ public interface SostieneService extends RemoteService {
     //Con l'inserimento di un array di Sostiene restituisce la media aritmentica dell'array
     //è possibile usarlo sia per gli studenti che per i docenti
     long calcolaMedia(Sostiene[] s);
+    Esame traduciEsame(int codEsame);
+    Studente traduciStudente(int matricola);
 }
