@@ -3,10 +3,16 @@ package com.university.client.schermate;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import com.university.client.model.Studente;
 import com.university.client.services.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SchermataAdmin {
 
@@ -19,7 +25,75 @@ public class SchermataAdmin {
         RootPanel.get("container").clear();
         //formStudenti();
         //formDocenti();
-        formSegreteria();
+        //formSegreteria();
+        listaStudenti();
+    }
+
+    public void listaStudenti(){
+        studenteServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Errore nel visualizzare gli studenti "+caught);
+            }
+
+            @Override
+            public void onSuccess(Studente[] result) {
+                FormPanel visualizzaStudenti= new FormPanel();
+                VerticalPanel studentiContainer= new VerticalPanel();
+                CellTable <Studente> tabella__studenti= tabella__studenti(result,"Sembra non ci siano studenti");
+                studentiContainer.add(tabella__studenti);
+                visualizzaStudenti.add(studentiContainer);
+                RootPanel.get("container").add(visualizzaStudenti);
+            }
+        });
+    }
+
+    private CellTable<Studente> tabella__studenti(Studente[] result, String msg) {
+        List<Studente> studenti= new ArrayList<>();
+            for(Studente studente: result){
+                studenti.add(studente);
+            }
+        CellTable<Studente> tabellaStudente= new CellTable<>();
+        tabellaStudente.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Studente> colonna__nome = new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return object.getNome();
+            }
+        };
+        tabellaStudente.addColumn(colonna__nome, "Nome");
+        TextColumn  <Studente> colonna__cognome= new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return object.getCognome();
+            }
+        };
+        tabellaStudente.addColumn(colonna__cognome, "Cognome");
+        TextColumn <Studente> colonna__matricola= new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return String.valueOf(object.getMatricola());
+            };
+        };
+        tabellaStudente.addColumn(colonna__matricola,"Matricola");
+        TextColumn<Studente> colonna__compleanno= new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return object.getDataNascita();
+            }
+        };
+        tabellaStudente.addColumn(colonna__compleanno, "Compleanno");
+        TextColumn<Studente> colonna__mail=new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return object.getMail();
+            }
+        };
+        tabellaStudente.addColumn(colonna__mail,"Email");
+        tabellaStudente.setRowCount(studenti.size());
+        tabellaStudente.setRowData(0,studenti);
+        return tabellaStudente;
     }
 
 
