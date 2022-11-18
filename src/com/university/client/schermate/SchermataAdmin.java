@@ -1,12 +1,21 @@
 package com.university.client.schermate;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import com.university.client.model.Studente;
 import com.university.client.services.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SchermataAdmin {
 
@@ -19,7 +28,123 @@ public class SchermataAdmin {
         RootPanel.get("container").clear();
         //formStudenti();
         //formDocenti();
-        formSegreteria();
+        //formSegreteria();
+        listaStudenti();
+    }
+
+    public void listaStudenti(){
+        RootPanel.get("container").clear();
+        studenteServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Errore nel visualizzare gli studenti "+caught);
+            }
+
+            @Override
+            public void onSuccess(Studente[] result) {
+                FormPanel visualizzaStudenti= new FormPanel();
+                VerticalPanel studentiContainer= new VerticalPanel();
+                CellTable <Studente> tabella__studenti= tabella__studenti(result,"Sembra non ci siano studenti");
+                studentiContainer.add(tabella__studenti);
+                visualizzaStudenti.add(studentiContainer);
+                RootPanel.get("container").add(visualizzaStudenti);
+            }
+        });
+    }
+
+    private CellTable<Studente> tabella__studenti(Studente[] result, String msg) {
+        List<Studente> studenti= new ArrayList<>();
+            for(Studente studente: result){
+                studenti.add(studente);
+            }
+        CellTable<Studente> tabellaStudente= new CellTable<>();
+        tabellaStudente.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Studente> colonna__nome = new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return object.getNome();
+            }
+        };
+        tabellaStudente.addColumn(colonna__nome, "Nome");
+        TextColumn  <Studente> colonna__cognome= new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return object.getCognome();
+            }
+        };
+        tabellaStudente.addColumn(colonna__cognome, "Cognome");
+        TextColumn <Studente> colonna__matricola= new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return String.valueOf(object.getMatricola());
+            };
+        };
+        tabellaStudente.addColumn(colonna__matricola,"Matricola");
+        TextColumn<Studente> colonna__compleanno= new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return object.getDataNascita();
+            }
+        };
+        tabellaStudente.addColumn(colonna__compleanno, "Compleanno");
+        TextColumn<Studente> colonna__mail=new TextColumn<Studente>() {
+            @Override
+            public String getValue(Studente object) {
+                return object.getMail();
+            }
+        };
+        tabellaStudente.addColumn(colonna__mail,"Email");
+
+
+        ButtonCell cella__modifica= new ButtonCell();
+        Column<Studente, String> colonna__modifica=new Column<Studente, String>(cella__modifica) {
+            @Override
+            public String getValue(Studente object) {
+                return "Modifica";
+            }
+        };
+        tabellaStudente.addColumn(colonna__modifica,"");
+        colonna__modifica.setCellStyleNames("modificaStudente__btn");
+
+        ButtonCell cella__elimina= new ButtonCell();
+        Column<Studente, String> colonna__elimina=new Column<Studente, String>(cella__elimina) {
+            @Override
+            public String getValue(Studente object) {
+                return "Elimina";
+            }
+        };
+
+        colonna__elimina.setFieldUpdater(new FieldUpdater<Studente, String>() {
+            @Override
+            public void update(int index, Studente object, String value) {
+                studenteServiceAsync.eliminaStudente(object.getMatricola(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore durante l'eliminazione dello studente "+caught);
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Window.alert("Studente eliminato");
+                        try{
+                            listaStudenti();
+                        }catch (Exception e){
+                            Window.alert("oi"+ e);
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+        });
+
+
+        tabellaStudente.addColumn(colonna__elimina,"");
+        colonna__elimina.setCellStyleNames("eliminaStudente__btn");
+
+        tabellaStudente.setRowCount(studenti.size());
+        tabellaStudente.setRowData(0,studenti);
+        return tabellaStudente;
     }
 
 
