@@ -98,6 +98,13 @@ public class SchermataAdmin {
                 return "Modifica";
             }
         };
+
+        colonna__modifica.setFieldUpdater(new FieldUpdater<Docente, String>() {
+            @Override
+            public void update(int index, Docente object, String value) {
+                formModificaDocente(object.getNome(), object.getCognome(), object.getPassword(), object.getMail(), object.getCodDocente());
+            }
+        });
         tabellaDocente.addColumn(colonna__modifica,"");
         colonna__modifica.setCellStyleNames("modificaDocente__btn");
 
@@ -384,6 +391,7 @@ public class SchermataAdmin {
     }
 
     public void formModificaDocente(String nome, String cognome, String password, String mail, int codDocente){
+        RootPanel.get("container").clear();
         FormPanel creaDocente =new FormPanel();
         creaDocente.setAction("/creanuvoDocente");
         creaDocente.setMethod(FormPanel.METHOD_POST);
