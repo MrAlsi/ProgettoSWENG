@@ -12,6 +12,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.university.client.model.Docente;
+import com.university.client.model.Frequenta;
+import com.university.client.model.Sostiene;
 import com.university.client.model.Studente;
 import com.university.client.services.*;
 
@@ -23,6 +25,8 @@ public class SchermataAdmin {
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
     private static SegreteriaServiceAsync segreteriaServiceAsync = GWT.create(SegreteriaService.class);
+    private static FrequentaServiceAsync frequentaServiceAsync= GWT.create(FrequentaService.class);
+    private static SostieneServiceAsync sostieneServiceAsync= GWT.create(SostieneService.class);
 
 
     public void accesso(){
@@ -30,10 +34,12 @@ public class SchermataAdmin {
         //formStudenti();
         //formDocenti();
         //formSegreteria();
-        //listaStudenti();
-        listaDocenti();
+        listaStudenti();
+        //listaDocenti();
+
     }
 
+    //visualizza docenti
     public void listaDocenti(){
         RootPanel.get("container").clear();
         docenteServiceAsync.getDocenti(new AsyncCallback<Docente[]>() {
@@ -137,9 +143,11 @@ public class SchermataAdmin {
         tabellaDocente.setRowCount(docenti.size());
         tabellaDocente.setRowData(0,docenti);
         return tabellaDocente;
-
     }
+    //fine visualizzazione dei docenti
 
+
+    //visualizzazione studenti
     public void listaStudenti(){
         RootPanel.get("container").clear();
         studenteServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
@@ -189,13 +197,6 @@ public class SchermataAdmin {
             };
         };
         tabellaStudente.addColumn(colonna__matricola,"Matricola");
-        TextColumn<Studente> colonna__compleanno= new TextColumn<Studente>() {
-            @Override
-            public String getValue(Studente object) {
-                return object.getDataNascita();
-            }
-        };
-        tabellaStudente.addColumn(colonna__compleanno, "Compleanno");
         TextColumn<Studente> colonna__mail=new TextColumn<Studente>() {
             @Override
             public String getValue(Studente object) {
@@ -223,6 +224,40 @@ public class SchermataAdmin {
         tabellaStudente.addColumn(colonna__modifica,"");
         colonna__modifica.setCellStyleNames("modificaStudente__btn");
 
+        ButtonCell cella__visualizzaCorsi= new ButtonCell();
+        Column<Studente, String> colonna__visualizzaCorsi=new Column<Studente, String>(cella__visualizzaCorsi) {
+            @Override
+            public String getValue(Studente object) {
+                return "Corsi";
+            }
+        };
+        colonna__visualizzaCorsi.setFieldUpdater(new FieldUpdater<Studente, String>() {
+            @Override
+            public void update(int index, Studente object, String value) {
+                visualizzaCorsiStudente(object);
+            }
+        });
+        tabellaStudente.addColumn(colonna__visualizzaCorsi,"");
+        colonna__visualizzaCorsi.setCellStyleNames("visualizzCorsi__btn");
+
+        ButtonCell cella_visualizzaEsami= new ButtonCell();
+
+        Column<Studente, String> colonna__visualizzaEsami = new Column<Studente, String>(cella_visualizzaEsami) {
+            @Override
+            public String getValue(Studente object) {
+                return "Esami";
+            }
+        };
+        colonna__visualizzaEsami.setFieldUpdater(new FieldUpdater<Studente, String>() {
+            @Override
+            public void update(int index, Studente object, String value) {
+                visualizzaEsamiStudente(object);
+            }
+        });
+
+        tabellaStudente.addColumn(colonna__visualizzaEsami,"");
+        colonna__visualizzaEsami.setCellStyleNames("visualizzaEsami__btn");
+
         ButtonCell cella__elimina= new ButtonCell();
         Column<Studente, String> colonna__elimina=new Column<Studente, String>(cella__elimina) {
             @Override
@@ -230,7 +265,6 @@ public class SchermataAdmin {
                 return "Elimina";
             }
         };
-
         colonna__elimina.setFieldUpdater(new FieldUpdater<Studente, String>() {
             @Override
             public void update(int index, Studente object, String value) {
@@ -254,16 +288,104 @@ public class SchermataAdmin {
             }
         });
 
-
         tabellaStudente.addColumn(colonna__elimina,"");
         colonna__elimina.setCellStyleNames("eliminaStudente__btn");
-
         tabellaStudente.setRowCount(studenti.size());
         tabellaStudente.setRowData(0,studenti);
         return tabellaStudente;
     }
+    //fine visualizzazione degli studenti
 
 
+    //visualizzazione degli esami di uno studente
+    public void visualizzaEsamiStudente(Studente studente){
+        RootPanel.get("container").clear();
+        sostieneServiceAsync.getSostieneStudenteConVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Errore nel caricare gli esami " + caught);
+
+            }
+
+            @Override
+            public void onSuccess(Sostiene[] result) {
+                FormPanel visualizzaEsami = new FormPanel();
+                VerticalPanel esamiContainer = new VerticalPanel();
+                CellTable<Sostiene> tabella__esami = tabella__esami(result, "Sembra non ci siano esami verbalizzati");
+                esamiContainer.add(tabella__esami);
+                visualizzaEsami.add(esamiContainer);
+                RootPanel.get("container").add(visualizzaEsami);
+            }
+        });
+    }
+
+    private CellTable<Sostiene> tabella__esami(Sostiene[] result, String msg) {
+        List<Sostiene> sostiene = new ArrayList<>();
+        for (Sostiene sostenuto : result) {
+            sostiene.add(sostenuto);
+        }
+        CellTable<Sostiene> tabellaSostiene = new CellTable<>();
+        tabellaSostiene.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Sostiene> colonna__nome = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return null;
+            }
+        };
+        tabellaSostiene.addColumn(colonna__nome,"Esami");
+        tabellaSostiene.setRowCount(sostiene.size());
+        tabellaSostiene.setRowData(0,sostiene);
+        return tabellaSostiene;
+    }
+    //fine visualizzazione esami
+
+
+    //visualizzazione corsi di uno studente selezionato
+    public void visualizzaCorsiStudente(Studente studente) {
+        RootPanel.get("container").clear();
+        frequentaServiceAsync.getMieiCorsi(studente.getMatricola(), new AsyncCallback<ArrayList<Frequenta>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Errore nel caricare i corsi " + caught);
+
+            }
+
+            @Override
+            public void onSuccess(ArrayList<Frequenta> result) {
+                FormPanel visualizzaCorsi = new FormPanel();
+                VerticalPanel corsiContainer = new VerticalPanel();
+                CellTable<Frequenta> tabella__corsi = tabella__corsi(result, "Sembra non ci siano corsi ai cui è iscritto");
+                corsiContainer.add(tabella__corsi);
+                visualizzaCorsi.add(corsiContainer);
+                RootPanel.get("container").add(visualizzaCorsi);
+            }
+        });
+    }
+
+    private CellTable<Frequenta> tabella__corsi(ArrayList<Frequenta> result, String msg) {
+        List<Frequenta> frequenta = new ArrayList<>();
+        for (Frequenta freq : result) {
+            frequenta.add(freq);
+        }
+        CellTable<Frequenta> tabellaFrequenta = new CellTable<>();
+        tabellaFrequenta.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Frequenta> colonna__nome = new TextColumn<Frequenta>() {
+            @Override
+            public String getValue(Frequenta object) {
+                return object.getNomeCorso();
+            }
+        };
+        tabellaFrequenta.addColumn(colonna__nome,"Corsi");
+        tabellaFrequenta.setRowCount(frequenta.size());
+        tabellaFrequenta.setRowData(0,frequenta);
+        return tabellaFrequenta;
+    }
+    //fine visualizzazione corsi
+
+
+    //form per creare un utente "segreteria"
     public void formSegreteria(){
         FormPanel creaSegreteria =new FormPanel();
         creaSegreteria.setAction("/creanuovaSegreteria");
@@ -323,6 +445,10 @@ public class SchermataAdmin {
         creaSegreteria.add(segreteriaContainer);
         RootPanel.get("container").add(creaSegreteria);
     }
+    //fine form segreteria
+
+
+    //form creazione di un docente
     public void formDocenti(){
         FormPanel creaDocente =new FormPanel();
         creaDocente.setAction("/creanuvoDocente");
@@ -382,9 +508,10 @@ public class SchermataAdmin {
         creaDocente.add(docenteContainer);
         RootPanel.get("container").add(creaDocente);
     }
+    //fine form docente
 
 
-
+    //form creazione studente
     public void formStudenti(){
         FormPanel creaStudente=new FormPanel();
         creaStudente.setAction("/creanuvoStudente");
@@ -447,7 +574,10 @@ public class SchermataAdmin {
         creaStudente.add(studenteContainer);
         RootPanel.get("container").add(creaStudente);
     }
+    //fine form studente
 
+
+    //form modifica di uno studente selezionato
     public void formModificaStudente(String nome, String cognome, String password, String mail, String dataNascita, int matricola){
         RootPanel.get("container").clear();
         FormPanel modificaStudente =new FormPanel();
@@ -516,4 +646,5 @@ public class SchermataAdmin {
         modificaStudente.add(studenteContainer);
         RootPanel.get("container").add(modificaStudente);
     }
+    //fine modifica studente
 }
