@@ -11,6 +11,7 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import com.university.client.model.Docente;
 import com.university.client.model.Studente;
 import com.university.client.services.*;
 
@@ -29,7 +30,114 @@ public class SchermataAdmin {
         //formStudenti();
         //formDocenti();
         //formSegreteria();
-        listaStudenti();
+        //listaStudenti();
+        listaDocenti();
+    }
+
+    public void listaDocenti(){
+        RootPanel.get("container").clear();
+        docenteServiceAsync.getDocenti(new AsyncCallback<Docente[]>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Errore nel caricare i docenti "+caught);
+            }
+            @Override
+            public void onSuccess(Docente[] result) {
+                FormPanel visualizzaDocenti = new FormPanel();
+                VerticalPanel docentiContainer = new VerticalPanel();
+                CellTable <Docente> tabella__docenti = tabella__docenti(result,"Sembra non ci siano docenti");
+                docentiContainer.add(tabella__docenti);
+                visualizzaDocenti.add(docentiContainer);
+                RootPanel.get("container").add(visualizzaDocenti);
+            }
+        });
+    }
+
+    private CellTable<Docente> tabella__docenti(Docente[] result, String msg) {
+        List<Docente> docenti = new ArrayList<>();
+        for (Docente docente : result) {
+            docenti.add(docente);
+        }
+        CellTable<Docente> tabellaDocente = new CellTable<>();
+        tabellaDocente.setEmptyTableWidget(new Label(msg));
+        TextColumn<Docente> colonna__nome = new TextColumn<Docente>() {
+            @Override
+            public String getValue(Docente object) {
+                return object.getNome();
+            }
+        };
+        tabellaDocente.addColumn(colonna__nome, "Nome");
+
+        TextColumn<Docente> colonna__cognome = new TextColumn<Docente>() {
+            @Override
+            public String getValue(Docente object) {
+                return object.getCognome();
+            }
+        };
+        tabellaDocente.addColumn(colonna__cognome, "Cognome");
+        TextColumn<Docente> colonna__codice = new TextColumn<Docente>() {
+            @Override
+            public String getValue(Docente object) {
+                return String.valueOf(object.getCodDocente());
+            }
+        };
+        tabellaDocente.addColumn(colonna__codice, "Codice docente");
+        TextColumn<Docente> colonna__mail = new TextColumn<Docente>() {
+            @Override
+            public String getValue(Docente object) {
+                return object.getMail();
+            }
+        };
+        tabellaDocente.addColumn(colonna__mail, "Email");
+
+        ButtonCell cella__modifica= new ButtonCell();
+        Column<Docente, String> colonna__modifica=new Column<Docente, String>(cella__modifica) {
+            @Override
+            public String getValue(Docente object) {
+                return "Modifica";
+            }
+        };
+        tabellaDocente.addColumn(colonna__modifica,"");
+        colonna__modifica.setCellStyleNames("modificaDocente__btn");
+
+        ButtonCell cella__elimina= new ButtonCell();
+        Column<Docente, String> colonna__elimina=new Column<Docente, String>(cella__elimina) {
+            @Override
+            public String getValue(Docente object) {
+                return "Elimina";
+            }
+        };
+
+        colonna__elimina.setFieldUpdater(new FieldUpdater<Docente, String>() {
+            @Override
+            public void update(int index, Docente object, String value) {
+                docenteServiceAsync.eliminaDocente(object.getCodDocente(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore durante l'eliminazione del docente "+caught);
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Window.alert("Docente eliminato");
+                        try{
+                            listaDocenti();
+                        }catch (Exception e){
+                            Window.alert("oi"+ e);
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+        });
+        tabellaDocente.addColumn(colonna__elimina,"");
+        colonna__elimina.setCellStyleNames("eliminaDocente__btn");
+
+        tabellaDocente.setRowCount(docenti.size());
+        tabellaDocente.setRowData(0,docenti);
+        return tabellaDocente;
+
     }
 
     public void listaStudenti(){
