@@ -55,7 +55,6 @@ public class Esame implements Serializable {
     public String getOra() {
         return ora;
     }
-
     public String getDurata() {
         return durata;
     }

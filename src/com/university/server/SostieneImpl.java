@@ -1,11 +1,12 @@
 package com.university.server;
 
+import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.*;
-import com.university.client.model.Serializer.SerializerCorso;
 import com.university.client.model.Serializer.SerializerDocente;
 import com.university.client.model.Serializer.SerializerEsame;
 import com.university.client.model.Serializer.SerializerSostiene;
+import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.services.SostieneService;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -20,6 +21,8 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
 
     DB db;
     HTreeMap<Integer, Sostiene> map;
+    HTreeMap<Integer, Esame> mapEsami;
+    HTreeMap<Integer, Studente> mapStudenti;
 
     private DB getDb() {
         ServletContext context = this.getServletContext();
@@ -127,7 +130,6 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
     }
 
-
     //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui è stato assegnato un voto
     @Override
     public Sostiene[] getStudenti(int codEsame) {
@@ -166,6 +168,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return false;
     }
 
+    //Metodo per accettare un voto da parte della segreteria
     @Override
     public boolean accettaVoto(int esame, int matricola) {
         try {
@@ -183,6 +186,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return false;
     }
 
+    //Metodo per eliminare un oggetto sostiene
     @Override
     public boolean eliminaSostiene(int esame, int matricola) {
         try {
@@ -200,13 +204,14 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return false;
     }
 
+    //Metodo per avere tutti gli esami a cui manca l'accettazione della segreteria
     @Override
     public Sostiene[] esamiSostenuti() {
         try {
             createOrOpenDB();
             ArrayList<Sostiene> esamiSostenuti = new ArrayList<>();
             for (int i : map.getKeys()) {
-                if (!map.get(i).getAccettato()) {
+                if (!map.get(i).getAccettato() && map.get(i).getVoto()!=-1) {
                     esamiSostenuti.add(map.get(i));
                 }
             }
@@ -318,5 +323,49 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             totale += esami.voto;
         }
         return totale / s.length;
+    }
+
+    public void getEsami(){
+        DB dbEsami = getEsamiDB();
+        mapEsami = dbEsami.hashMap("esamiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerEsame()).createOrOpen();
+    }
+
+    @Override
+    public Esame traduciEsame(int codEsame) {
+        getEsami();
+        for(int i : mapEsami.getKeys()){
+            if(mapEsami.get(i).getCodEsame() == codEsame){
+                return mapEsami.get(i);
+            }
+        }
+        return null;
+    }
+
+    private DB getStudentiDB(){
+        ServletContext context = this.getServletContext();
+        synchronized (context) {
+            DB db = (DB)context.getAttribute("studentiDb");
+            if(db == null) {
+                db = DBMaker.fileDB("C:\\MapDB\\studenti").closeOnJvmShutdown().checksumHeaderBypass().make();
+                context.setAttribute("studentiDb", db);
+            }
+            return db;
+        }
+    }
+
+    public void getStudenti() {
+        DB dbStudenti = getStudentiDB();
+        mapStudenti = dbStudenti.hashMap("studentiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerStudente()).createOrOpen();
+    }
+
+    @Override
+    public Studente traduciStudente(int matricola) {
+        getStudenti();
+        for(int i : mapStudenti.getKeys()){
+            if(mapStudenti.get(i).getMatricola() == matricola){
+                return mapStudenti.get(i);
+            }
+        }
+        return null;
     }
 }
