@@ -23,6 +23,10 @@ public class University implements EntryPoint {
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
     private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
     private static EsameServiceAsync esameServiceAsync = GWT.create(EsameService.class);
+    private static SostieneServiceAsync sostieneServiceAsync = GWT.create(SostieneService.class);
+
+    private static FrequentaServiceAsync frequentaServiceAsync = GWT.create(FrequentaService.class);
+
     final HTML login__background = new HTML("" +
             "<div class=\"login__background\">" +
             "</div>" +
@@ -148,7 +152,7 @@ public class University implements EntryPoint {
 
             @Override
             public void onSuccess(Boolean result) {
-                Window.alert("Segreteria creata");
+                //Window.alert("Segreteria creata");
             }
         });
 
@@ -165,6 +169,8 @@ public class University implements EntryPoint {
 
             }
         });
+
+
 
         corsoServiceAsync.creaCorso("Italiano", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 2 , new AsyncCallback<Boolean>() {
             @Override
@@ -192,7 +198,8 @@ public class University implements EntryPoint {
             }
         });
 
-       esameServiceAsync.creaEsame("Matematica", "19-01-2023", "14:00", "3 ore", "Fratelli Giovanni",  new AsyncCallback<Boolean>() {
+
+        esameServiceAsync.creaEsame("Matematica", "19-01-2023", "14:00", "3 ore", "Fratelli Giovanni",  new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -217,6 +224,47 @@ public class University implements EntryPoint {
 
             }
         });
+
+
+        sostieneServiceAsync.creaSostiene(1, 1, 3, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Sostiene creato");
+
+            }
+        });
+
+        sostieneServiceAsync.inserisciVoto(1,1,10, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Voto inserito");
+
+            }
+        });
+
+        sostieneServiceAsync.accettaVoto(1, 1,new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Voto accettato");
+
+            }
+        });
+
 
         //Condizioni se username e password sono corretti
         login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
@@ -295,7 +343,7 @@ public class University implements EntryPoint {
                             default:
                                 //Carica admin
                                 if(email__input.getText().equals("admin") && password__input.getText().equals("admin"))
-                                Window.alert("Admin");
+                                    Window.alert("Admin");
                                 break;
 
 

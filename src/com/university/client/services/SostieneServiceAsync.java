@@ -3,7 +3,7 @@ package com.university.client.services;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.university.client.model.Sostiene;
+import com.university.client.model.*;
 
 import java.util.ArrayList;
 
@@ -29,6 +29,10 @@ public interface SostieneServiceAsync {
 
     //Metodo per eliminare un oggetto sostiene
     void eliminaSostiene(int esame, int matricola, AsyncCallback<Boolean> async);
+
+    void getEsamiSostenibili(int matricola, AsyncCallback<Esame[]> async);
+
+    void getMieiEsami(int matricola, AsyncCallback<ArrayList<Sostiene>> async);
 
     //Restituisce tutti gli esami che devono ancora essere sostenuti
     void esamiNonSostenuti(AsyncCallback<Sostiene[]> async);

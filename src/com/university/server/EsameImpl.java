@@ -3,6 +3,7 @@ package com.university.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Corso;
 import com.university.client.model.Esame;
+import com.university.client.model.Frequenta;
 import com.university.client.model.Serializer.SerializerEsame;
 import com.university.client.services.EsameService;
 import org.mapdb.DB;
@@ -13,6 +14,7 @@ import org.mapdb.Serializer;
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class EsameImpl extends RemoteServiceServlet implements EsameService {
     DB db;
@@ -94,6 +96,7 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
         }
         return null;
     }
+
 
     @Override
     public Esame[] getEsami() {
