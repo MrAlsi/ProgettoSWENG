@@ -1,10 +1,12 @@
 package com.university.server;
 
+import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.*;
 import com.university.client.model.Serializer.SerializerDocente;
 import com.university.client.model.Serializer.SerializerEsame;
 import com.university.client.model.Serializer.SerializerSostiene;
+import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.services.SostieneService;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -18,6 +20,8 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
 
     DB db;
     HTreeMap<Integer, Sostiene> map;
+    HTreeMap<Integer, Esame> mapEsami;
+    HTreeMap<Integer, Studente> mapStudenti;
 
     private DB getDb() {
         ServletContext context = this.getServletContext();
@@ -224,10 +228,14 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             return db;
         }
     }
+    public void getEsami(){
+        DB dbEsami = getEsamiDB();
+        mapEsami = dbEsami.hashMap("esamiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerEsame()).createOrOpen();
+    }
+
     @Override
     public Esame traduciEsame(int codEsame) {
-        DB dbEsami = getEsamiDB();
-        HTreeMap<Integer, Esame> mapEsami = dbEsami.hashMap("esamiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerEsame()).createOrOpen();
+        getEsami();
         for(int i : mapEsami.getKeys()){
             if(mapEsami.get(i).getCodEsame() == codEsame){
                 return mapEsami.get(i);
@@ -236,8 +244,31 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return null;
     }
 
+    private DB getStudentiDB(){
+        ServletContext context = this.getServletContext();
+        synchronized (context) {
+            DB db = (DB)context.getAttribute("studentiDb");
+            if(db == null) {
+                db = DBMaker.fileDB("C:\\MapDB\\studenti").closeOnJvmShutdown().checksumHeaderBypass().make();
+                context.setAttribute("studentiDb", db);
+            }
+            return db;
+        }
+    }
+
+    public void getStudenti() {
+        DB dbStudenti = getStudentiDB();
+        mapStudenti = dbStudenti.hashMap("studentiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerStudente()).createOrOpen();
+    }
+
     @Override
     public Studente traduciStudente(int matricola) {
+        getStudenti();
+        for(int i : mapStudenti.getKeys()){
+            if(mapStudenti.get(i).getMatricola() == matricola){
+                return mapStudenti.get(i);
+            }
+        }
         return null;
     }
 }
