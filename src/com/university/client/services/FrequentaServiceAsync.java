@@ -11,6 +11,8 @@ public interface FrequentaServiceAsync {
 
     void getMieiCorsi(int matricola, AsyncCallback<ArrayList<Frequenta>> async);
 
+    void getCorsiStudente(int matricola, AsyncCallback<Corso[]> async);
+
 
     void getFrequenta(AsyncCallback<Frequenta[]> async);
 

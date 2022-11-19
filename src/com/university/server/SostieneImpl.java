@@ -15,6 +15,7 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SostieneImpl extends RemoteServiceServlet implements SostieneService {
 
@@ -35,13 +36,42 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
     }
 
+    //chiamata al db esami
+    private DB getEsamiDB(){
+        ServletContext context = this.getServletContext();
+        synchronized (context) {
+            DB db = (DB)context.getAttribute("esameDb");
+            if(db == null) {
+                db = DBMaker.fileDB("C:\\MapDB\\esame").closeOnJvmShutdown().checksumHeaderBypass().make();
+                context.setAttribute("esameDb", db);
+            }
+            return db;
+        }
+    }
+
+    //metodo che mi permette di avere qui in frequenza anche il db degli esami
+    private Esame[] traduciEsame(){
+        try{
+            DB dbEsami = getEsamiDB();
+            HTreeMap<Integer, Esame> mapEsami = dbEsami.hashMap("esameMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerEsame()).createOrOpen();
+            Esame[] esami = new Esame [mapEsami.size()];
+
+            int j=0;
+            for(int i: mapEsami.getKeys()){
+                esami[j]=mapEsami.get(i);
+                j++;
+            }
+            return esami;
+        }catch (Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
+    }
+
     private void createOrOpenDB() {
         this.db = getDb();
         this.map = this.db.hashMap("sostieneMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerSostiene()).createOrOpen();
     }
-
-
-
 
     //ottengo un array con tutte le istanze di sostiene
     @Override
@@ -209,6 +239,67 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return null;
     }
 
+    @Override
+    public Esame[] getEsamiSostenibili(int matricola) {
+        try {
+            createOrOpenDB();
+            //prendo tutti gli esami
+            Boolean check;
+            Esame[] tuttiEsami = traduciEsame();
+
+            ArrayList<Esame> esamiDisponibili = new ArrayList<>();
+            HashMap<String, Esame> esami = new HashMap<>();
+
+            for (Esame esame : tuttiEsami) {
+                esami.put(esame.nomeCorso, esame);
+            }
+
+            ArrayList<Sostiene> mieiEsami = getMieiEsami(matricola);
+
+            if(mieiEsami != null) {
+                for (Esame esame : esami.values()) {
+                    check = false;
+                    for (Sostiene sostiene : mieiEsami) {
+                        if (esame.getCodEsame() == sostiene.getCodEsame()) {
+                            check = true;
+                        }
+                    }
+                    if (!check) {
+                        esamiDisponibili.add(esame);
+                    }
+                }
+                return esamiDisponibili.toArray(new Esame[0]);
+            }else{
+                for (Esame esame : esami.values()) {
+                    esamiDisponibili.add(esame);
+                }
+                return esamiDisponibili.toArray(new Esame[0]);
+            }
+        } catch (Exception e) {
+            System.out.println("Errore: " + e);
+            return null;
+        }
+    }
+
+    //metodo per prendere i miei esami
+    @Override
+    public ArrayList<Sostiene> getMieiEsami(int matricola) {
+        try {
+            createOrOpenDB();
+            Sostiene[] sostiene = getSostiene();
+            ArrayList<Sostiene> mieiEsami = new ArrayList<>();
+            for(Sostiene sostiene1 : sostiene) {
+                if (sostiene1.matricola == matricola) {
+                    mieiEsami.add(sostiene1);
+                }
+            }
+            return mieiEsami;
+
+        }catch (Exception e){
+            System.out.println("Errore: " + e);
+            return null;
+        }
+    }
 
     //creo una nuova istanza di sostiene
     @Override
@@ -234,17 +325,6 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return totale / s.length;
     }
 
-    private DB getEsamiDB(){
-        ServletContext context = this.getServletContext();
-        synchronized (context) {
-            DB db = (DB)context.getAttribute("esamiDb");
-            if(db == null) {
-                db = DBMaker.fileDB("C:\\MapDB\\esami").closeOnJvmShutdown().checksumHeaderBypass().make();
-                context.setAttribute("esamiDb", db);
-            }
-            return db;
-        }
-    }
     public void getEsami(){
         DB dbEsami = getEsamiDB();
         mapEsami = dbEsami.hashMap("esamiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerEsame()).createOrOpen();

@@ -504,7 +504,8 @@ form {
 
 .tabella__libretto  tr, .tabella__corsi  tr, .tabella__esami  tr,
 .tabella__pianificaProve  tr, .tabella__esamiPrenotati  tr,
-.tabella__mieiCorsi  tr, .tabella__studenti tr {
+.tabella__mieiCorsi  tr, .tabella__studenti tr,
+.tabella__valutazioni tr{
     height: 10rem;
 }
 
@@ -607,7 +608,8 @@ form {
     border-radius: 12px;
 }
 
-.valutazioni__btn button {
+.pubblicaVoto__btn button, .frequentaCorso__btn button,
+.valutazioni__btn button, .iscrivitiEsame__btn button{
     background: var(--color-bg);
     color: var(--color-bg-variant);
     z-index: 1;

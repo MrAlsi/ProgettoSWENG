@@ -1,6 +1,7 @@
 package com.university.client.schermate;
 
 import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
@@ -94,7 +95,38 @@ public class SchermataSegreteria {
 
     public void form__valutazioni() throws Exception {
         user__container.clear();
-        user__container.add(new HTML("<div class=\"user__title\">Valutazioni</div>"));
+
+        List<Sostiene> tuttiSostieneConVoto = new ArrayList<>();
+        serviceStudente.getStudenti(new AsyncCallback<Studente[]>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                Window.alert("Failure on getStudenti: " + throwable.getMessage());
+            }
+            @Override
+            public void onSuccess(Studente[] studenti) {
+
+                for(Studente studenteIndex : studenti) {
+                    serviceSostiene.getSostieneStudenteConVoto(studenteIndex.getMatricola(), new AsyncCallback<Sostiene[]>() {
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Window.alert("Failure on getSostieneStudenteConVoto: " + throwable.getMessage());
+                        }
+                        @Override
+                        public void onSuccess(Sostiene[] esamiSostenuti) {
+
+                            for(Sostiene esameSostenuto : esamiSostenuti){
+                                tuttiSostieneConVoto.add(esameSostenuto);
+                            }
+                        }
+                    });
+                }
+                user__container.add(new HTML("<div class=\"user__title\">Valutazioni</div>"));
+
+                CellTable<Sostiene> tabella__valutazioni = tabella__valutazioni(tuttiSostieneConVoto, "Sembra che non ci siano valutazioni da pubblicare!");
+                user__container.add(tabella__valutazioni);
+
+            }
+        });
     }
 
     private CellTable<Studente> tabella__studenti(Studente[] result, String msg) {
@@ -149,6 +181,77 @@ public class SchermataSegreteria {
         tabella__studenti.setRowCount(result.length, true);
         tabella__studenti.setRowData(0, Arrays.asList(result));
         return tabella__studenti;
+    }
+
+    private CellTable<Sostiene> tabella__valutazioni(List<Sostiene> result, String msg) {
+
+        CellTable<Sostiene> tabella__valutazioni = new CellTable<>();
+        tabella__valutazioni.addStyleName("tabella__valutazioni");
+        tabella__valutazioni.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
+        tabella__valutazioni.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Sostiene> colonna__matricola = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return String.valueOf(object.getMatricola());
+            }
+        };
+        tabella__valutazioni.addColumn(colonna__matricola, "Matricola");
+
+        TextColumn<Sostiene> colonna__codEsame = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return String.valueOf(object.getCodEsame());
+            }
+        };
+        tabella__valutazioni.addColumn(colonna__codEsame, "Codice Esame");
+
+        TextColumn<Sostiene> colonna__voto = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return String.valueOf(object.getVoto());
+            }
+        };
+        tabella__valutazioni.addColumn(colonna__voto, "Voto");
+
+
+        ButtonCell cella__pubblica = new ButtonCell();
+        Column<Sostiene, String> colonna__pubblica = new Column<Sostiene, String>(cella__pubblica) {
+            @Override
+            public String getValue(Sostiene object) {
+                return "Elimina";
+            }
+        };
+
+        tabella__valutazioni.addColumn(colonna__pubblica, "");
+        colonna__pubblica.setCellStyleNames("pubblicaVoto__btn");
+
+        colonna__pubblica.setFieldUpdater(new FieldUpdater<Sostiene, String>() {
+            @Override
+            public void update(int index, Sostiene object, String value) {
+                serviceSostiene.accettaVoto(object.getCodEsame(), object.getMatricola(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Window.alert("Errore durante la pubblicazione del voto: " + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean check) {
+                        Window.alert("Voto pubblicato con successo!");
+                        try {
+                            form__valutazioni();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+
+
+        tabella__valutazioni.setRowCount(result.size(), true);
+        tabella__valutazioni.setRowData(0, result);
+        return tabella__valutazioni;
     }
 
 }
