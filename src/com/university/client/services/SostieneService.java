@@ -30,6 +30,9 @@ public interface SostieneService extends RemoteService {
     //Restituisce tutti gli esami Sostenuti che devono essere accettati
     Sostiene[] esamiSostenuti();
 
+    //Restituisce tutti gli esami che devono ancora essere sostenuti
+    Sostiene[] esamiNonSostenuti();
+
     //Metodo per la segreteria di accettare il voto
     boolean accettaVoto(int esame, int matricola);
 

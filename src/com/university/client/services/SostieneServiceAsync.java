@@ -35,4 +35,7 @@ public interface SostieneServiceAsync {
     void traduciEsame(int codEsame, AsyncCallback<Esame> async);
 
     void traduciStudente(int matricola, AsyncCallback<Studente> async);
+
+    //Restituisce tutti gli esami che devono ancora essere sostenuti
+    void esamiNonSostenuti(AsyncCallback<Sostiene[]> async);
 }

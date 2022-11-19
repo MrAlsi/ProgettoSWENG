@@ -181,7 +181,24 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             createOrOpenDB();
             ArrayList<Sostiene> esamiSostenuti = new ArrayList<>();
             for (int i : map.getKeys()) {
-                if (!map.get(i).getAccettato()) {
+                if (!map.get(i).getAccettato() && map.get(i).getVoto()!=-1) {
+                    esamiSostenuti.add(map.get(i));
+                }
+            }
+            return esamiSostenuti.toArray(new Sostiene[0]);
+        } catch (Exception e) {
+            System.out.println("Err: accetta voto: " + e);
+        }
+        return null;
+    }
+
+    @Override
+    public Sostiene[] esamiNonSostenuti() {
+        try {
+            createOrOpenDB();
+            ArrayList<Sostiene> esamiSostenuti = new ArrayList<>();
+            for (int i : map.getKeys()) {
+                if (!map.get(i).getAccettato() && map.get(i).getVoto()==-1) {
                     esamiSostenuti.add(map.get(i));
                 }
             }
