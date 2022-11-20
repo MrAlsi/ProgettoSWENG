@@ -30,9 +30,6 @@ public interface SostieneService extends RemoteService {
     //Restituisce tutti gli esami Sostenuti che devono essere accettati
     Sostiene[] esamiSostenuti();
 
-    //Restituisce tutti gli esami che devono ancora essere sostenuti
-    Sostiene[] esamiNonSostenuti();
-
     //Metodo per la segreteria di accettare il voto
     boolean accettaVoto(int esame, int matricola);
 
@@ -40,13 +37,12 @@ public interface SostieneService extends RemoteService {
     boolean eliminaSostiene(int esame, int matricola);
 
     //Crea un oggetto sostiene
-    boolean creaSostiene(int matricola, int codEsame, int voto);
+    boolean creaSostiene(int matricola, int codEsame, String nomeCorso, String data, String ora);
 
     //Con l'inserimento di un array di Sostiene restituisce la media aritmentica dell'array
     //è possibile usarlo sia per gli studenti che per i docenti
     long calcolaMedia(Sostiene[] s);
     Esame traduciEsame(int codEsame);
-    Studente traduciStudente(int matricola);
 
     // restituisce tutti gli esami sostenibili dallo studente
     Esame[] getEsamiSostenibili(int matricola);

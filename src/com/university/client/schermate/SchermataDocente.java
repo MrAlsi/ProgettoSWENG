@@ -392,6 +392,7 @@ public class SchermataDocente {
     }
 
     public void formCreaCorso() {
+        
         RootPanel.get("container").clear();
         FormPanel creaCorso = new FormPanel();
         creaCorso.setAction("/creanuovoCorso");

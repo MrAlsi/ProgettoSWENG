@@ -130,6 +130,7 @@ public class SchermataStudente {
                 user__container.clear();
                 HTML user__info = new HTML("<div class=\"content__profilo\"><b>Nome: </b>" + result.getNome()
                         + "<br /><b>Cognome: </b>" + result.getCognome()
+                        + "<br /><b>Data di nascita: </b>" + result.getDataNascita()
                         + "<br /><b>E-mail: </b>" + result.getMail()
                         + "<br /><b>Matricola: </b>" + result.getMatricola() + "</div>");
                 user__container.add(new HTML("<div class=\"user__title\">Profilo</div>"));
@@ -151,7 +152,16 @@ public class SchermataStudente {
 
                 user__container.add(new HTML("<div class=\"user__title\">Il mio libretto</div>"));
 
-                CellTable<Sostiene> tabella__libretto = tabella__libretto(result, "Sembra che tu non abbia ancora valutazioni disponibili!");
+                List<Sostiene> esamiSostenuti = new ArrayList<>();
+
+                //solo esami accettati
+                for(Sostiene sostiene : result){
+                    if(sostiene.getAccettato()) {
+                        esamiSostenuti.add(sostiene);
+                    }
+                }
+
+                CellTable<Sostiene> tabella__libretto = tabella__libretto(esamiSostenuti, "Sembra che tu non abbia ancora valutazioni disponibili!");
                 user__container.add(tabella__libretto);
 
             }
@@ -184,16 +194,38 @@ public class SchermataStudente {
         serviceSostiene.getSostieneStudenteSenzaVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
-                Window.alert("Failure on getSostieneStudente: " + throwable.getMessage());
+                Window.alert("Failure on getSostieneStudenteSenzaVoto: " + throwable.getMessage());
             }
             @Override
             public void onSuccess(Sostiene[] result) {
+                serviceEsame.getEsami( new AsyncCallback<Esame[]>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Window.alert("Failure on getEsami: " + throwable.getMessage());
+                    }
+                    @Override
+                    public void onSuccess(Esame[] esami) {
 
-                user__container.add(new HTML("<div class=\"user__title\">Esami prenotati</div>"));
+                        List<Esame> esamiPrenotati = new ArrayList<>();
 
-                CellTable<Esame> tabella__esamiPrenotati = tabella__esamiPrenotati(result, "Sembra che tu non abbia esami prenotati!");
-                user__container.add(tabella__esamiPrenotati);
+                        try {
 
+                            for (Sostiene sostiene : result) {
+                                for (Esame esame : esami) {
+                                    if (sostiene.getCodEsame() == esame.getCodEsame()) {
+                                        esamiPrenotati.add(esame);
+                                    }
+                                }
+                            }
+                        }catch (Exception e){
+
+                        }
+
+                        CellTable<Esame> tabella__esamiPrenotati = tabella__esamiPrenotati(esamiPrenotati, "Sembra che tu non abbia esami prenotati!");
+                        user__container.add(new HTML("<div class=\"user__title\">Esami prenotati</div>"));
+                        user__container.add(tabella__esamiPrenotati);
+                    }
+                });
             }
         });
     }
@@ -238,16 +270,7 @@ public class SchermataStudente {
         });
     }
 
-    private CellTable<Sostiene> tabella__libretto(Sostiene[] result, String msg) {
-
-        List<Sostiene> esamiSostenuti = new ArrayList<>();
-
-        //solo esami accettati
-        for(Sostiene sostiene : result){
-            if(sostiene.getAccettato()) {
-                esamiSostenuti.add(sostiene);
-            }
-        }
+    private CellTable<Sostiene> tabella__libretto(List<Sostiene> result, String msg) {
 
         CellTable<Sostiene> tabella__libretto = new CellTable<>();
         tabella__libretto.addStyleName("tabella__libretto");
@@ -262,6 +285,22 @@ public class SchermataStudente {
         };
         tabella__libretto.addColumn(colonna__codice, "Codice esame");
 
+        TextColumn<Sostiene> colonna__nomeCorso = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return object.getNomeCorso();
+            }
+        };
+        tabella__libretto.addColumn(colonna__nomeCorso, "Corso");
+
+        TextColumn<Sostiene> colonna__data = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return object.getData() + " - " + object.getOra();
+            }
+        };
+        tabella__libretto.addColumn(colonna__data, "Data");
+
         TextColumn<Sostiene> colonna__voto = new TextColumn<Sostiene>() {
             @Override
             public String getValue(Sostiene object) {
@@ -271,8 +310,8 @@ public class SchermataStudente {
         tabella__libretto.addColumn(colonna__voto, "Voto");
 
 
-        tabella__libretto.setRowCount(esamiSostenuti.size(), true);
-        tabella__libretto.setRowData(0, esamiSostenuti);
+        tabella__libretto.setRowCount(result.size(), true);
+        tabella__libretto.setRowData(0, result);
         return tabella__libretto;
     }
 
@@ -334,7 +373,7 @@ public class SchermataStudente {
         colonna__sostieni.setFieldUpdater(new FieldUpdater<Esame, String>() {
             @Override
             public void update(int index, Esame object, String value) {
-                serviceSostiene.creaSostiene(studente.getMatricola(), object.getCodEsame(), -1, new AsyncCallback<Boolean>() {
+                serviceSostiene.creaSostiene(studente.getMatricola(), object.getCodEsame(), object.getNomeCorso(), object.getData(), object.getOra(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable throwable) {
                         Window.alert("Errore durante l'iscrizione all'esame': " + throwable.getMessage());
@@ -344,7 +383,7 @@ public class SchermataStudente {
                     public void onSuccess(Boolean check) {
                         Window.alert("Iscrizione all'esame avvenuta con successo!");
                         try {
-                            form__corsi();
+                            form__pianificaProve();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -359,23 +398,7 @@ public class SchermataStudente {
         return tabella__pianificaProve;
     }
 
-    private CellTable<Esame> tabella__esamiPrenotati(Sostiene[] result, String msg) {
-
-        List<Esame> esamiPrenotati = new ArrayList<>();
-
-        for(int i = 0; i < result.length; i++){
-            serviceEsame.getEsame(result[i].getCodEsame(), new AsyncCallback<Esame>() {
-                @Override
-                public void onFailure(Throwable throwable) {
-                    Window.alert("Failure on getEsame: " + throwable.getMessage());
-                }
-                @Override
-                public void onSuccess(Esame result) {
-                    Window.alert("Esame prenotato: " + result.getCodEsame());
-                    esamiPrenotati.add(result);
-                }
-            });
-        }
+    private CellTable<Esame> tabella__esamiPrenotati(List<Esame> result, String msg) {
 
         CellTable<Esame> tabella__esamiPrenotati = new CellTable<>();
         tabella__esamiPrenotati.addStyleName("tabella__esamiPrenotati");
@@ -419,9 +442,8 @@ public class SchermataStudente {
         tabella__esamiPrenotati.addColumn(colonna__aula, "Aula");
 
 
-
-        tabella__esamiPrenotati.setRowCount(esamiPrenotati.size(), true);
-        tabella__esamiPrenotati.setRowData(0, esamiPrenotati);
+        tabella__esamiPrenotati.setRowCount(result.size(), true);
+        tabella__esamiPrenotati.setRowData(0, result);
         return tabella__esamiPrenotati;
     }
 

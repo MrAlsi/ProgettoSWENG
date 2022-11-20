@@ -15,14 +15,6 @@ public class Corso implements Serializable {
     public Corso() {
     }
 
-    public Corso(String nome,  String dataInizio, String dataFine, String descrizione, int docente){
-        this.nome = nome;
-        this.dataInizio = dataInizio;
-        this.dataFine = dataFine;
-        this.descrizione = descrizione;
-        this.docente = docente;
-    }
-
     public Corso(String nome, String dataInizio, String dataFine, String descrizione, int coDocente, int docente, int esame) {
         this.nome = nome;
         this.dataInizio = dataInizio;

@@ -5,12 +5,20 @@ import java.io.Serializable;
 public class Sostiene implements Serializable {
     public int matricola;
     public int codEsame;
+
+    public String nomeCorso;
+
+    public String data;
+    public String ora;
     public int voto;
     public boolean accettato;
 
-    public Sostiene(int matricola, int codEsame, int voto, boolean accettato) {
+    public Sostiene(int matricola, int codEsame, String nomeCorso, String data, String ora, int voto, boolean accettato) {
         this.matricola = matricola;
         this.codEsame = codEsame;
+        this.nomeCorso = nomeCorso;
+        this.data = data;
+        this.ora = ora;
         this.voto = voto;
         this.accettato = accettato;
     }
@@ -31,4 +39,14 @@ public class Sostiene implements Serializable {
     }
 
     public boolean getAccettato() {return accettato;}
+
+    public String getData() {
+        return data;
+    }
+    public String getOra() {
+        return ora;
+    }
+    public String getNomeCorso() {
+        return nomeCorso;
+    }
 }

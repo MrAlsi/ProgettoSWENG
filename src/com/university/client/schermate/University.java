@@ -131,7 +131,7 @@ public class University implements EntryPoint {
                 }
             }
         });
-        /*
+
         docenteServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -145,7 +145,7 @@ public class University implements EntryPoint {
             }
         });
 
-        segreteriaServiceAsync.creaSegretaria("Claudia", "Guanciale", "pecorino", new AsyncCallback<Boolean>() {
+        segreteriaServiceAsync.creaSegretaria("carlotta", "carboni", "password", new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -153,12 +153,25 @@ public class University implements EntryPoint {
 
             @Override
             public void onSuccess(Boolean result) {
-                Window.alert("Segreteria creata");
+                //Window.alert("Segreteria creata");
             }
         });
 
+        
+        corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1,  new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                System.out.println("Errore creazione corso: " + caught);
+            }
 
-        corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 0 , new AsyncCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Corso creato");
+
+            }
+        });
+
+        corsoServiceAsync.creaCorso("Italiano", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1,  new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -171,7 +184,7 @@ public class University implements EntryPoint {
             }
         });
 
-        corsoServiceAsync.creaCorso("Italiano", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 2 , new AsyncCallback<Boolean>() {
+        corsoServiceAsync.creaCorso("Matematica", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1,  new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -184,31 +197,6 @@ public class University implements EntryPoint {
             }
         });
 
-        corsoServiceAsync.creaCorso("Matematica", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1, 3 , new AsyncCallback<Boolean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-
-            }
-
-            @Override
-            public void onSuccess(Boolean result) {
-                //Window.alert("Corso creato");
-
-            }
-        });
-
-       esameServiceAsync.creaEsame("Matematica", "19-01-2023", "14:00", "3 ore", "Fratelli Giovanni",  new AsyncCallback<Boolean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-
-            }
-
-            @Override
-            public void onSuccess(Boolean result) {
-                //Window.alert("Corso creato");
-
-            }
-        });
 
         esameServiceAsync.creaEsame("Italiano", "19-01-2023", "13:00", "3 ore", "Fratelli pini",  new AsyncCallback<Boolean>() {
             @Override
@@ -221,7 +209,24 @@ public class University implements EntryPoint {
                 //Window.alert("Corso creato");
 
             }
-        });*/
+        });
+
+        esameServiceAsync.creaEsame("Matematica", "19-01-2023", "14:00", "3 ore", "Fratelli Giovanni",  new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Corso creato");
+
+            }
+        });
+
+
+
+
 
         //Condizioni se username e password sono corretti
         login__panel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {

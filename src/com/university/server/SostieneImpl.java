@@ -22,12 +22,11 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     DB db;
     HTreeMap<Integer, Sostiene> map;
     HTreeMap<Integer, Esame> mapEsami;
-    HTreeMap<Integer, Studente> mapStudenti;
 
     private DB getDb() {
         ServletContext context = this.getServletContext();
         synchronized (context) {
-            DB db = (DB) context.getAttribute("sostieneDb");
+            DB db = (DB)context.getAttribute("sostieneDb");
             if (db == null) {
                 db = DBMaker.fileDB("C:\\MapDB\\sostiene").closeOnJvmShutdown().checksumHeaderBypass().make();
                 context.setAttribute("sostieneDb", db);
@@ -154,10 +153,9 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     public boolean inserisciVoto(int esame, int matricola, int voto) {
         try {
             createOrOpenDB();
-            Sostiene esameConVoto = new Sostiene(esame, matricola, voto, false);
             for (int i : map.getKeys()) {
                 if (map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola) {
-                    map.replace(i, esameConVoto);
+                    map.replace(i, new Sostiene(esame, matricola, map.get(i).nomeCorso,map.get(i).data, map.get(i).ora,  voto, false));
                     db.commit();
                     return true;
                 }
@@ -175,7 +173,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             createOrOpenDB();
             for (int i : map.getKeys()) {
                 if (map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola) {
-                    map.replace(i, new Sostiene(esame, matricola, map.get(i).voto, true));
+                    map.replace(i, new Sostiene(esame, matricola,map.get(i).nomeCorso, map.get(i).data, map.get(i).ora, map.get(i).voto, true));
                     db.commit();
                     return true;
                 }
@@ -211,24 +209,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             createOrOpenDB();
             ArrayList<Sostiene> esamiSostenuti = new ArrayList<>();
             for (int i : map.getKeys()) {
-                if (!map.get(i).getAccettato() && map.get(i).getVoto()!=-1) {
-                    esamiSostenuti.add(map.get(i));
-                }
-            }
-            return esamiSostenuti.toArray(new Sostiene[0]);
-        } catch (Exception e) {
-            System.out.println("Err: accetta voto: " + e);
-        }
-        return null;
-    }
-
-    @Override
-    public Sostiene[] esamiNonSostenuti() {
-        try {
-            createOrOpenDB();
-            ArrayList<Sostiene> esamiSostenuti = new ArrayList<>();
-            for (int i : map.getKeys()) {
-                if (!map.get(i).getAccettato() && map.get(i).getVoto()==-1) {
+                if (!map.get(i).getAccettato() && map.get(i).getVoto() != -1) {
                     esamiSostenuti.add(map.get(i));
                 }
             }
@@ -303,11 +284,11 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
 
     //creo una nuova istanza di sostiene
     @Override
-    public boolean creaSostiene(int matricola, int codEsame, int voto) {
+    public boolean creaSostiene(int matricola, int codEsame, String nomeCorso, String data, String ora) {
         try {
             createOrOpenDB();
             map.put((map.size() + 1),
-                    new Sostiene( matricola, codEsame,-1, false));
+                    new Sostiene( matricola, codEsame, nomeCorso, data, ora, -1, false));
             db.commit();
             return true;
         } catch (Exception e) {
@@ -341,31 +322,4 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return null;
     }
 
-    private DB getStudentiDB(){
-        ServletContext context = this.getServletContext();
-        synchronized (context) {
-            DB db = (DB)context.getAttribute("studentiDb");
-            if(db == null) {
-                db = DBMaker.fileDB("C:\\MapDB\\studenti").closeOnJvmShutdown().checksumHeaderBypass().make();
-                context.setAttribute("studentiDb", db);
-            }
-            return db;
-        }
-    }
-
-    public void getStudenti() {
-        DB dbStudenti = getStudentiDB();
-        mapStudenti = dbStudenti.hashMap("studentiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerStudente()).createOrOpen();
-    }
-
-    @Override
-    public Studente traduciStudente(int matricola) {
-        getStudenti();
-        for(int i : mapStudenti.getKeys()){
-            if(mapStudenti.get(i).getMatricola() == matricola){
-                return mapStudenti.get(i);
-            }
-        }
-        return null;
-    }
 }

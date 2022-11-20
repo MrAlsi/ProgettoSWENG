@@ -18,7 +18,7 @@ public class SerializerEsame implements Serializer<Esame>, Serializable {
         dataOutput2.writeUTF(esame.getNomeCorso());
         dataOutput2.writeUTF(esame.getData());
         dataOutput2.writeUTF(esame.getOra());
-        dataOutput2.writeUTF(esame.getAula());
+        dataOutput2.writeUTF(esame.getDurata());
         dataOutput2.writeUTF(esame.getAula());
     }
 

@@ -206,9 +206,27 @@ public class SchermataSegreteria {
         };
         tabella__valutazioni.addColumn(colonna__codEsame, "Codice Esame");
 
+        TextColumn<Sostiene> colonna__nomeCorso = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return object.getNomeCorso();
+            }
+        };
+        tabella__valutazioni.addColumn(colonna__nomeCorso, "Corso");
+
+        TextColumn<Sostiene> colonna__data = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return object.getData() + " - " + object.getOra();
+            }
+        };
+        tabella__valutazioni.addColumn(colonna__data, "Data");
+
+
         TextColumn<Sostiene> colonna__voto = new TextColumn<Sostiene>() {
             @Override
             public String getValue(Sostiene object) {
+
                 return String.valueOf(object.getVoto());
             }
         };
@@ -219,7 +237,7 @@ public class SchermataSegreteria {
         Column<Sostiene, String> colonna__pubblica = new Column<Sostiene, String>(cella__pubblica) {
             @Override
             public String getValue(Sostiene object) {
-                return "Elimina";
+                return "Pubblica";
             }
         };
 

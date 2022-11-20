@@ -47,7 +47,7 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
         try{
             createOrOpenDB();
             map.put(map.size() + 1,
-                    new Corso( nome, pulisciData(dataInizio), pulisciData(dataFine), descrizione, codocente,docente, -1));
+                    new Corso( nome, pulisciData(dataInizio), pulisciData(dataFine), descrizione, codocente, docente, -1));
             db.commit();
             return true;
         } catch (Exception e){
@@ -57,8 +57,11 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     }
 
     public String pulisciData(String data){
-        String[] date = data.split(" ");
-        return date[2] + " " + date[1] + " " + date[5];
+        if(data.contains(" ")) {
+            String[] date = data.split(" ");
+            return date[2] + " " + date[1] + " " + date[5];
+        }
+        return data;
     }
 
     //restituisce tutti i corsi

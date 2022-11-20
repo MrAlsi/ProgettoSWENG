@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface SostieneServiceAsync {
     void getSostiene(AsyncCallback<Sostiene[]> async);
-    void creaSostiene(int matricola, int codEsame, int voto, AsyncCallback<Boolean> async);
+    void creaSostiene(int matricola, int codEsame, String nomeCorso, String data, String ora, AsyncCallback<Boolean> async);
 
     void getStudenti(int codEsame, AsyncCallback<Sostiene[]> async);
 
@@ -34,12 +34,8 @@ public interface SostieneServiceAsync {
 
     void traduciEsame(int codEsame, AsyncCallback<Esame> async);
 
-    void traduciStudente(int matricola, AsyncCallback<Studente> async);
-
     void getEsamiSostenibili(int matricola, AsyncCallback<Esame[]> async);
 
     void getMieiEsami(int matricola, AsyncCallback<ArrayList<Sostiene>> async);
 
-    //Restituisce tutti gli esami che devono ancora essere sostenuti
-    void esamiNonSostenuti(AsyncCallback<Sostiene[]> async);
 }
