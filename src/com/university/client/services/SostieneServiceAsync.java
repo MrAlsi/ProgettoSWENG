@@ -29,12 +29,15 @@ public interface SostieneServiceAsync {
     //Restituisce tutti gli oggetti sostiene di un determinato studente con voto
     void getSostieneStudenteConVoto(int matricola, AsyncCallback<Sostiene[]> async);
 
+    //ottengo i voti dello studente
+    void getEsamiLibretto(int matricola, AsyncCallback<Sostiene[]> async);
+
     //Metodo per eliminare un oggetto sostiene
     void eliminaSostiene(int esame, int matricola, AsyncCallback<Boolean> async);
 
     void traduciEsame(int codEsame, AsyncCallback<Esame> async);
 
-    void getEsamiSostenibili(int matricola, AsyncCallback<Esame[]> async);
+    void getEsamiSostenibili(int matricola, Corso[] mieiCorsi, AsyncCallback<Esame[]> async);
 
     void getMieiEsami(int matricola, AsyncCallback<ArrayList<Sostiene>> async);
 

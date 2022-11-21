@@ -95,36 +95,18 @@ public class SchermataSegreteria {
 
     public void form__valutazioni() throws Exception {
         user__container.clear();
-
-        List<Sostiene> tuttiSostieneConVoto = new ArrayList<>();
-        serviceStudente.getStudenti(new AsyncCallback<Studente[]>() {
+        serviceSostiene.esamiSostenuti(new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
                 Window.alert("Failure on getStudenti: " + throwable.getMessage());
             }
             @Override
-            public void onSuccess(Studente[] studenti) {
+            public void onSuccess(Sostiene[] esamiSostenuti) {
 
-                for(Studente studenteIndex : studenti) {
-                    serviceSostiene.getSostieneStudenteConVoto(studenteIndex.getMatricola(), new AsyncCallback<Sostiene[]>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Window.alert("Failure on getSostieneStudenteConVoto: " + throwable.getMessage());
-                        }
-                        @Override
-                        public void onSuccess(Sostiene[] esamiSostenuti) {
-
-                            for(Sostiene esameSostenuto : esamiSostenuti){
-                                tuttiSostieneConVoto.add(esameSostenuto);
-                            }
-                        }
-                    });
-                }
                 user__container.add(new HTML("<div class=\"user__title\">Valutazioni</div>"));
 
-                CellTable<Sostiene> tabella__valutazioni = tabella__valutazioni(tuttiSostieneConVoto, "Sembra che non ci siano valutazioni da pubblicare!");
+                CellTable<Sostiene> tabella__valutazioni = tabella__valutazioni(esamiSostenuti, "Sembra che non ci siano valutazioni da pubblicare!");
                 user__container.add(tabella__valutazioni);
-
             }
         });
     }
@@ -183,7 +165,7 @@ public class SchermataSegreteria {
         return tabella__studenti;
     }
 
-    private CellTable<Sostiene> tabella__valutazioni(List<Sostiene> result, String msg) {
+    private CellTable<Sostiene> tabella__valutazioni(Sostiene[] result, String msg) {
 
         CellTable<Sostiene> tabella__valutazioni = new CellTable<>();
         tabella__valutazioni.addStyleName("tabella__valutazioni");
@@ -256,19 +238,30 @@ public class SchermataSegreteria {
                     @Override
                     public void onSuccess(Boolean check) {
                         Window.alert("Voto pubblicato con successo!");
-                        try {
-                            form__valutazioni();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        serviceFrequenta.cancellaIscrizione(object.getMatricola(), object.getNomeCorso(), new AsyncCallback<Boolean>() {
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                Window.alert("Errore durante la pubblicazione del voto: " + throwable.getMessage());
+                            }
+
+                            @Override
+                            public void onSuccess(Boolean check) {
+                                Window.alert("Iscrizione al corso rimossa con successo!");
+                                try {
+                                    form__valutazioni();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                 });
             }
         });
 
 
-        tabella__valutazioni.setRowCount(result.size(), true);
-        tabella__valutazioni.setRowData(0, result);
+        tabella__valutazioni.setRowCount(result.length, true);
+        tabella__valutazioni.setRowData(0, Arrays.asList(result));
         return tabella__valutazioni;
     }
 

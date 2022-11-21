@@ -131,6 +131,37 @@ public class University implements EntryPoint {
                 }
             }
         });
+  /*
+
+
+            esameServiceAsync.creaEsame("Scienze", "19-01-2023", "13:00", "3 ore", "Fratelli pini",  new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Corso creato");
+
+            }
+        });
+
+
+
+
+        studenteServiceAsync.creaStudente("gabriel", "alsina", "password", "22-08-1999", new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("arg" + caught);
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Studente creato");
+
+            }
+        });
 
         docenteServiceAsync.creaDocente("alessandro", "pasi", "password", new AsyncCallback<Boolean>() {
             @Override
@@ -157,7 +188,7 @@ public class University implements EntryPoint {
             }
         });
 
-        
+
         corsoServiceAsync.creaCorso("Scienze", "19-01-2023", "19-05-2023", "descrizione corso", 1, 1,  new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -197,20 +228,6 @@ public class University implements EntryPoint {
             }
         });
 
-
-        esameServiceAsync.creaEsame("Italiano", "19-01-2023", "13:00", "3 ore", "Fratelli pini",  new AsyncCallback<Boolean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-
-            }
-
-            @Override
-            public void onSuccess(Boolean result) {
-                //Window.alert("Corso creato");
-
-            }
-        });
-
         esameServiceAsync.creaEsame("Matematica", "19-01-2023", "14:00", "3 ore", "Fratelli Giovanni",  new AsyncCallback<Boolean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -224,6 +241,35 @@ public class University implements EntryPoint {
             }
         });
 
+
+
+
+        esameServiceAsync.creaEsame("Scienze", "19-01-2023", "16:00", "1 ora", "Fratelli Boschi",  new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Corso creato");
+
+            }
+        });
+
+        sostieneServiceAsync.inserisciVoto(2,1, 16, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //Window.alert("Corso creato");
+
+            }
+        });
+    */
 
 
 

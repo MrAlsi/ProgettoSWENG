@@ -142,7 +142,7 @@ public class SchermataStudente {
 
     public void form__libretto() throws Exception {
         user__container.clear();
-        serviceSostiene.getSostieneStudenteConVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
+        serviceSostiene.getEsamiLibretto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
                 Window.alert("Failure on getSostieneStudente: " + throwable.getMessage());
@@ -152,16 +152,7 @@ public class SchermataStudente {
 
                 user__container.add(new HTML("<div class=\"user__title\">Il mio libretto</div>"));
 
-                List<Sostiene> esamiSostenuti = new ArrayList<>();
-
-                //solo esami accettati
-                for(Sostiene sostiene : result){
-                    if(sostiene.getAccettato()) {
-                        esamiSostenuti.add(sostiene);
-                    }
-                }
-
-                CellTable<Sostiene> tabella__libretto = tabella__libretto(esamiSostenuti, "Sembra che tu non abbia ancora valutazioni disponibili!");
+                CellTable<Sostiene> tabella__libretto = tabella__libretto(result, "Sembra che tu non abbia ancora valutazioni disponibili!");
                 user__container.add(tabella__libretto);
 
             }
@@ -171,19 +162,28 @@ public class SchermataStudente {
     public void form__pianificaProve() throws Exception {
 
         user__container.clear();
-        serviceSostiene.getEsamiSostenibili(studente.getMatricola(), new AsyncCallback<Esame[]>() {
+        serviceFrequenta.getCorsiStudente(studente.getMatricola(),new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
                 Window.alert("Failure on getEsami: " + throwable.getMessage());
             }
             @Override
-            public void onSuccess(Esame[] result) {
+            public void onSuccess(Corso[] result) {
+                serviceSostiene.getEsamiSostenibili(studente.getMatricola(), result,  new AsyncCallback<Esame[]>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Window.alert("Failure on getEsami: " + throwable.getMessage());
+                    }
+                    @Override
+                    public void onSuccess(Esame[] result) {
 
-                user__container.add(new HTML("<div class=\"user__title\">Pianifico le mie prove</div>"));
+                        user__container.add(new HTML("<div class=\"user__title\">Pianifico le mie prove</div>"));
 
-                CellTable<Esame> tabella__pianificaProve = tabella__pianificaProve(result, "Sembra che non ci siano esami sostenibili!");
-                user__container.add(tabella__pianificaProve);
+                        CellTable<Esame> tabella__pianificaProve = tabella__pianificaProve(result, "Sembra che non ci siano esami sostenibili!");
+                        user__container.add(tabella__pianificaProve);
 
+                    }
+                });
             }
         });
     }
@@ -270,7 +270,7 @@ public class SchermataStudente {
         });
     }
 
-    private CellTable<Sostiene> tabella__libretto(List<Sostiene> result, String msg) {
+    private CellTable<Sostiene> tabella__libretto(Sostiene[] result, String msg) {
 
         CellTable<Sostiene> tabella__libretto = new CellTable<>();
         tabella__libretto.addStyleName("tabella__libretto");
@@ -310,8 +310,8 @@ public class SchermataStudente {
         tabella__libretto.addColumn(colonna__voto, "Voto");
 
 
-        tabella__libretto.setRowCount(result.size(), true);
-        tabella__libretto.setRowData(0, result);
+        tabella__libretto.setRowCount(result.length, true);
+        tabella__libretto.setRowData(0, Arrays.asList(result));
         return tabella__libretto;
     }
 
