@@ -23,6 +23,10 @@ public class University implements EntryPoint {
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
     private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
     private static EsameServiceAsync esameServiceAsync = GWT.create(EsameService.class);
+    private static SostieneServiceAsync sostieneServiceAsync = GWT.create(SostieneService.class);
+
+    private static FrequentaServiceAsync frequentaServiceAsync = GWT.create(FrequentaService.class);
+
     final HTML login__background = new HTML("" +
             "<div class=\"login__background\">" +
             "</div>" +

@@ -1,6 +1,7 @@
 package com.university.client.schermate;
 
 import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
@@ -160,7 +161,7 @@ public class SchermataStudente {
     public void form__pianificaProve() throws Exception {
 
         user__container.clear();
-        serviceEsame.getEsami(new AsyncCallback<Esame[]>() {
+        serviceSostiene.getEsamiSostenibili(studente.getMatricola(), new AsyncCallback<Esame[]>() {
             @Override
             public void onFailure(Throwable throwable) {
                 Window.alert("Failure on getEsami: " + throwable.getMessage());
@@ -200,13 +201,13 @@ public class SchermataStudente {
     public void form__mieiCorsi() throws Exception {
 
         user__container.clear();
-        serviceFrequenta.getMieiCorsi(studente.getMatricola(), new AsyncCallback<ArrayList<Frequenta>>() {
+        serviceFrequenta.getCorsiStudente(studente.getMatricola(), new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
-                Window.alert("Failure on getMieiCorsi: " + throwable.getMessage());
+                Window.alert("Failure on getCorsiStudente: " + throwable.getMessage());
             }
             @Override
-            public void onSuccess(ArrayList<Frequenta> result) {
+            public void onSuccess(Corso[] result) {
 
                 user__container.add(new HTML("<div class=\"user__title\">I miei corsi</div>"));
 
@@ -220,7 +221,7 @@ public class SchermataStudente {
     public void form__corsi() throws Exception {
 
         user__container.clear();
-        serviceCorso.getCorsi( new AsyncCallback<Corso[]>() {
+        serviceFrequenta.getCorsiDisponibili(studente.getMatricola(), new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
                 Window.alert("Failure on getCorsi: " + throwable.getMessage());
@@ -239,20 +240,13 @@ public class SchermataStudente {
 
     private CellTable<Sostiene> tabella__libretto(Sostiene[] result, String msg) {
 
-        List<Esame> esamiSostenuti = new ArrayList<>();
+        List<Sostiene> esamiSostenuti = new ArrayList<>();
 
-        for(int i = 0; i < result.length; i++){
-            serviceEsame.getEsame(result[i].getCodEsame(), new AsyncCallback<Esame>() {
-                @Override
-                public void onFailure(Throwable throwable) {
-                    Window.alert("Failure on getSostieneStudente: " + throwable.getMessage());
-                }
-                @Override
-                public void onSuccess(Esame result) {
-                    Window.alert("Esame aggiunto: " + result.getCodEsame());
-                    esamiSostenuti.add(result);
-                }
-            });
+        //solo esami accettati
+        for(Sostiene sostiene : result){
+            if(sostiene.getAccettato()) {
+                esamiSostenuti.add(sostiene);
+            }
         }
 
         CellTable<Sostiene> tabella__libretto = new CellTable<>();
@@ -277,35 +271,12 @@ public class SchermataStudente {
         tabella__libretto.addColumn(colonna__voto, "Voto");
 
 
-        tabella__libretto.setRowCount(result.length, true);
-        tabella__libretto.setRowData(0, Arrays.asList(result));
+        tabella__libretto.setRowCount(esamiSostenuti.size(), true);
+        tabella__libretto.setRowData(0, esamiSostenuti);
         return tabella__libretto;
     }
 
     private CellTable<Esame> tabella__pianificaProve(Esame[] esami, String msg) {
-
-        List<Esame> esamiCorsiFrequentati = new ArrayList<>();
-
-
-        serviceFrequenta.getMieiCorsi(studente.getMatricola(), new AsyncCallback<ArrayList<Frequenta>>() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                Window.alert("Failure on getSostieneStudente: " + throwable.getMessage());
-            }
-            @Override
-            public void onSuccess(ArrayList<Frequenta> result) {
-
-                for(int i = 0; i < esami.length; i++){
-                    for(int j = 0; j < result.size(); j++) {
-                        if(esami[i].getNomeCorso().equals(result.get(j).getNomeCorso())) {
-                            Window.alert("Esame aggiunto: " + esami[i].getCodEsame());
-                            esamiCorsiFrequentati.add(esami[i]);
-                        }
-                    }
-                }
-            }
-        });
-
 
         CellTable<Esame> tabella__pianificaProve = new CellTable<>();
         tabella__pianificaProve.addStyleName("tabella__pianificaProve");
@@ -353,26 +324,38 @@ public class SchermataStudente {
         Column<Esame, String> colonna__sostieni = new Column<Esame, String>(cella__sostieni) {
             @Override
             public String getValue(Esame object) {
-                return "Sostieni";
+                return "Iscriviti";
             }
         };
 
         tabella__pianificaProve.addColumn(colonna__sostieni, "");
-        colonna__sostieni.setCellStyleNames("modificaEsame__btn");
+        colonna__sostieni.setCellStyleNames("iscrivitiEsame__btn");
 
-        /*
         colonna__sostieni.setFieldUpdater(new FieldUpdater<Esame, String>() {
             @Override
-            public void update(Esame object) {
-                user__container.clear();
-                user__container.add(new HTML("<div class=\"user__title\">Sostieni esame</div>"));
-                user__container.add((new form__sostieniEsame(studente, object)).getForm());
+            public void update(int index, Esame object, String value) {
+                serviceSostiene.creaSostiene(studente.getMatricola(), object.getCodEsame(), -1, new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Window.alert("Errore durante l'iscrizione all'esame': " + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean check) {
+                        Window.alert("Iscrizione all'esame avvenuta con successo!");
+                        try {
+                            form__corsi();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
-        }); */
+        });
 
 
-        tabella__pianificaProve.setRowCount(esamiCorsiFrequentati.size(), true);
-        tabella__pianificaProve.setRowData(0, esamiCorsiFrequentati);
+        tabella__pianificaProve.setRowCount(esami.length, true);
+        tabella__pianificaProve.setRowData(0, Arrays.asList(esami));
         return tabella__pianificaProve;
     }
 
@@ -442,23 +425,7 @@ public class SchermataStudente {
         return tabella__esamiPrenotati;
     }
 
-    private CellTable<Corso> tabella__mieiCorsi(ArrayList<Frequenta> corsi, String msg) {
-
-        List<Corso> mieiCorsi = new ArrayList<>();
-
-        for(int i = 0; i < corsi.size(); i++){
-            serviceCorso.getCorso(corsi.get(i).getNomeCorso(), new AsyncCallback<Corso>() {
-                @Override
-                public void onFailure(Throwable throwable) {
-                    Window.alert("Failure on getCorso: " + throwable.getMessage());
-                }
-                @Override
-                public void onSuccess(Corso result) {
-                    Window.alert("Corso aggiunto: " + result.getNome());
-                    mieiCorsi.add(result);
-                }
-            });
-        }
+    private CellTable<Corso> tabella__mieiCorsi(Corso[] corsi, String msg) {
 
         CellTable<Corso> tabella__mieiCorsi = new CellTable<>();
         tabella__mieiCorsi.addStyleName("tabella__mieiCorsi");
@@ -506,74 +473,97 @@ public class SchermataStudente {
         tabella__mieiCorsi.addColumn(colonna__coDocente, "Co-Docente");
 
 
-        tabella__mieiCorsi.setRowCount(mieiCorsi.size(), true);
-        tabella__mieiCorsi.setRowData(0, mieiCorsi);
+        tabella__mieiCorsi.setRowCount(corsi.length, true);
+        tabella__mieiCorsi.setRowData(0, Arrays.asList(corsi));
         return tabella__mieiCorsi;
     }
 
     private CellTable<Corso> tabella__corsi(Corso[] corsi, String msg) {
 
-        List<Corso> corsiDisponibili = new ArrayList<>();
         CellTable<Corso> tabella__corsi = new CellTable<>();
         tabella__corsi.addStyleName("tabella__corsi");
         tabella__corsi.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
         tabella__corsi.setEmptyTableWidget(new Label(msg));
-            serviceFrequenta.getCorsiDisponibili(studente.getMatricola(), new AsyncCallback<Corso[]>() {
-                @Override
-                public void onFailure(Throwable throwable) {
-                    Window.alert("Failure on getMieiCorsi: " + throwable.getMessage());
-                }
 
-                @Override
-                public void onSuccess(Corso[] result) {
-                    for(Corso corso: result){
-                        corsiDisponibili.add(corso);
+        TextColumn<Corso> colonna__nome = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return object.getNome();
+            }
+        };
+        tabella__corsi.addColumn(colonna__nome, "Nome");
+
+        TextColumn<Corso> colonna__periodo = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return object.getDataInizio() + " - " + object.getDataFine();
+            }
+        };
+        tabella__corsi.addColumn(colonna__periodo, "Periodo");
+
+        TextColumn<Corso> colonna__descrizione = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return object.getDescrizione();
+            }
+        };
+        tabella__corsi.addColumn(colonna__descrizione, "Descrizione");
+
+        TextColumn<Corso> colonna__docente = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return String.valueOf(object.getDocente());
+            }
+        };
+        tabella__corsi.addColumn(colonna__docente, "Docente");
+
+        TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return String.valueOf(object.getCoDocente());
+            }
+        };
+        tabella__corsi.addColumn(colonna__coDocente, "Co-Docente");
+
+
+
+        ButtonCell cella__frequenta = new ButtonCell();
+        Column<Corso, String> colonna__frequenta = new Column<Corso, String>(cella__frequenta) {
+            @Override
+            public String getValue(Corso object) {
+                return "Iscriviti";
+            }
+        };
+
+        tabella__corsi.addColumn(colonna__frequenta, "");
+        colonna__frequenta.setCellStyleNames("frequentaCorso__btn");
+
+        colonna__frequenta.setFieldUpdater(new FieldUpdater<Corso, String>() {
+            @Override
+            public void update(int index, Corso object, String value) {
+                serviceFrequenta.iscrivi(studente.getMatricola(), object.getNome(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Window.alert("Errore durante l'iscrizione al corso: " + throwable.getMessage());
                     }
-                    TextColumn<Corso> colonna__nome = new TextColumn<Corso>() {
-                        @Override
-                        public String getValue(Corso object) {
-                            return object.getNome();
+
+                    @Override
+                    public void onSuccess(Boolean check) {
+                        Window.alert("Iscrizione al corso avvenuta con successo!");
+                        try {
+                            form__corsi();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    };
-                    tabella__corsi.addColumn(colonna__nome, "Nome");
-
-                    TextColumn<Corso> colonna__periodo = new TextColumn<Corso>() {
-                        @Override
-                        public String getValue(Corso object) {
-                            return object.getDataInizio() + " - " + object.getDataFine();
-                        }
-                    };
-                    tabella__corsi.addColumn(colonna__periodo, "Periodo");
-
-                    TextColumn<Corso> colonna__descrizione = new TextColumn<Corso>() {
-                        @Override
-                        public String getValue(Corso object) {
-                            return object.getDescrizione();
-                        }
-                    };
-                    tabella__corsi.addColumn(colonna__descrizione, "Descrizione");
-
-                    TextColumn<Corso> colonna__docente = new TextColumn<Corso>() {
-                        @Override
-                        public String getValue(Corso object) {
-                            return String.valueOf(object.getDocente());
-                        }
-                    };
-                    tabella__corsi.addColumn(colonna__docente, "Docente");
-
-                    TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
-                        @Override
-                        public String getValue(Corso object) {
-                            return String.valueOf(object.getCoDocente());
-                        }
-                    };
-                    tabella__corsi.addColumn(colonna__coDocente, "Co-Docente");
+                    }
+                });
+            }
+        });
 
 
-                    tabella__corsi.setRowCount(corsiDisponibili.size(), true);
-                    tabella__corsi.setRowData(0, corsiDisponibili);
-                }
-            });
+        tabella__corsi.setRowCount(corsi.length, true);
+        tabella__corsi.setRowData(0, Arrays.asList(corsi));
+
         return tabella__corsi;
     }
 

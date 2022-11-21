@@ -4,7 +4,7 @@ package com.university.client.services;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.university.client.model.Esame;
-import com.university.client.model.Sostiene;
+import com.university.client.model.*;
 import com.university.client.model.Studente;
 
 import java.util.ArrayList;
@@ -30,6 +30,9 @@ public interface SostieneService extends RemoteService {
     //Restituisce tutti gli esami Sostenuti che devono essere accettati
     Sostiene[] esamiSostenuti();
 
+    //Restituisce tutti gli esami che devono ancora essere sostenuti
+    Sostiene[] esamiNonSostenuti();
+
     //Metodo per la segreteria di accettare il voto
     boolean accettaVoto(int esame, int matricola);
 
@@ -44,4 +47,9 @@ public interface SostieneService extends RemoteService {
     long calcolaMedia(Sostiene[] s);
     Esame traduciEsame(int codEsame);
     Studente traduciStudente(int matricola);
+
+    // restituisce tutti gli esami sostenibili dallo studente
+    Esame[] getEsamiSostenibili(int matricola);
+
+    ArrayList<Sostiene> getMieiEsami(int matricola);
 }

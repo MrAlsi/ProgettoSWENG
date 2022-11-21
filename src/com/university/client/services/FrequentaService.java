@@ -16,6 +16,8 @@ public interface FrequentaService extends RemoteService {
 
     ArrayList<Frequenta> getMieiCorsi (int matricola);
 
+    Corso[] getCorsiStudente (int matricola);
+
     ArrayList<Frequenta> getStudentiIscritti (String nomeCorso);
     boolean iscrivi (int matricola, String nomeCorso );
     boolean cancellaIscrizione(int matricola, String nomeCorso);
