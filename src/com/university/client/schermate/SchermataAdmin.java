@@ -34,8 +34,8 @@ public class SchermataAdmin {
         //formStudenti();
         //formDocenti();
         //formSegreteria();
-        //listaStudenti();
-        listaDocenti();
+        listaStudenti();
+        //listaDocenti();
     }
 
     //visualizza docenti
