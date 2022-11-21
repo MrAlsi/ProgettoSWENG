@@ -34,8 +34,8 @@ public class SchermataAdmin {
         //formStudenti();
         //formDocenti();
         //formSegreteria();
-        //listaStudenti();
-        listaDocenti();
+        listaStudenti();
+        //listaDocenti();
     }
 
     //visualizza docenti
@@ -310,7 +310,6 @@ public class SchermataAdmin {
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert("Errore nel caricare gli esami " + caught);
-
             }
 
             @Override
