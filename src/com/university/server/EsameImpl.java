@@ -38,17 +38,17 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
     }
 
     @Override
-    public boolean creaEsame(String nomeCorso, String data, String ora, String durata, String aula) {
+    public int creaEsame(String nomeCorso, String data, String ora, String durata, String aula) {
         try{
             createOrOpenDB();
             map.put(map.size()+1,
                     new Esame(map.size()+1, nomeCorso, data, ora, durata, aula));
             db.commit();
-            return true;
+            return map.size();
         } catch(Exception e){
             System.out.println("Err: creaEsame  " + e);
         }
-        return false;
+        return -1;
     }
 
     @Override

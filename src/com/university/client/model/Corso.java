@@ -1,6 +1,7 @@
 package com.university.client.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Corso implements Serializable {
     public String nome;

@@ -172,6 +172,12 @@ public class SchermataDocente {
 
                         Button btnCreaEsame = new Button("Crea esame");
                         btnCreaEsame.addStyleName("creaEsame__btn");
+                        btnCreaEsame.addClickHandler(new ClickHandler() {
+                            @Override
+                            public void onClick(ClickEvent event) {
+                                formCreaEsame();
+                            }
+                        });
                         user__container.add(btnCreaEsame);
 
                         CellTable<Esame> tabella__esami = tabella__esami(esami, "Sembra che tu non abbia ancora esami in programma, creane uno!");
@@ -619,6 +625,140 @@ public class SchermataDocente {
 
         modificaCorso.add(modificaCorsoContainer);
         RootPanel.get("container").add(modificaCorso);
+    }
+
+    public void formCreaEsame(){
+        user__container.clear();
+        FormPanel creaEsame = new FormPanel();
+        creaEsame.setAction("/creanuovoEsame");
+        creaEsame.setMethod(FormPanel.METHOD_POST);
+        VerticalPanel esameContainer = new VerticalPanel();
+        final Label aula__label = new Label("Aula: ");
+        esameContainer.add(aula__label);
+        final TextBox aula__textBox = new TextBox();
+        esameContainer.add(aula__textBox);
+        final Label data__label = new Label("Data: ");
+        esameContainer.add(data__label);
+        final DateBox data__dataBox = new DateBox();
+        data__dataBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("dd/MM/yyyy")));
+        esameContainer.add(data__dataBox);
+        final Label ora__label = new Label("Ora: ");
+        esameContainer.add(ora__label);
+        final ListBox ora__listBox = new ListBox();
+        for(int i=9; i<=15; i++){
+            ora__listBox.addItem((String.valueOf(i)));
+        }
+        esameContainer.add(ora__listBox);
+        final Label durata__label = new Label("Durata: ");
+        esameContainer.add(durata__label);
+        final TextBox durata__textBox = new TextBox();
+        esameContainer.add(durata__textBox);
+        final Label corso__label = new Label("Corso: ");
+        esameContainer.add(corso__label);
+        final ListBox corso__list = new ListBox();
+        serviceCorso.getCorsiDocente(docente.getCodDocente(), new AsyncCallback<Corso[]>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Errore nel caricare i corsi del docente "+ caught);
+            }
+
+            @Override
+            public void onSuccess(Corso[] result) {
+                for (int i = 0; i < result.length; i++) {
+                    //devo prendere solo i corsi del docente che non hanno già un esame associato
+                    if(result[i].getEsame()==-1) {
+                        corso__list.addItem(result[i].getNome());
+                    }
+                }
+            }
+        });
+
+        esameContainer.add(corso__list);
+        final Button crea__btn= new Button("Crea");
+        crea__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                creaEsame.submit();
+            }
+        });
+
+        creaEsame.addSubmitHandler(new FormPanel.SubmitHandler() {
+            @Override
+            public void onSubmit(FormPanel.SubmitEvent event) {
+                //Controllo che tutti i campi siano pieni
+                if (aula__textBox.getText().length() == 0 || durata__textBox.getText().length() == 0 || data__dataBox.getValue() == null ||
+                        corso__list.getSelectedValue() == null || ora__listBox.getSelectedValue()== null) {
+                    Window.alert("Compilare tutti i campi!");
+                    event.cancel();
+                }
+                //fare controlli che l'esame sia dopo la fine del corso
+
+                serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore nel caricare i dati dell'esame "+ caught);
+
+                    }
+                    @Override
+                    public void onSuccess(Corso result) {
+                        if(data__dataBox.getValue().before(StringToDate(result.dataFine))){
+                            Window.alert("l'esame deve essere dopo la fine del corso: "+ result.getDataFine());
+                            event.cancel();
+                        }
+                    }
+                });
+
+            }
+        });
+
+        creaEsame.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+            @Override
+            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                serviceEsame.creaEsame(corso__list.getSelectedValue(), data__dataBox.getValue().toString(),ora__listBox.getSelectedValue(), durata__textBox.getText(), aula__textBox.getText(), new AsyncCallback<Integer>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore nel creare l'esame "+caught);
+                    }
+
+                    @Override
+                    public void onSuccess(Integer codEsame) {
+                        try {
+                            //aggiungo l'esame creato anche nella tabella dei corsi al corso a cui è stato associato
+                            serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
+                                @Override
+                                public void onFailure(Throwable caught) {
+                                    Window.alert("Errore nel caricare i dati dell'esame "+ caught);
+                                }
+                                @Override
+                                public void onSuccess(Corso result) {
+                                    serviceCorso.modificaCorso(result.getNome(), result.getNome(), result.getDataInizio(), result.getDataFine().toString(), result.getDescrizione(), result.getCoDocente(), result.getDocente(), codEsame, new AsyncCallback<Boolean>() {
+                                        @Override
+                                        public void onFailure(Throwable caught) {
+                                            Window.alert("Errore nel modificare il corso "+caught);
+                                        }
+
+                                        @Override
+                                        public void onSuccess(Boolean result) {
+                                            Window.alert("Esame creato");
+                                            try {
+                                                form__esami();
+                                            } catch (Exception e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+        });
+        esameContainer.add(crea__btn);
+        creaEsame.add(esameContainer);
+        user__container.add(creaEsame);
     }
 
     public Date StringToDate(String data){
