@@ -21,6 +21,9 @@ public interface SostieneService extends RemoteService {
     //Restituisce tutti gli oggetti sostiene di un determinato studente con voto
     Sostiene[] getSostieneStudenteConVoto(int matricola);
 
+    //ottengo i voti dello studente
+    Sostiene[] getEsamiLibretto(int matricola);
+
     //Restituisce tutti gli oggetti sostiene di un determinato studente
     Sostiene[] getStudenti(int codEsame);
 
@@ -45,7 +48,7 @@ public interface SostieneService extends RemoteService {
     Esame traduciEsame(int codEsame);
 
     // restituisce tutti gli esami sostenibili dallo studente
-    Esame[] getEsamiSostenibili(int matricola);
+    Esame[] getEsamiSostenibili(int matricola, Corso[] mieiCorsi);
 
     ArrayList<Sostiene> getMieiEsami(int matricola);
 }

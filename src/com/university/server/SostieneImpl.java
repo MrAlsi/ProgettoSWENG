@@ -129,6 +129,25 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
     }
 
+    //ottengo i voti dello studente
+    @Override
+    public Sostiene[] getEsamiLibretto(int matricola) {
+        try {
+            createOrOpenDB();
+            ArrayList<Sostiene> sostenuti = new ArrayList<>();
+            Sostiene[] sostiene = getSostiene();
+            for (Sostiene esame : sostiene) {
+                if (esame.getMatricola() == matricola && esame.accettato) {
+                    sostenuti.add(esame);
+                }
+            }
+            return sostenuti.toArray(new Sostiene[0]);
+        } catch (Exception e) {
+            System.out.println("Errore: " + e);
+            return null;
+        }
+    }
+
     //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui è stato assegnato un voto
     @Override
     public Sostiene[] getStudenti(int codEsame) {
@@ -155,7 +174,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             createOrOpenDB();
             for (int i : map.getKeys()) {
                 if (map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola) {
-                    map.replace(i, new Sostiene(esame, matricola, map.get(i).nomeCorso,map.get(i).data, map.get(i).ora,  voto, false));
+                    map.replace(i, new Sostiene(matricola, esame, map.get(i).nomeCorso,map.get(i).data, map.get(i).ora,  voto, false));
                     db.commit();
                     return true;
                 }
@@ -173,7 +192,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             createOrOpenDB();
             for (int i : map.getKeys()) {
                 if (map.get(i).getCodEsame() == esame && map.get(i).getMatricola() == matricola) {
-                    map.replace(i, new Sostiene(esame, matricola,map.get(i).nomeCorso, map.get(i).data, map.get(i).ora, map.get(i).voto, true));
+                    map.replace(i, new Sostiene(matricola, esame, map.get(i).nomeCorso, map.get(i).data, map.get(i).ora, map.get(i).voto, true));
                     db.commit();
                     return true;
                 }
@@ -221,14 +240,17 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     }
 
     @Override
-    public Esame[] getEsamiSostenibili(int matricola) {
+    public Esame[] getEsamiSostenibili(int matricola, Corso[] mieiCorsi) {
         try {
             createOrOpenDB();
+
             //prendo tutti gli esami
             Boolean check;
             Esame[] tuttiEsami = traduciEsame();
 
+            ArrayList<Esame> mieiEsamiCorso = new ArrayList<>();
             ArrayList<Esame> esamiDisponibili = new ArrayList<>();
+
             HashMap<String, Esame> esami = new HashMap<>();
 
             for (Esame esame : tuttiEsami) {
@@ -237,25 +259,29 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
 
             ArrayList<Sostiene> mieiEsami = getMieiEsami(matricola);
 
-            if(mieiEsami != null) {
+            // Prendo solo gli esami di un corso in cui lo studente è iscritto
+            for(Corso corsi : mieiCorsi){
                 for (Esame esame : esami.values()) {
-                    check = false;
-                    for (Sostiene sostiene : mieiEsami) {
-                        if (esame.getCodEsame() == sostiene.getCodEsame()) {
-                            check = true;
-                        }
-                    }
-                    if (!check) {
-                        esamiDisponibili.add(esame);
+                    if (corsi.getNome().equals(esame.getNomeCorso())) {
+                        mieiEsamiCorso.add(esame);
                     }
                 }
-                return esamiDisponibili.toArray(new Esame[0]);
-            }else{
-                for (Esame esame : esami.values()) {
+            }
+
+            // Prendo solo gli esami a cui lo studente non è ancora iscritto
+            for (Esame esame : mieiEsamiCorso) {
+                check = false;
+                for (Sostiene sostiene : mieiEsami) {
+                    if (esame.getCodEsame() == sostiene.getCodEsame()) {
+                        check = true;
+                    }
+                }
+                if (!check) {
                     esamiDisponibili.add(esame);
                 }
-                return esamiDisponibili.toArray(new Esame[0]);
             }
+            return esamiDisponibili.toArray(new Esame[0]);
+
         } catch (Exception e) {
             System.out.println("Errore: " + e);
             return null;

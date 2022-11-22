@@ -1,11 +1,9 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.model.Corso;
-import com.university.client.model.Frequenta;
-import com.university.client.model.Serializer.SerializerCorso;
-import com.university.client.model.Serializer.SerializerFrequenta;
-import com.university.client.services.FrequentaService;
+import com.university.client.model.*;
+import com.university.client.model.Serializer.*;
+import com.university.client.services.*;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
@@ -70,6 +68,37 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
         }
     }
 
+    //chiamata al db corsi
+    private DB getSostieneDB(){
+        ServletContext context = this.getServletContext();
+        synchronized (context) {
+            DB db = (DB)context.getAttribute("sostieneDb");
+            if(db == null) {
+                db = DBMaker.fileDB("C:\\MapDB\\sostiene").closeOnJvmShutdown().checksumHeaderBypass().make();
+                context.setAttribute("sostieneDb", db);
+            }
+            return db;
+        }
+    }
+
+    //metodo che mi permette di avere qui in frequenza anche il db dei corsi
+    private Sostiene[] traduciSostiene(){
+        try{
+            DB dbSostiene=getSostieneDB();
+            HTreeMap<Integer, Sostiene> mapSostiene = dbSostiene.hashMap("sostieneMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerSostiene()).createOrOpen();
+            Sostiene[] sostiene = new Sostiene [mapSostiene.size()];
+            int j=0;
+            for(int i: mapSostiene.getKeys()){
+                sostiene[j]=mapSostiene.get(i);
+                j++;
+            }
+            return sostiene;
+        }catch (Exception e){
+            System.out.println("Errore: "+ e);
+            return null;
+        }
+    }
+
 
     //metodo per prendere tutte le istanze di frequenta
     @Override
@@ -95,10 +124,16 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
     public Corso[] getCorsiDisponibili(int matricola) {
         try {
             createOrOpenDB();
+
             //prendo tutti i corsi
             Boolean check;
+
+            Sostiene[] tuttiSostiene = traduciSostiene();
             Corso[] tuttiCorsi = traduciCorso();
+
             ArrayList<Corso> corsiDisponibili = new ArrayList<>();
+            ArrayList<Corso> corsiDisponibiliFinali = new ArrayList<>();
+
             HashMap<String, Corso> corsi = new HashMap<>();
 
             for (Corso corso : tuttiCorsi) {
@@ -107,18 +142,38 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
 
             ArrayList<Frequenta> mieiCorsi = getMieiCorsi(matricola);
 
+            //filtro solo i corsi non superati
             for (Corso corso : corsi.values()) {
+                check = false;
+                for(Sostiene sostiene : tuttiSostiene) {
+                    if (sostiene.getMatricola() == matricola
+                            && sostiene.getNomeCorso().equals(corso.getNome())
+                            && sostiene.getAccettato()
+                            && sostiene.getVoto() >= 18) {
+                        check = true;
+                    }
+                }
+                if (!check) {
+                    corsiDisponibili.add(corso);
+                }
+            }
+
+            //filtro i corsi ai quali non sono iscritto
+            for (Corso corso : corsiDisponibili) {
                 check = false;
                 for (Frequenta frequenta : mieiCorsi) {
                     if (corso.getNome().equals(frequenta.getNomeCorso())) {
                         check = true;
                     }
                 }
-                if(!check){
-                    corsiDisponibili.add(corso);
+                if (!check) {
+                    corsiDisponibiliFinali.add(corso);
                 }
             }
-            return corsiDisponibili.toArray(new Corso[0]);
+
+            return corsiDisponibiliFinali.toArray(new Corso[0]);
+
+
         } catch (Exception e) {
             System.out.println("Errore: " + e);
             return null;
@@ -126,11 +181,16 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
     }
 
     //metodo per prendere i corsi di uno studente in formato Corso[]
+    //prendo solo i corsi che lo studente frequenta che non hanno ricevuto un voto >= 18.
+    //se lo studente prende un'insufficienza rimane iscritto al corso, se lo passa si disicrive
     public Corso[] getCorsiStudente(int matricola) {
         try {
             createOrOpenDB();
 
+            Boolean check = false;
             Corso[] tuttiCorsi = traduciCorso();
+            Sostiene[] tuttiSostiene = traduciSostiene();
+
             ArrayList<Corso> corsiDisponibili = new ArrayList<>();
             HashMap<String, Corso> corsi = new HashMap<>();
 
@@ -139,7 +199,18 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
             //smisto i doppioni attraverso un hashmap
             for (Corso corso : tuttiCorsi) {
                 for (Frequenta frequenta : mieiCorsi) {
-                    if(corso.getNome().equals(frequenta.getNomeCorso())) {
+                    for (Sostiene sostiene : tuttiSostiene) {
+                        check = false;
+                        if (corso.getNome().equals(frequenta.getNomeCorso())
+                                && corso.getNome().equals(sostiene.getNomeCorso())
+                                && sostiene.getMatricola() == frequenta.getMatricola()
+                                && sostiene.getAccettato()
+                                && sostiene.getVoto() >= 18) {
+                            check = true;
+                        }
+                    }
+                    if (corso.getNome().equals(frequenta.getNomeCorso())
+                            && !check) {
                         corsi.put(corso.nome, corso);
                     }
                 }

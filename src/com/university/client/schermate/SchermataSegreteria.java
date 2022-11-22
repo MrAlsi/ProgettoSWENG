@@ -95,35 +95,55 @@ public class SchermataSegreteria {
 
     public void form__valutazioni() throws Exception {
         user__container.clear();
-
-        List<Sostiene> tuttiSostieneConVoto = new ArrayList<>();
-        serviceStudente.getStudenti(new AsyncCallback<Studente[]>() {
+        serviceSostiene.esamiSostenuti(new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
                 Window.alert("Failure on getStudenti: " + throwable.getMessage());
             }
             @Override
-            public void onSuccess(Studente[] studenti) {
+            public void onSuccess(Sostiene[] esamiSostenuti) {
 
-                for(Studente studenteIndex : studenti) {
-                    serviceSostiene.getSostieneStudenteConVoto(studenteIndex.getMatricola(), new AsyncCallback<Sostiene[]>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Window.alert("Failure on getSostieneStudenteConVoto: " + throwable.getMessage());
-                        }
-                        @Override
-                        public void onSuccess(Sostiene[] esamiSostenuti) {
-
-                            for(Sostiene esameSostenuto : esamiSostenuti){
-                                tuttiSostieneConVoto.add(esameSostenuto);
-                            }
-                        }
-                    });
-                }
                 user__container.add(new HTML("<div class=\"user__title\">Valutazioni</div>"));
 
-                CellTable<Sostiene> tabella__valutazioni = tabella__valutazioni(tuttiSostieneConVoto, "Sembra che non ci siano valutazioni da pubblicare!");
+                CellTable<Sostiene> tabella__valutazioni = tabella__valutazioni(esamiSostenuti, "Sembra che non ci siano valutazioni da pubblicare!");
                 user__container.add(tabella__valutazioni);
+            }
+        });
+    }
+
+    public void form__visualizzaCorsi(int matricola, String nome, String cognome) throws Exception {
+        user__container.clear();
+        serviceFrequenta.getCorsiStudente(matricola, new AsyncCallback<Corso[]>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                Window.alert("Failure on getCorsiStudente: " + throwable.getMessage());
+            }
+            @Override
+            public void onSuccess(Corso[] result) {
+
+                user__container.add(new HTML("<div class=\"user__title\">Corsi dello studente " + cognome + " " + nome + "</div>"));
+
+                CellTable<Corso> tabella__corsiStudente = tabella__corsiStudente(result, "Sembra che lo studente non sia iscritto a nessun corso!");
+                user__container.add(tabella__corsiStudente);
+
+            }
+        });
+    }
+
+    public void form__visualizzaEsami(int matricola, String nome, String cognome) throws Exception {
+        user__container.clear();
+        serviceSostiene.getEsamiLibretto(matricola, new AsyncCallback<Sostiene[]>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                Window.alert("Failure on getSostieneStudente: " + throwable.getMessage());
+            }
+            @Override
+            public void onSuccess(Sostiene[] result) {
+
+                user__container.add(new HTML("<div class=\"user__title\">Voti dello studente " + cognome + " " + nome + "</div>"));
+
+                CellTable<Sostiene> tabella__esamiStudente = tabella__esamiStudente(result, "Sembra che lo studente non abbia ancora valutazioni disponibili!");
+                user__container.add(tabella__esamiStudente);
 
             }
         });
@@ -177,13 +197,161 @@ public class SchermataSegreteria {
         tabella__studenti.addColumn(colonna__nascita, "Data di nascita");
 
 
+        ButtonCell cella__visualizzaCorsi = new ButtonCell();
+        Column<Studente, String> colonna__visualizzaCorsi = new Column<Studente, String>(cella__visualizzaCorsi) {
+            @Override
+            public String getValue(Studente object) {
+                return "Corsi";
+            }
+        };
+
+
+        tabella__studenti.addColumn(colonna__visualizzaCorsi, "");
+        colonna__visualizzaCorsi.setCellStyleNames("pubblicaVoto__btn");
+
+        colonna__visualizzaCorsi.setFieldUpdater(new FieldUpdater<Studente, String>() {
+            @Override
+            public void update(int index, Studente object, String value) {
+
+                try {
+                    form__visualizzaCorsi(object.getMatricola(), object.getNome(), object.getCognome());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        });
+
+        ButtonCell cella__visualizzaEsami = new ButtonCell();
+        Column<Studente, String> colonna__visualizzaEsami = new Column<Studente, String>(cella__visualizzaEsami) {
+            @Override
+            public String getValue(Studente object) {
+                return "Esami";
+            }
+        };
+
+
+        tabella__studenti.addColumn(colonna__visualizzaEsami, "");
+        colonna__visualizzaEsami.setCellStyleNames("pubblicaVoto__btn");
+
+        colonna__visualizzaEsami.setFieldUpdater(new FieldUpdater<Studente, String>() {
+            @Override
+            public void update(int index, Studente object, String value) {
+
+                try {
+                    form__visualizzaEsami(object.getMatricola(), object.getNome(), object.getCognome());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        });
+
 
         tabella__studenti.setRowCount(result.length, true);
         tabella__studenti.setRowData(0, Arrays.asList(result));
         return tabella__studenti;
     }
 
-    private CellTable<Sostiene> tabella__valutazioni(List<Sostiene> result, String msg) {
+    private CellTable<Corso> tabella__corsiStudente(Corso[] corsi, String msg) {
+
+        CellTable<Corso> tabella__corsiStudente = new CellTable<>();
+        tabella__corsiStudente.addStyleName("tabella__mieiCorsi");
+        tabella__corsiStudente.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
+        tabella__corsiStudente.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Corso> colonna__nome = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return object.getNome();
+            }
+        };
+        tabella__corsiStudente.addColumn(colonna__nome, "Nome");
+
+        TextColumn<Corso> colonna__periodo = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return object.getDataInizio() + " - " + object.getDataFine();
+            }
+        };
+        tabella__corsiStudente.addColumn(colonna__periodo, "Periodo");
+
+        TextColumn<Corso> colonna__descrizione = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return object.getDescrizione();
+            }
+        };
+        tabella__corsiStudente.addColumn(colonna__descrizione, "Descrizione");
+
+        TextColumn<Corso> colonna__docente = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return String.valueOf(object.getDocente());
+            }
+        };
+        tabella__corsiStudente.addColumn(colonna__docente, "Docente");
+
+        TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
+            @Override
+            public String getValue(Corso object) {
+                return String.valueOf(object.getCoDocente());
+            }
+        };
+        tabella__corsiStudente.addColumn(colonna__coDocente, "Co-Docente");
+
+
+        tabella__corsiStudente.setRowCount(corsi.length, true);
+        tabella__corsiStudente.setRowData(0, Arrays.asList(corsi));
+        return tabella__corsiStudente;
+    }
+
+    private CellTable<Sostiene> tabella__esamiStudente(Sostiene[] result, String msg) {
+
+        CellTable<Sostiene> tabella__esamiStudente = new CellTable<>();
+        tabella__esamiStudente.addStyleName("tabella__libretto");
+        tabella__esamiStudente.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
+        tabella__esamiStudente.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Sostiene> colonna__codice = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return String.valueOf(object.getCodEsame());
+            }
+        };
+        tabella__esamiStudente.addColumn(colonna__codice, "Codice esame");
+
+        TextColumn<Sostiene> colonna__nomeCorso = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return object.getNomeCorso();
+            }
+        };
+        tabella__esamiStudente.addColumn(colonna__nomeCorso, "Corso");
+
+        TextColumn<Sostiene> colonna__data = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return object.getData() + " - " + object.getOra();
+            }
+        };
+        tabella__esamiStudente.addColumn(colonna__data, "Data");
+
+        TextColumn<Sostiene> colonna__voto = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return String.valueOf(object.getVoto());
+            }
+        };
+        tabella__esamiStudente.addColumn(colonna__voto, "Voto");
+
+
+        tabella__esamiStudente.setRowCount(result.length, true);
+        tabella__esamiStudente.setRowData(0, Arrays.asList(result));
+        return tabella__esamiStudente;
+    }
+
+    private CellTable<Sostiene> tabella__valutazioni(Sostiene[] result, String msg) {
 
         CellTable<Sostiene> tabella__valutazioni = new CellTable<>();
         tabella__valutazioni.addStyleName("tabella__valutazioni");
@@ -256,19 +424,30 @@ public class SchermataSegreteria {
                     @Override
                     public void onSuccess(Boolean check) {
                         Window.alert("Voto pubblicato con successo!");
-                        try {
-                            form__valutazioni();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        serviceFrequenta.cancellaIscrizione(object.getMatricola(), object.getNomeCorso(), new AsyncCallback<Boolean>() {
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                Window.alert("Errore durante la pubblicazione del voto: " + throwable.getMessage());
+                            }
+
+                            @Override
+                            public void onSuccess(Boolean check) {
+                                Window.alert("Iscrizione al corso rimossa con successo!");
+                                try {
+                                    form__valutazioni();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                 });
             }
         });
 
 
-        tabella__valutazioni.setRowCount(result.size(), true);
-        tabella__valutazioni.setRowData(0, result);
+        tabella__valutazioni.setRowCount(result.length, true);
+        tabella__valutazioni.setRowData(0, Arrays.asList(result));
         return tabella__valutazioni;
     }
 
