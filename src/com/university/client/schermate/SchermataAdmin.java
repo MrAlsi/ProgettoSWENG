@@ -269,8 +269,17 @@ public class SchermataAdmin {
         studenteContainer.add(password__textBox);
         final Label data__label = new Label("Data di nascita: ");
         studenteContainer.add(data__label);
-        final TextBox data__textBox = new TextBox();
-        studenteContainer.add(data__textBox);
+
+        ListBox[] data = getInsertData();
+        Label giorno__label = new Label("giorno");
+        studenteContainer.add(giorno__label);
+        studenteContainer.add(data[0]);
+        Label mese__label = new Label("giorno");
+        studenteContainer.add(mese__label);
+        studenteContainer.add(data[1]);
+        Label anno__label = new Label("giorno");
+        studenteContainer.add(anno__label);
+        studenteContainer.add(data[2]);
 
         final Button crea__btn = new Button("Crea");
         crea__btn.addClickHandler(new ClickHandler() {
@@ -284,8 +293,15 @@ public class SchermataAdmin {
             @Override
             public void onSubmit(FormPanel.SubmitEvent event) {
                 if(nome__textBox.getText().length()==0 || cognome__textBox.getText().length()==0 ||
-                        password__textBox.getText().length()==0 || data__textBox.getText().length()==0){
+                        password__textBox.getText().length()==0){
                     Window.alert("Compilare tutti i campi!");
+                    event.cancel();
+                }
+                if(controlloMese(data[0].getSelectedValue(), data[1].getSelectedValue(), data[2].getSelectedValue())==null) {
+                    Window.alert("Trenta giorni ha novembre\n" +
+                            "con april, giugno e settembre\n" +
+                            "di ventotto ce n'è uno\n" +
+                            "tutti gli altri ne han trentuno");
                     event.cancel();
                 }
             }
@@ -294,18 +310,18 @@ public class SchermataAdmin {
         creaStudente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                studenteServiceAsync.creaStudente(nome__textBox.getText(), cognome__textBox.getText(), password__textBox.getText(), data__textBox.getText(), new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore nel creare lo studente: "+caught);
-                    }
+                    studenteServiceAsync.creaStudente(nome__textBox.getText(), cognome__textBox.getText(), password__textBox.getText(), controlloMese(data[0].getSelectedValue(), data[1].getSelectedValue(), data[2].getSelectedValue()), new AsyncCallback<Boolean>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            Window.alert("Errore nel creare lo studente: " + caught);
+                        }
 
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        Window.alert("Studente creato");
-                        listaStudenti();
-                    }
-                });
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            Window.alert("Studente creato");
+                            listaStudenti();
+                        }
+                    });
             }
         });
 
@@ -940,5 +956,54 @@ public class SchermataAdmin {
         segreteriaContainer.add(crea__btn);
         creaSegreteria.add(segreteriaContainer);
         user__container.add(creaSegreteria);
+    }
+
+    public ListBox[] getInsertData(){
+        //Giorno
+        ListBox giorno__list = new ListBox();
+        for(int i=1; i<=31; i++){
+            giorno__list.addItem((String.valueOf(i)));
+        }
+
+        //Mese
+        ListBox mese__list = new ListBox();
+        for(int i=1; i<=12; i++){
+            mese__list.addItem((String.valueOf(i)));
+        }
+        //Anno
+        ListBox anno__list = new ListBox();
+        for(int i=2003; i>=1904; i--){
+            anno__list.addItem((String.valueOf(i)));
+        }
+
+        return new ListBox[]{giorno__list, mese__list, anno__list};
+    }
+
+    public String controlloMese(String giorno, String mese, String anno){
+        //Controllo anno bisestile
+        if(mese.equals(2)){
+            int maxFeb;
+            if((Integer.parseInt(anno)%4==0) && (Integer.parseInt(anno)%100==0)){
+                maxFeb = 29;
+            } else {
+                maxFeb = 28;
+            }
+
+            if(Integer.parseInt(giorno) > maxFeb){
+                return null;
+            }
+        }
+        //Controllo mesi con 30 giorni e non 31
+        if(Integer.parseInt(giorno)>30){
+            switch(mese){
+                case "4": return null;
+                case "6": return null;
+                case "9": return null;
+                case "11": return null;
+            }
+        }
+
+        return giorno+"/"+mese+"/"+anno;
+
     }
 }
