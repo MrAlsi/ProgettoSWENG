@@ -644,6 +644,7 @@ public class SchermataAdmin {
                     @Override
                     public void onSuccess(Boolean result) {
                         Window.alert("Docente creato");
+                        listaDocenti();
                     }
                 });
             }
@@ -653,9 +654,6 @@ public class SchermataAdmin {
         creaDocente.add(docenteContainer);
         user__container.add(creaDocente);
     }
-
-
-
 
     //form per modificare un docente
     public void formModificaDocente(String nome, String cognome, String password, String mail, int codDocente){
@@ -712,7 +710,7 @@ public class SchermataAdmin {
                     @Override
                     public void onSuccess(Boolean result) {
                         Window.alert("Docente modificato");
-                        //lista docenti
+                        listaDocenti();
                     }
                 });
             }
@@ -736,7 +734,6 @@ public class SchermataAdmin {
                 Window.alert("Errore nel visualizzare la segreteria "+caught);
 
             }
-
             @Override
             public void onSuccess(Segreteria[] result) {
                 //Bottone per creare una segreteria
@@ -759,7 +756,7 @@ public class SchermataAdmin {
     //Tabella con le segreterie
    private CellTable<Segreteria> tabella__segreteria(Segreteria[] result, String msg) {
         List<Segreteria> segretari = new ArrayList<>();
-        for(Segreteria segreteria : segretari) {
+        for(Segreteria segreteria : result) {
             segretari.add(segreteria);
         }
 
@@ -835,6 +832,7 @@ public class SchermataAdmin {
 
     //form per creare un utente "segreteria"
     public void formSegreteria(){
+        user__container.clear();
         FormPanel creaSegreteria =new FormPanel();
         creaSegreteria.setAction("/creanuovaSegreteria");
         creaSegreteria.setMethod(FormPanel.METHOD_POST);
@@ -884,6 +882,7 @@ public class SchermataAdmin {
                     @Override
                     public void onSuccess(Boolean result) {
                         Window.alert("Segreteria creata");
+                        listaSegreteria();
                     }
                 });
             }
@@ -891,16 +890,6 @@ public class SchermataAdmin {
         segreteriaContainer.add(crea__btn);
 
         creaSegreteria.add(segreteriaContainer);
-        RootPanel.get("container").add(creaSegreteria);
+        user__container.add(creaSegreteria);
     }
-
-
-
-
-
-
-
-
-
-
 }
