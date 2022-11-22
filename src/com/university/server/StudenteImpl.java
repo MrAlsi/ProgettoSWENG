@@ -148,9 +148,9 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
             }
         }
         if(num>0){
-            return nome + "." + cognome + num + "@studente.university.com";
+            return nome.toLowerCase() + "." + cognome.toLowerCase() + num + "@studente.university.com";
         } else {
-            return nome + "." + cognome + "@studente.university.com";
+            return nome.toLowerCase() + "." + cognome.toLowerCase() + "@studente.university.com";
         }
     }
 }
