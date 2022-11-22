@@ -643,6 +643,7 @@ a:hover #contatti__GWTbtn {
     outline: none;
     box-shadow: 5px 5px 9px #c5c5c5, -5px -5px 9px #fbfbfb;
     padding: 0px 10px;
+    margin-bottom: 2rem;
 }
 
 .form__crea-modifica .gwt-Button {
