@@ -81,9 +81,6 @@ public class SchermataAdmin {
         user__container.add(new HTML("<div class=\"user__title\">my<b>University</b></div>"));
         RootPanel.get("container").add(user__container);
 
-        //formStudenti();
-        //
-        //formSegreteria();
     }
 
     /*       ~ ~ Metodi per Studente ~ ~        */
@@ -247,6 +244,13 @@ public class SchermataAdmin {
     //form creazione di un nuovo studente
     public void formStudenti(){
         user__container.clear();
+        Button btn__chiudi = new Button("X");
+        btn__chiudi.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                listaStudenti();
+            }
+        });
         FormPanel creaStudente=new FormPanel();
         creaStudente.setAction("/creanuvoStudente");
         creaStudente.setMethod(FormPanel.METHOD_POST);
@@ -304,6 +308,8 @@ public class SchermataAdmin {
                 });
             }
         });
+
+        user__container.add(btn__chiudi);
         studenteContainer.add(crea__btn);
         creaStudente.add(studenteContainer);
 
@@ -313,6 +319,14 @@ public class SchermataAdmin {
     //form modifica di uno studente selezionato
     public void formModificaStudente(String nome, String cognome, String password, String mail, String dataNascita, int matricola){
         user__container.clear();
+        Button btn__chiudi = new Button("X");
+        btn__chiudi.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                listaStudenti();
+            }
+        });
+
         FormPanel modificaStudente =new FormPanel();
         modificaStudente.setAction("/creanuvoStudente");
         modificaStudente.setMethod(FormPanel.METHOD_POST);
@@ -375,8 +389,8 @@ public class SchermataAdmin {
                 });
             }
         });
+        user__container.add(btn__chiudi);
         studenteContainer.add(crea__btn);
-
         modificaStudente.add(studenteContainer);
         user__container.add(modificaStudente);
     }
@@ -606,6 +620,13 @@ public class SchermataAdmin {
     //form creazione di un docente
     public void formDocenti(){
         user__container.clear();
+        Button btn__chiudi = new Button("X");
+        btn__chiudi.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                listaDocenti();
+            }
+        });
         FormPanel creaDocente =new FormPanel();
         creaDocente.setAction("/creanuvoDocente");
         creaDocente.setMethod(FormPanel.METHOD_POST);
@@ -660,6 +681,8 @@ public class SchermataAdmin {
                 });
             }
         });
+
+        user__container.add(btn__chiudi);
         docenteContainer.add(crea__btn);
 
         creaDocente.add(docenteContainer);
@@ -669,6 +692,13 @@ public class SchermataAdmin {
     //form per modificare un docente
     public void formModificaDocente(String nome, String cognome, String password, String mail, int codDocente){
         user__container.clear();
+        Button btn__chiudi = new Button("X");
+        btn__chiudi.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                listaDocenti();
+            }
+        });
         FormPanel creaDocente =new FormPanel();
         creaDocente.setAction("/creanuvoDocente");
         creaDocente.setMethod(FormPanel.METHOD_POST);
@@ -727,11 +757,11 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(btn__chiudi);
         docenteContainer.add(crea__btn);
         creaDocente.add(docenteContainer);
         user__container.add(creaDocente);
     }
-
 
 
     /*       ~ ~ Metodi per Segreteria ~ ~        */
@@ -841,9 +871,16 @@ public class SchermataAdmin {
        return tabellaSegreteria;
    }
 
-    //form per creare un utente "segreteria"
+    //form per creare una "segreteria"
     public void formSegreteria(){
         user__container.clear();
+        Button btn__chiudi = new Button("X");
+        btn__chiudi.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                listaSegreteria();
+            }
+        });
         FormPanel creaSegreteria =new FormPanel();
         creaSegreteria.setAction("/creanuovaSegreteria");
         creaSegreteria.setMethod(FormPanel.METHOD_POST);
@@ -898,8 +935,9 @@ public class SchermataAdmin {
                 });
             }
         });
-        segreteriaContainer.add(crea__btn);
 
+        user__container.add(btn__chiudi);
+        segreteriaContainer.add(crea__btn);
         creaSegreteria.add(segreteriaContainer);
         user__container.add(creaSegreteria);
     }
