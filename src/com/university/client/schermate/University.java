@@ -93,6 +93,7 @@ public class University implements EntryPoint {
         login__panel = new FormPanel();
         login__panel.setAction("/login");
         login__panel.setMethod(FormPanel.METHOD_POST);
+        login__panel.addStyleName("form__login");
 
         VerticalPanel login__container = new VerticalPanel();
         login__container.add(login__img);
