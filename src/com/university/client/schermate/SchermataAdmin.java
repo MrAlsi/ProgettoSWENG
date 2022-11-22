@@ -299,6 +299,7 @@ public class SchermataAdmin {
                     @Override
                     public void onSuccess(Boolean result) {
                         Window.alert("Studente creato");
+                        listaStudenti();
                     }
                 });
             }
@@ -311,7 +312,7 @@ public class SchermataAdmin {
 
     //form modifica di uno studente selezionato
     public void formModificaStudente(String nome, String cognome, String password, String mail, String dataNascita, int matricola){
-        RootPanel.get("container").clear();
+        user__container.clear();
         FormPanel modificaStudente =new FormPanel();
         modificaStudente.setAction("/creanuvoStudente");
         modificaStudente.setMethod(FormPanel.METHOD_POST);
@@ -337,7 +338,7 @@ public class SchermataAdmin {
         data__textBox.setValue(dataNascita);
         studenteContainer.add(data__textBox);
 
-        final Button crea__btn = new Button("Crea");
+        final Button crea__btn = new Button("Modifica");
         crea__btn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -369,6 +370,7 @@ public class SchermataAdmin {
                     @Override
                     public void onSuccess(Boolean result) {
                         Window.alert("Studente modificato");
+                        listaStudenti();
                     }
                 });
             }
@@ -376,12 +378,12 @@ public class SchermataAdmin {
         studenteContainer.add(crea__btn);
 
         modificaStudente.add(studenteContainer);
-        RootPanel.get("container").add(modificaStudente);
+        user__container.add(modificaStudente);
     }
 
     //visualizzazione degli esami di uno studente
     public void visualizzaEsamiStudente(Studente studente){
-        RootPanel.get("container").clear();
+        user__container.clear();
         sostieneServiceAsync.getSostieneStudenteConVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -391,12 +393,17 @@ public class SchermataAdmin {
 
             @Override
             public void onSuccess(Sostiene[] result) {
-                FormPanel visualizzaEsami = new FormPanel();
-                VerticalPanel esamiContainer = new VerticalPanel();
+                Button btn__chiudi = new Button("X");
+                //btn__chiudi.addClickHandler("close__btn");
+                btn__chiudi.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        listaStudenti();
+                    }
+                });
                 CellTable<Sostiene> tabella__esami = tabella__esami(result, "Sembra non ci siano esami verbalizzati");
-                esamiContainer.add(tabella__esami);
-                visualizzaEsami.add(esamiContainer);
-                RootPanel.get("container").add(visualizzaEsami);
+                user__container.add(btn__chiudi);
+                user__container.add(tabella__esami);
             }
         });
     }
@@ -424,7 +431,7 @@ public class SchermataAdmin {
 
     //visualizzazione corsi di uno studente selezionato
     public void visualizzaCorsiStudente(Studente studente) {
-        RootPanel.get("container").clear();
+        user__container.clear();
         frequentaServiceAsync.getMieiCorsi(studente.getMatricola(), new AsyncCallback<ArrayList<Frequenta>>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -434,12 +441,16 @@ public class SchermataAdmin {
 
             @Override
             public void onSuccess(ArrayList<Frequenta> result) {
-                FormPanel visualizzaCorsi = new FormPanel();
-                VerticalPanel corsiContainer = new VerticalPanel();
+                Button btn__chiudi = new Button("X");
+                btn__chiudi.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        listaStudenti();
+                    }
+                });
                 CellTable<Frequenta> tabella__corsi = tabella__corsi(result, "Sembra non ci siano corsi ai cui è iscritto");
-                corsiContainer.add(tabella__corsi);
-                visualizzaCorsi.add(corsiContainer);
-                RootPanel.get("container").add(visualizzaCorsi);
+                user__container.add(btn__chiudi);
+                user__container.add(tabella__corsi);
             }
         });
     }
