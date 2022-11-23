@@ -4,12 +4,15 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudenteServiceTest extends GWTTestCase{
     StudenteServiceAsync service;
+
+    @BeforeEach
     public void gwtSetUp(){
         // Create the service that we will test.
         service = GWT.create(StudenteService.class);
@@ -49,5 +52,14 @@ class StudenteServiceTest extends GWTTestCase{
 
     @Test
     void loginStudente() {
+    }
+
+
+    @Test
+    void testGetNumeroStudenti() {
+    }
+
+    @Test
+    void testGetStudenteByMatricola() {
     }
 }

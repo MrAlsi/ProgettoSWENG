@@ -223,7 +223,11 @@ public class SchermataDocente {
         TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
             @Override
             public String getValue(Corso object) {
-                return String.valueOf(object.getCoDocente());
+                if(object.getCoDocente()==-1){
+                    return "Nessun codocente";
+                } else {
+                    return String.valueOf(object.getCoDocente());
+                }
             }
         };
         tabella__corsi.addColumn(colonna__coDocente, "Co-Docente");
@@ -424,6 +428,7 @@ public class SchermataDocente {
         final Label codocente__label = new Label("Codocente: ");
         corsoContainer.add(codocente__label);
         final ListBox codocente__list = new ListBox();
+        codocente__list.addItem("Nessun codocente");
         serviceDocente.getDocenti(new AsyncCallback<Docente[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -454,6 +459,7 @@ public class SchermataDocente {
             @Override
             public void onSubmit(FormPanel.SubmitEvent event) {
                 //Controllo su che tutti i campi siano pieni
+
                 if (nome__textBox.getText().length() == 0 || descrizione__text.getText().length() == 0 || dataF__dataBox.getValue() == null || dataI__dateBox.getValue() == null ||
                         descrizione__text.getText().length() == 0) {
                     Window.alert("Compilare tutti i campi!");
@@ -475,8 +481,14 @@ public class SchermataDocente {
         creaCorso.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                int codocente;
+                if(codocente__list.getSelectedValue().equals("Nessun codocente")){
+                    codocente = -1;
+                } else {
+                    codocente = Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]);
+                }
                 serviceCorso.creaCorso(nome__textBox.getText(), dataI__dateBox.getValue().toString(), dataF__dataBox.getValue().toString(),
-                descrizione__text.getText(), Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]), docente.getCodDocente(), new AsyncCallback<Boolean>() {
+                descrizione__text.getText(), codocente, docente.getCodDocente(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Errore nel creare il corso "+ caught);

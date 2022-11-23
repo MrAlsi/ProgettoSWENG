@@ -138,8 +138,6 @@ public class Index implements Contenuto {
                         });
                     }
                 });
-
-
             }
         });
     }

@@ -141,9 +141,9 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
             }
         }
         if(num>0){
-            return nome + "." + cognome + num + "@docente.university.com";
+            return nome.toLowerCase() + "." + cognome.toLowerCase() + num + "@docente.university.com";
         } else {
-            return nome + "." + cognome + "@docente.university.com";
+            return nome.toLowerCase() + "." + cognome.toLowerCase() + "@docente.university.com";
         }
     }
 }

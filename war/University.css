@@ -394,7 +394,7 @@ a:hover #contatti__GWTbtn {
 
 /*======== LOGIN =========*/
 
-form {
+.form__login {
     display: flex;
     width: fit-content;
     height: 60rem;
@@ -482,9 +482,11 @@ form {
     margin-bottom: 10rem;
 }
 
+/*
 .user__container tbody tr:nth-child(1) td:nth-child(1) {
     height: 100px;
 }
+*/
 
 .user__container table {
     margin: 0rem 4rem 4rem 4rem;
@@ -505,8 +507,9 @@ form {
 .tabella__libretto  tr, .tabella__corsi  tr, .tabella__esami  tr,
 .tabella__pianificaProve  tr, .tabella__esamiPrenotati  tr,
 .tabella__mieiCorsi  tr, .tabella__studenti tr,
-.tabella__valutazioni tr{
-    height: 10rem;
+.tabella__valutazioni tr, .tabella__docenti tr,
+.tabella__segreteria tr {
+    height: 8rem;
 }
 
 .nav__user {
@@ -543,52 +546,39 @@ form {
     box-shadow: inset 5px 5px 10px #e2e2e2, inset -5px -5px 10px #fefefe;
 }
 
-.gwt-Button.creaCorso__btn {
-    margin: 30px;
-    color: var(--color-bg-variant);
-    font-size: 16px;
-    width: 120px;
-    height: 40px;
-    border-radius: 10px;
-    background: linear-gradient(145deg, #f8f8f8, #d1d1d1);
-    box-shadow: 4px 4px 9px #c5c5c5, -4px -4px 9px #ffffff;
-    border-width: 0;
-}
-
-.creaCorso__btn:hover {
-    background: linear-gradient(145deg, #d1d1d1, #f8f8f8);
-    box-shadow:  6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
-}
-
-.creaCorso__btn:active {
-    background: #e8e8e8;
-    box-shadow: inset 6px 6px 12px #c5c5c5, inset -6px -6px 12px #ffffff;
-}
-
+.gwt-Button.creaCorso__btn, .gwt-Button.back__btn,
 .gwt-Button.creaEsame__btn {
-    margin: 30px;
+    margin: 30px 0 0 0;
     color: var(--color-bg-variant);
     font-size: 16px;
     width: 120px;
-    height: 40px;
+    min-height: 50px;
+    max-height: fit-content;
     border-radius: 10px;
     background: linear-gradient(145deg, #f8f8f8, #d1d1d1);
     box-shadow: 4px 4px 9px #c5c5c5, -4px -4px 9px #ffffff;
     border-width: 0;
 }
 
+.gwt-Button.back__btn{
+    margin-bottom: 5rem;
+}
+
+.creaCorso__btn:hover, .back__btn:hover,
 .creaEsame__btn:hover {
     background: linear-gradient(145deg, #d1d1d1, #f8f8f8);
     box-shadow:  6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
 }
 
+.creaCorso__btn:active, .back__btn:active,
 .creaEsame__btn:active {
     background: #e8e8e8;
     box-shadow: inset 6px 6px 12px #c5c5c5, inset -6px -6px 12px #ffffff;
 }
 
-
-.modificaCorso__btn button {
+.modificaCorso__btn button,
+.modificaEsame__btn button,
+.modifica__btn button{
     background: var(--color-bg-variant);
     color: var(--color-primary-variant);
     z-index: 1;
@@ -598,7 +588,9 @@ form {
     border-radius: 12px;
 }
 
-.eliminaCorso__btn button {
+.eliminaCorso__btn button,
+.eliminaEsame__btn button,
+.elimina__btn button{
     background: var(--color-primary-variant);
     color: var(--color-bg);
     z-index: 1;
@@ -609,7 +601,8 @@ form {
 }
 
 .pubblicaVoto__btn button, .frequentaCorso__btn button,
-.valutazioni__btn button, .iscrivitiEsame__btn button{
+.valutazioni__btn button, .iscrivitiEsame__btn button,
+.visualizza__btn button{
     background: var(--color-bg);
     color: var(--color-bg-variant);
     z-index: 1;
@@ -619,26 +612,69 @@ form {
     border-radius: 12px;
 }
 
-.modificaEsame__btn button {
-    background: var(--color-bg-variant);
-    color: var(--color-primary-variant);
-    z-index: 1;
-    height: 5rem;
-    width: 11rem;
-    border: none;
-    border-radius: 12px;
+.form__crea-modifica {
+    line-height: 2rem;
 }
 
-.eliminaEsame__btn button {
-    background: var(--color-primary-variant);
-    color: var(--color-bg);
-    z-index: 1;
-    height: 5rem;
-    width: 11rem;
-    border: none;
-    border-radius: 12px;
+.form__crea-modifica .gwt-Label {
+    margin: 1rem 0 0.5rem 0;
+    text-align: center;
+    color: var(--color-primary);
 }
 
+.form__crea-modifica .gwt-TextBox{
+    width: 20rem;
+    height: 3rem;
+    border-radius: 10px;
+    border-width: 0px;
+    background: #e0e0e0;
+    box-shadow: inset 5px 5px 8px #b5bfc2,
+    inset -5px -5px 8px #fbffff;
+    outline: none;
+    padding: 0px 10px;
+}
+
+.form__crea-modifica .gwt-ListBox{
+    width: 20rem;
+    height: 3rem;
+    border-radius: 10px;
+    border-width: 0px;
+    background: #e0e0e0;
+    outline: none;
+    box-shadow: 5px 5px 9px #c5c5c5, -5px -5px 9px #fbfbfb;
+    padding: 0px 10px;
+    margin-bottom: 2rem;
+}
+
+.form__crea-modifica .gwt-Button {
+    margin-top: 5rem;
+    width: 20rem;
+    height: 5rem;
+    color: var(--color-primary);
+    border-width: 0px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #f0f0f0, #cacaca);
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #fbfbfb;
+    font-weight: 500;
+}
+
+.form__crea-modifica .label__margin {
+    margin: 4rem 0 1.5rem 0;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.form__crea-modifica .gwt-Button:hover {
+    background: linear-gradient(145deg, #cacaca, #f0f0f0);
+    box-shadow:  6px 6px 12px #c5c5c5,
+    -6px -6px 12px #fbfbfb;
+}
+
+.form__crea-modifica .gwt-Button:active {
+    background: #e0e0e0;
+    box-shadow: inset 6px 6px 12px #c5c5c5,
+    inset -6px -6px 12px #fbfbfb;
+}
 
 /* =================== MEDIA QUERY ======================= */
 

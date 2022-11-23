@@ -53,9 +53,9 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
             }
         }
         if(num>0){
-            return nome + "." + cognome + num + "@segreteria.university.com";
+            return nome.toLowerCase() + "." + cognome.toLowerCase() + num + "@segreteria.university.com";
         } else {
-            return nome + "." + cognome + "@segreteria.university.com";
+            return nome.toLowerCase() + "." + cognome.toLowerCase() + "@segreteria.university.com";
         }
     }
 
