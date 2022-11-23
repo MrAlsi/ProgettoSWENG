@@ -12,5 +12,5 @@ public interface EsameServiceAsync {
     void getEsami(AsyncCallback<Esame[]> async);
     void modificaEsame(int codEsame, String nomeCorso, String data, String ora, String durata, String aula, AsyncCallback<Boolean> async);
     void eliminaEsame(int codEsame, AsyncCallback<Boolean> async);
-    void creaEsame(String nomeCorso, String data, String ora, String durata, String aula, AsyncCallback<Boolean> async);
+    void creaEsame(String nomeCorso, String data, String ora, String durata, String aula, AsyncCallback<Integer> async);
 }

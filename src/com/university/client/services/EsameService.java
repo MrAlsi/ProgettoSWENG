@@ -7,7 +7,7 @@ import com.university.client.model.Esame;
 
 @RemoteServiceRelativePath("esame")
 public interface EsameService extends RemoteService {
-    boolean creaEsame(String nomeCorso, String data, String ora, String durata, String aula);
+    int creaEsame(String nomeCorso, String data, String ora, String durata, String aula);
     boolean modificaEsame(int codEsame, String nomeCorso, String data, String ora, String durata, String aula);
     boolean eliminaEsame(int codEsame);
     Esame getEsame(int codEsame);
