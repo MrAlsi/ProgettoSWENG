@@ -15,9 +15,7 @@ import com.google.gwt.user.client.ui.*;
 import com.university.client.model.*;
 import com.university.client.services.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class SchermataAdmin {
 
@@ -940,6 +938,15 @@ public class SchermataAdmin {
            }
        };
        tabellaSegreteria.addColumn(colonna__mail, "Email");
+
+       //Colonna password
+       TextColumn<Segreteria> colonna__password = new TextColumn<Segreteria>() {
+           @Override
+           public String getValue(Segreteria object) {
+               return object.getPassword();
+           }
+       };
+       tabellaSegreteria.addColumn(colonna__password, "Password");
 
        //Colonna elimina
        ButtonCell cella__elimina= new ButtonCell();

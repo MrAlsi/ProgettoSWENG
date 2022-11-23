@@ -3,6 +3,8 @@ package com.university.client.schermate;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
@@ -126,12 +128,26 @@ public class SchermataSegreteria {
                 CellTable<Corso> tabella__corsiStudente = tabella__corsiStudente(result, "Sembra che lo studente non sia iscritto a nessun corso!");
                 user__container.add(tabella__corsiStudente);
 
+                Button btn__chiudi = new Button("< Back");
+                btn__chiudi.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        try {
+                            form__studenti();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                btn__chiudi.addStyleName("back__btn");
+                user__container.add(btn__chiudi);
             }
         });
     }
 
     public void form__visualizzaEsami(int matricola, String nome, String cognome) throws Exception {
         user__container.clear();
+
         serviceSostiene.getEsamiLibretto(matricola, new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -145,6 +161,19 @@ public class SchermataSegreteria {
                 CellTable<Sostiene> tabella__esamiStudente = tabella__esamiStudente(result, "Sembra che lo studente non abbia ancora valutazioni disponibili!");
                 user__container.add(tabella__esamiStudente);
 
+                Button btn__chiudi = new Button("< Back");
+                btn__chiudi.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        try {
+                            form__studenti();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                btn__chiudi.addStyleName("back__btn");
+                user__container.add(btn__chiudi);
             }
         });
     }
