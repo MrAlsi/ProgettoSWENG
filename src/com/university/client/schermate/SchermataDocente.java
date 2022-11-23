@@ -398,8 +398,7 @@ public class SchermataDocente {
     }
 
     public void formCreaCorso() {
-        
-        RootPanel.get("container").clear();
+        user__container.clear();
         FormPanel creaCorso = new FormPanel();
         creaCorso.setAction("/creanuovoCorso");
         creaCorso.setMethod(FormPanel.METHOD_POST);
@@ -499,7 +498,7 @@ public class SchermataDocente {
         corsoContainer.add(crea__btn);
 
         creaCorso.add(corsoContainer);
-        RootPanel.get("container").add(creaCorso);
+        user__container.add(creaCorso);
     }
 
     public void formModificaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int esame) throws ParseException {
@@ -690,24 +689,24 @@ public class SchermataDocente {
                         corso__list.getSelectedValue() == null || ora__listBox.getSelectedValue()== null) {
                     Window.alert("Compilare tutti i campi!");
                     event.cancel();
-                }
-                //fare controlli che l'esame sia dopo la fine del corso
+                }else {
+                    //controllo che l'esame sia dopo la fine del corso
+                    serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            Window.alert("Errore nel caricare i dati dell'esame " + caught);
 
-                serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore nel caricare i dati dell'esame "+ caught);
-
-                    }
-                    @Override
-                    public void onSuccess(Corso result) {
-                        if(data__dataBox.getValue().before(StringToDate(result.dataFine))){
-                            Window.alert("l'esame deve essere dopo la fine del corso: "+ result.getDataFine());
-                            event.cancel();
                         }
-                    }
-                });
 
+                        @Override
+                        public void onSuccess(Corso result) {
+                            if (data__dataBox.getValue().before(StringToDate(result.dataFine))) {
+                                Window.alert("l'esame deve essere dopo la fine del corso: " + result.getDataFine());
+                                event.cancel();
+                            }
+                        }
+                    });
+                }
             }
         });
 

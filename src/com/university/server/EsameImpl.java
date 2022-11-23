@@ -41,8 +41,9 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
     public int creaEsame(String nomeCorso, String data, String ora, String durata, String aula) {
         try{
             createOrOpenDB();
+            map.size();
             map.put(map.size()+1,
-                    new Esame(map.size()+1, nomeCorso, data, ora, durata, aula));
+                    new Esame(map.size()+1, nomeCorso, pulisciData(data), ora, durata, aula));
             db.commit();
             return map.size();
         } catch(Exception e){
@@ -55,7 +56,7 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
     public boolean modificaEsame(int codEsame, String nomeCorso, String data, String ora, String durata, String aula) {
         try{
             createOrOpenDB();
-            Esame esame = new Esame(codEsame, nomeCorso, data, ora, durata, aula);
+            Esame esame = new Esame(codEsame, nomeCorso, pulisciData(data), ora, durata, aula);
             for(int i : map.getKeys()){
                 if(map.get(i).getCodEsame() == codEsame){
                     map.replace(i, esame);
@@ -135,5 +136,13 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
             System.out.println("Errore: "+ e);
             return null;
         }
+    }
+
+    public String pulisciData(String data){
+        if(data.contains("GMT")) {
+            String[] date = data.split(" ");
+            return date[2] + " " + date[1] + " " + date[5];
+        }
+        return data;
     }
 }

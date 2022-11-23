@@ -57,7 +57,7 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     }
 
     public String pulisciData(String data){
-        if(data.contains(" ")) {
+        if(data.contains("GMT")) {
             String[] date = data.split(" ");
             return date[2] + " " + date[1] + " " + date[5];
         }
