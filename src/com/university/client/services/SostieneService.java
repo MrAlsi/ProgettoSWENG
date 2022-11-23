@@ -36,6 +36,9 @@ public interface SostieneService extends RemoteService {
     //Metodo per la segreteria di accettare il voto
     boolean accettaVoto(int esame, int matricola);
 
+    //metodo per eliminare tutti i sostiene con un codice esame
+    boolean eliminaEsameSostiene(int esame);
+
     //Metodo per eliminare un oggetto sostiene
     boolean eliminaSostiene(int esame, int matricola);
 

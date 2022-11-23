@@ -15,14 +15,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.university.client.model.Docente;
-import com.university.client.services.DocenteServiceAsync;
-import com.university.client.services.DocenteService;
+import com.university.client.model.Sostiene;
+import com.university.client.services.*;
 import com.university.client.model.Corso;
-import com.university.client.services.CorsoServiceAsync;
-import com.university.client.services.CorsoService;
 import com.university.client.model.Esame;
-import com.university.client.services.EsameServiceAsync;
-import com.university.client.services.EsameService;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -36,6 +32,7 @@ public class SchermataDocente {
     private DocenteServiceAsync serviceDocente = GWT.create(DocenteService.class);
     private CorsoServiceAsync serviceCorso = GWT.create(CorsoService.class);
     private EsameServiceAsync serviceEsame = GWT.create(EsameService.class);
+    private SostieneServiceAsync serviceSostiene = GWT.create(SostieneService.class);
 
 
     public void accesso(Docente docente) {
@@ -281,7 +278,7 @@ public class SchermataDocente {
                 serviceCorso.eliminaCorso(object.getNome(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("Errore nel elimina");
+                        Window.alert("Errore nel elimina "+ caught);
                     }
                     @Override
                     public void onSuccess(Boolean result) {
@@ -392,6 +389,69 @@ public class SchermataDocente {
                 return "Elimina";
             }
         };
+
+        //aggiungo il metodo eliminaEsame() al bottone elimina
+        colonna__elimina.setFieldUpdater(new FieldUpdater<Esame, String>() {
+            @Override
+            public void update(int index, Esame object, String value) {
+                serviceEsame.eliminaEsame(object.getCodEsame(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore nel elimina "+ caught);
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        try {
+                            //elimino tutti i sostiene relativi a questo esame
+                            serviceSostiene.eliminaEsameSostiene(object.getCodEsame(), new AsyncCallback<Boolean>() {
+                                @Override
+                                public void onFailure(Throwable caught) {
+                                    Window.alert("Errore nel caricare Sostiene "+ caught);
+
+                                }
+
+                                @Override
+                                public void onSuccess(Boolean result) {
+                                    try {
+                                        serviceCorso.getCorso(object.getNomeCorso(), new AsyncCallback<Corso>() {
+                                            @Override
+                                            public void onFailure(Throwable caught) {
+                                                Window.alert("Errore nel caricare i dati del corso "+ caught);
+                                            }
+
+                                            @Override
+                                            public void onSuccess(Corso result) {
+                                                serviceCorso.modificaCorso(object.getNomeCorso(), object.getNomeCorso(), result.getDataInizio(), result.getDataFine(), result.getDescrizione(), result.getCoDocente(), result.getDocente(), -1, new AsyncCallback<Boolean>() {
+                                                    @Override
+                                                    public void onFailure(Throwable caught) {
+                                                        Window.alert("Errore nel modificare il corso "+caught);
+                                                    }
+
+                                                    @Override
+                                                    public void onSuccess(Boolean result) {
+                                                        Window.alert("Esame eliminato");
+                                                        try {
+                                                            form__esami();
+                                                        } catch (Exception e) {
+                                                            throw new RuntimeException(e);
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    } catch (Exception e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            });
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+        });
 
         tabella__esami.addColumn(colonna__elimina, "");
         colonna__elimina.setCellStyleNames("eliminaEsame__btn");
