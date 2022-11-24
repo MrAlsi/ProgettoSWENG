@@ -107,6 +107,7 @@ public class SchermataAdmin {
                 });
                 //Tabella con tutti gli stundenti
                 CellTable <Studente> tabella__studenti= tabella__studenti(result,"Sembra non ci siano studenti");
+                user__container.add(new HTML("<div class=\"user__title\">Studenti iscritti alla piattaforma</div>"));
                 user__container.add(btn__creaStudente);
                 user__container.add(tabella__studenti);
             }
@@ -336,6 +337,7 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(new HTML("<div class=\"user__title\">Crea un nuovo profilo Studente</div>"));
         user__container.add(btn__chiudi);
         studenteContainer.add(crea__btn);
         creaStudente.add(studenteContainer);
@@ -433,6 +435,7 @@ public class SchermataAdmin {
                 });
             }
         });
+        user__container.add(new HTML("<div class=\"user__title\">Modifica i dati dello studente</div>"));
         user__container.add(btn__chiudi);
         studenteContainer.add(crea__btn);
         modificaStudente.add(studenteContainer);
@@ -624,6 +627,7 @@ public class SchermataAdmin {
 
                 //Tabella con tutti i docenti
                 CellTable <Docente> tabella__docenti = tabella__docenti(result,"Sembra non ci siano docenti");
+                user__container.add(new HTML("<div class=\"user__title\">Docenti iscritti alla piattaforma</div>"));
                 user__container.add(btn__creaDocente);
                 user__container.add(tabella__docenti);
 
@@ -792,6 +796,7 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(new HTML("<div class=\"user__title\">Crea un nuovo profilo Docente</div>"));
         user__container.add(btn__chiudi);
         docenteContainer.add(crea__btn);
 
@@ -868,6 +873,7 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(new HTML("<div class=\"user__title\">Modifica i dati del docente</div>"));
         user__container.add(btn__chiudi);
         docenteContainer.add(crea__btn);
         creaDocente.add(docenteContainer);
@@ -899,6 +905,7 @@ public class SchermataAdmin {
                 });
                 //Tabella con tutti gli stundenti
                 CellTable <Segreteria> tabella__segreteria= tabella__segreteria(result,"Sembra non ci siano segreterie");
+                user__container.add(new HTML("<div class=\"user__title\">Segreterie iscritte alla piattaforma</div>"));
                 user__container.add(btn__creaSegreteria);
                 user__container.add(tabella__segreteria);
             }
@@ -1059,6 +1066,7 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(new HTML("<div class=\"user__title\">Crea un nuovo profilo Segreteria</div>"));
         user__container.add(btn__chiudi);
         segreteriaContainer.add(crea__btn);
         creaSegreteria.add(segreteriaContainer);
