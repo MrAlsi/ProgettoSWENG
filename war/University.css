@@ -482,11 +482,10 @@ a:hover #contatti__GWTbtn {
     margin-bottom: 10rem;
 }
 
-/*
-.user__container tbody tr:nth-child(1) td:nth-child(1) {
-    height: 100px;
+
+.user__container > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) {
+    height: 10rem;
 }
-*/
 
 .user__container table {
     margin: 0rem 4rem 4rem 4rem;
@@ -634,7 +633,52 @@ a:hover #contatti__GWTbtn {
     padding: 0px 10px;
 }
 
+.form__crea-modifica .gwt-TextArea{
+    width: 20rem;
+    min-width: 20rem;
+    min-height: 5rem;
+    height: 5rem;
+    max-height: 10rem;
+    max-width: 20rem;
+    border-radius: 10px;
+    border-width: 0px;
+    background: #e0e0e0;
+    box-shadow: inset 5px 5px 8px #b5bfc2,
+    inset -5px -5px 8px #fbffff;
+    outline: none;
+    padding: 5px 10px;
+}
+
+.dateBoxPopup{
+    left: 569px;
+    top: 438px;
+    visibility: visible;
+    position: absolute;
+    overflow: visible;
+    background-color: white;
+    padding: 1rem;
+    width: 20rem;
+    color: var(--color-primary);
+    border-radius: 12px;
+}
+
+.gwt-DatePicker{
+    margin-left: 3rem;
+}
+
 .form__crea-modifica .gwt-ListBox{
+    width: 20rem;
+    height: 3rem;
+    border-radius: 10px;
+    border-width: 0px;
+    background: #e0e0e0;
+    outline: none;
+    box-shadow: 5px 5px 9px #c5c5c5, -5px -5px 9px #fbfbfb;
+    padding: 0px 10px;
+    margin-bottom: 2rem;
+}
+
+.form__crea-modifica .gwt-DateBox{
     width: 20rem;
     height: 3rem;
     border-radius: 10px;
