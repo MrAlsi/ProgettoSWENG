@@ -43,6 +43,7 @@ public class SchermataStudente {
 
         this.studente = studente;
 
+        //Menù laterale
         Button btn__profilo = new Button("Profilo");
         Button btn__voti__studente = new Button("Il mio libretto");
         Button btn__esami = new Button("Pianifico le mie prove");
@@ -119,6 +120,7 @@ public class SchermataStudente {
     }
 
 
+    //Profilo dello studente
     public void form__profilo(){
         serviceStudente.getStudenteByMatricola(studente.getMatricola(), new AsyncCallback<Studente>() {
             @Override
@@ -140,6 +142,7 @@ public class SchermataStudente {
         RootPanel.get("container").add(user__container);
     }
 
+    //Libretto dello studente, tutti gli esami che ha svolto
     public void form__libretto() throws Exception {
         user__container.clear();
         serviceSostiene.getEsamiLibretto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
@@ -154,11 +157,27 @@ public class SchermataStudente {
 
                 CellTable<Sostiene> tabella__libretto = tabella__libretto(result, "Sembra che tu non abbia ancora valutazioni disponibili!");
                 user__container.add(tabella__libretto);
+/*
+                serviceSostiene.calcolaMedia(result, new AsyncCallback<Long>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Long result) {
+                        Label mediaVoto = new Label("Media:" + result);
+                        user__container.add(mediaVoto);
+                    }
+                });
+
+ */
 
             }
         });
     }
 
+    //Pagina che mostra tutti i corsi che posso prenotare un esame
     public void form__pianificaProve() throws Exception {
 
         user__container.clear();
@@ -188,8 +207,8 @@ public class SchermataStudente {
         });
     }
 
+    //Pagina che mostra gli esami prenotati che non ancora un voto
     public void form__esamiPrenotati() throws Exception {
-
         user__container.clear();
         serviceSostiene.getSostieneStudenteSenzaVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
@@ -205,11 +224,8 @@ public class SchermataStudente {
                     }
                     @Override
                     public void onSuccess(Esame[] esami) {
-
                         List<Esame> esamiPrenotati = new ArrayList<>();
-
                         try {
-
                             for (Sostiene sostiene : result) {
                                 for (Esame esame : esami) {
                                     if (sostiene.getCodEsame() == esame.getCodEsame()) {
@@ -230,6 +246,7 @@ public class SchermataStudente {
         });
     }
 
+    //Pagina per vedere i corsi a cui sono iscritto
     public void form__mieiCorsi() throws Exception {
 
         user__container.clear();
@@ -250,6 +267,7 @@ public class SchermataStudente {
         });
     }
 
+    //Pagina con tutti i corsi disponibili, ovvero a quelli a cui non sono iscritto
     public void form__corsi() throws Exception {
 
         user__container.clear();
@@ -421,7 +439,6 @@ public class SchermataStudente {
         };
         tabella__esamiPrenotati.addColumn(colonna__data, "Data");
 
-
         TextColumn<Esame> colonna__durata = new TextColumn<Esame>() {
             @Override
             public String getValue(Esame object) {
@@ -489,7 +506,11 @@ public class SchermataStudente {
         TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
             @Override
             public String getValue(Corso object) {
-                return String.valueOf(object.getCoDocente());
+                if(object.getCoDocente()==-1){
+                    return "Nessun codocente";
+                } else {
+                    return String.valueOf(object.getCoDocente());
+                }
             }
         };
         tabella__mieiCorsi.addColumn(colonna__coDocente, "Co-Docente");
@@ -542,7 +563,11 @@ public class SchermataStudente {
         TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
             @Override
             public String getValue(Corso object) {
-                return String.valueOf(object.getCoDocente());
+                if(object.getCoDocente()==-1){
+                    return "Nessun codocente";
+                } else {
+                    return String.valueOf(object.getCoDocente());
+                }
             }
         };
         tabella__corsi.addColumn(colonna__coDocente, "Co-Docente");
