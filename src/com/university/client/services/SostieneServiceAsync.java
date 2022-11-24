@@ -41,4 +41,6 @@ public interface SostieneServiceAsync {
 
     void getMieiEsami(int matricola, AsyncCallback<ArrayList<Sostiene>> async);
 
+    //metodo per eliminare tutti i sostiene con un codice esame
+    void eliminaEsameSostiene(int esame, AsyncCallback<Boolean> async);
 }

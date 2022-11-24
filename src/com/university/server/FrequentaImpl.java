@@ -267,7 +267,7 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
 
     }
 
-    //metodo per creare una nuova istanza di frequenta, al momento non sono ancora implementati i controlli
+    //metodo per creare una nuova istanza di frequenta
     @Override
     public boolean iscrivi(int matricola, String nomeCorso) {
         try{
