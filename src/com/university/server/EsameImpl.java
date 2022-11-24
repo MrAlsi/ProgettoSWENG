@@ -41,7 +41,6 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
     public int creaEsame(String nomeCorso, String data, String ora, String durata, String aula) {
         try{
             createOrOpenDB();
-            map.size();
             map.put(map.size()+1,
                     new Esame(map.size()+1, nomeCorso, pulisciData(data), ora, durata, aula));
             db.commit();

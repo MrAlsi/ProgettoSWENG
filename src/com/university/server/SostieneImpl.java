@@ -1,12 +1,9 @@
 package com.university.server;
 
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.*;
-import com.university.client.model.Serializer.SerializerDocente;
 import com.university.client.model.Serializer.SerializerEsame;
 import com.university.client.model.Serializer.SerializerSostiene;
-import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.services.SostieneService;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -203,6 +200,24 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return false;
     }
 
+    //metodo per eliminare tutti i sostiene con un codice esame
+    @Override
+    public boolean eliminaEsameSostiene(int esame){
+        try{
+            createOrOpenDB();
+            for (int i : map.getKeys()) {
+                if (map.get(i).getCodEsame() == esame) {
+                    map.remove(i);
+                    db.commit();
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Err: " + e);
+        }
+        return false;
+    }
+
     //Metodo per eliminare un oggetto sostiene
     @Override
     public boolean eliminaSostiene(int esame, int matricola) {
@@ -359,5 +374,4 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
         return null;
     }
-
 }
