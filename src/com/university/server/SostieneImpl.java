@@ -362,5 +362,4 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
         return null;
     }
-
 }

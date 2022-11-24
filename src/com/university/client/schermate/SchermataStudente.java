@@ -91,7 +91,7 @@ public class SchermataStudente {
 
         btn__corsi__studente.addClickHandler(clickEvent -> {
             try {
-                form__mieiCorsi();
+                StampaMieiCorsi();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -230,7 +230,7 @@ public class SchermataStudente {
         });
     }
 
-    public void form__mieiCorsi() throws Exception {
+    public void StampaMieiCorsi() throws Exception {
 
         user__container.clear();
         serviceFrequenta.getCorsiStudente(studente.getMatricola(), new AsyncCallback<Corso[]>() {

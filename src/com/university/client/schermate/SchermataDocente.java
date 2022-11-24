@@ -481,6 +481,8 @@ public class SchermataDocente {
         modificaEsame.setAction("/modificaEsame");
         modificaEsame.setMethod(FormPanel.METHOD_POST);
         VerticalPanel modificaEsameContainer= new VerticalPanel();
+        modificaEsame.addStyleName("form__crea-modifica");
+
 
         final Label nome__label= new Label("Corso: ");
         modificaEsameContainer.add(nome__label);
