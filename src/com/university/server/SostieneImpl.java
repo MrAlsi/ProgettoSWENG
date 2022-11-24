@@ -303,6 +303,18 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
     }
 
+    @Override
+    public Sostiene[] getStudentiInserisciVoto(int codEsame) {
+        createOrOpenDB();
+        ArrayList<Sostiene> sostenuti = new ArrayList<>();
+        for(int i : map.getKeys()){
+            if(map.get(i).getCodEsame() == codEsame && map.get(i).getVoto()==-1){
+                sostenuti.add(map.get(i));
+            }
+        }
+        return sostenuti.toArray(new Sostiene[0]);
+    }
+
     //metodo per prendere i miei esami
     @Override
     public ArrayList<Sostiene> getMieiEsami(int matricola) {

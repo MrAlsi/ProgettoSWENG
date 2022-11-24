@@ -53,5 +53,7 @@ public interface SostieneService extends RemoteService {
     // restituisce tutti gli esami sostenibili dallo studente
     Esame[] getEsamiSostenibili(int matricola, Corso[] mieiCorsi);
 
+    Sostiene[] getStudentiInserisciVoto(int codEsame);
+
     ArrayList<Sostiene> getMieiEsami(int matricola);
 }

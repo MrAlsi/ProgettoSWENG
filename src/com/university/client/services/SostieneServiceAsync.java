@@ -43,4 +43,5 @@ public interface SostieneServiceAsync {
 
     //metodo per eliminare tutti i sostiene con un codice esame
     void eliminaEsameSostiene(int esame, AsyncCallback<Boolean> async);
+    void getStudentiInserisciVoto(int codEsame, AsyncCallback<Sostiene[]> async);
 }
