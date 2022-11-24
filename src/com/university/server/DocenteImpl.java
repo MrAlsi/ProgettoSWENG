@@ -1,5 +1,6 @@
 package com.university.server;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Serializer.SerializerStudente;
 import com.university.client.model.Studente;
@@ -22,8 +23,8 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
     private DB getDb(){
         ServletContext context = this.getServletContext();
         synchronized (context) {
-            DB db = (DB)context.getAttribute("docentiDb");
-            if(db == null) {
+            DB db = (DB) context.getAttribute("docentiDb");
+            if (db == null) {
                 db = DBMaker.fileDB("C:\\MapDB\\docente").closeOnJvmShutdown().checksumHeaderBypass().make();
                 context.setAttribute("docentiDb", db);
             }

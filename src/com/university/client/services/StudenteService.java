@@ -3,7 +3,7 @@ package com.university.client.services;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.university.client.model.*;
-
+import com.university.server.StudenteImplementazione;
 
 @RemoteServiceRelativePath("studenti")
 public interface StudenteService extends RemoteService {

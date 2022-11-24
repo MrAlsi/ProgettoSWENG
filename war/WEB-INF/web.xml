@@ -10,7 +10,7 @@
     </servlet>
     <servlet>
         <servlet-name>com.university.University StudenteService</servlet-name>
-        <servlet-class>com.university.server.StudenteImpl</servlet-class>
+        <servlet-class>com.university.server.StudenteImplementazione</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>com.university.University CorsoService</servlet-name>
@@ -68,4 +68,4 @@
         <servlet-name>com.university.University SostieneService</servlet-name>
         <url-pattern>/University/sostiene</url-pattern>
     </servlet-mapping>
-  </web-app>
+</web-app>
