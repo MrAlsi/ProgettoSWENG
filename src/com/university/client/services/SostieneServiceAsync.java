@@ -41,4 +41,5 @@ public interface SostieneServiceAsync {
 
     void getMieiEsami(int matricola, AsyncCallback<ArrayList<Sostiene>> async);
 
+    void getStudentiInserisciVoto(int codEsame, AsyncCallback<Sostiene[]> async);
 }

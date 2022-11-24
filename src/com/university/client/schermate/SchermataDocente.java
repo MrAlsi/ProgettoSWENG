@@ -1,11 +1,13 @@
 package com.university.client.schermate;
 
-import com.google.gwt.cell.client.ButtonCell;
-import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
@@ -13,6 +15,9 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.university.client.model.Docente;
 import com.university.client.model.Sostiene;
@@ -23,6 +28,7 @@ import com.university.client.model.Esame;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Set;
 
 public class SchermataDocente {
     Docente docente;
@@ -783,10 +789,10 @@ public class SchermataDocente {
 
     public void valutazioni(Esame esame){
         user__container.clear();
-        serviceSostiene.getStudenti(esame.getCodEsame(), new AsyncCallback<Sostiene[]>() {
+        serviceSostiene.getStudentiInserisciVoto(esame.getCodEsame(), new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("Errore nel caricamento degli studenti" + caught);
+
             }
 
             @Override
@@ -809,7 +815,6 @@ public class SchermataDocente {
                 user__container.add(tabella__sostiene);
             }
         });
-
     }
 
     private CellTable<Sostiene> tabella__esamiSostenuti(Sostiene[] result, String msg){
@@ -818,31 +823,90 @@ public class SchermataDocente {
         tabellaSostiene.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
         tabellaSostiene.setEmptyTableWidget(new Label(msg));
 
+        //Colonna per mostrare la matricola
         TextColumn<Sostiene> colonna__matricola = new TextColumn<Sostiene>() {
             @Override
             public String getValue(Sostiene object) {
                 return "" + object.getMatricola();
             }
         };
-
         tabellaSostiene.addColumn(colonna__matricola, "Matricola");
 
-        TextColumn<Sostiene> colonna__voto = new TextColumn<Sostiene>() {
+        //TextInput per aggiungere voto
+        TextInputCell inputVoto = new TextInputCell();
+
+        Column<Sostiene, String> colonna__aggiungiVoto = new Column<Sostiene, String>(inputVoto) {
             @Override
             public String getValue(Sostiene object) {
-                if(object.getVoto()==-1){
-                    return " - ";
-                } else {
-                    return object.getVoto() + "/30";
-                }
+                return null;
             }
         };
 
-        tabellaSostiene.addColumn(colonna__voto, "Voto");
+        colonna__aggiungiVoto.setFieldUpdater(new FieldUpdater<Sostiene, String>() {
+            @Override
+            public void update(int index, Sostiene object, String value) {
+                try{
+                    object.voto = Integer.parseInt(value);
+                } catch(Exception NumberFormatException){
+                    Window.alert("NO: "+ value + " non è un voto vero");
+                }
+            }
+        });
+
+        tabellaSostiene.addColumn(colonna__aggiungiVoto, "Aggiungi voto");
+
+        //Tasto per mandare il voto alla segreteria
+        ButtonCell cella__mandaVoto = new ButtonCell();
+        Column<Sostiene, String> colonna__mandaVoto = new Column<Sostiene, String>(cella__mandaVoto) {
+            @Override
+            public String getValue(Sostiene object) {
+                return "Manda";
+            }
+        };
+
+        colonna__mandaVoto.setFieldUpdater(new FieldUpdater<Sostiene, String>() {
+            @Override
+            public void update(int index, Sostiene object, String value) {
+                try{
+                    //if(colonna__aggiungiVoto.getValue())
+                    if((object.voto<31 && object.voto>-1) || object.voto==32){
+                        int voto = object.voto;
+                        serviceSostiene.inserisciVoto(object.codEsame, object.matricola, object.voto, new AsyncCallback<Boolean>() {
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                Window.alert("Errore");
+                            }
+                            @Override
+                            public void onSuccess(Boolean result) {
+                                Window.alert("Voto inserito con successo");
+                                serviceEsame.getEsame(object.codEsame, new AsyncCallback<Esame>() {
+                                    @Override
+                                    public void onFailure(Throwable caught) {
+                                        Window.alert("KEK");
+                                    }
+                                    @Override
+                                    public void onSuccess(Esame result) {
+                                        valutazioni(result);
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        Window.alert("Il voto deve essere compreso tra 0 e 30 oppure 32 che è 30 e lode");
+                    }
+                } catch(Exception NumberFormatException){
+                    Window.alert("NO: "+ value + " non è un voto vero");
+                }
+            }
+        });
+
+        tabellaSostiene.addColumn(colonna__mandaVoto, "Manda voto");
+
         tabellaSostiene.setRowCount(result.length);
         tabellaSostiene.setRowData(0, Arrays.asList(result));
         return tabellaSostiene;
     }
+
 
     public Date StringToDate(String data){
         String[] amg = data.split(" ");
