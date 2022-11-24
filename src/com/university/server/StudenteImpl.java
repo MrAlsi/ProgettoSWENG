@@ -28,7 +28,7 @@ public class StudenteImpl extends RemoteServiceServlet implements StudenteServic
             return db;
         }
     }
-    private void createOrOpenDB(){
+    protected void createOrOpenDB(){
         this.db = getDb();
         this.map = this.db.hashMap("studentiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerStudente()).createOrOpen();
     }

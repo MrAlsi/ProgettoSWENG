@@ -23,7 +23,6 @@ import com.university.client.model.Esame;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Locale;
 
 public class SchermataDocente {
     Docente docente;
@@ -357,6 +356,13 @@ public class SchermataDocente {
             }
         };
 
+        colonna__valutazioni.setFieldUpdater(new FieldUpdater<Esame, String>() {
+            @Override
+            public void update(int index, Esame object, String value) {
+                valutazioni(object);
+            }
+        });
+
         tabella__esami.addColumn(colonna__valutazioni, "");
         colonna__valutazioni.setCellStyleNames("valutazioni__btn");
 
@@ -482,7 +488,6 @@ public class SchermataDocente {
         modificaEsame.setMethod(FormPanel.METHOD_POST);
         VerticalPanel modificaEsameContainer= new VerticalPanel();
         modificaEsame.addStyleName("form__crea-modifica");
-
 
         final Label nome__label= new Label("Corso: ");
         modificaEsameContainer.add(nome__label);
@@ -749,6 +754,7 @@ public class SchermataDocente {
         modificaCorsoContainer.add(codocente__label);
 
         final ListBox codocente__list = new ListBox();
+        codocente__list.addItem("Nessun codocente");
 
         serviceDocente.getDocenti(new AsyncCallback<Docente[]>() {
             @Override
@@ -762,12 +768,11 @@ public class SchermataDocente {
                     if (result[i].getCodDocente() != docente.getCodDocente()) {
                         codocente__list.addItem(result[i].codDocente + ": " + result[i].getNome() + " " + result[i].getCognome());
                         if(result[i].getCodDocente() == codocente){
-                            codocente__list.setItemSelected(i, true);
+                            codocente__list.setItemSelected(i+1, true);
                         }
                     }
                 }
                 //codocente__list.setValue(codocente, "pp" /*result[i].codDocente + ": " + result[i].getNome() + " " + result[i].getCognome()*/);
-
             }
         });
 
@@ -808,8 +813,14 @@ public class SchermataDocente {
         modificaCorso.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                int codocente;
+                if(codocente__list.getSelectedValue().equals("Nessun codocente")){
+                    codocente = -1;
+                } else {
+                    codocente = Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]);
+                }
                 serviceCorso.modificaCorso(nome, nome__textBox.getText(), dataI__dateBox.getValue().toString(), dataF__dataBox.getValue().toString(),
-                        descrizione__text.getText(), Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]), docente.getCodDocente(), esame, new AsyncCallback<Boolean>() {
+                        descrizione__text.getText(), codocente, docente.getCodDocente(), esame, new AsyncCallback<Boolean>() {
                             @Override
                             public void onFailure(Throwable caught) {
                                 Window.alert("Errore nel creare il corso "+ caught);
@@ -831,7 +842,7 @@ public class SchermataDocente {
         modificaCorsoContainer.add(crea__btn);
 
         modificaCorso.add(modificaCorsoContainer);
-        RootPanel.get("container").add(modificaCorso);
+        user__container.add(modificaCorso);
     }
 
     public void formCreaEsame(){
@@ -965,6 +976,69 @@ public class SchermataDocente {
         esameContainer.add(crea__btn);
         creaEsame.add(esameContainer);
         user__container.add(creaEsame);
+    }
+
+    public void valutazioni(Esame esame){
+        user__container.clear();
+        serviceSostiene.getStudenti(esame.getCodEsame(), new AsyncCallback<Sostiene[]>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Errore nel caricamento degli studenti" + caught);
+            }
+
+            @Override
+            public void onSuccess(Sostiene[] result) {
+                Button btnIndietro= new Button("Back");
+                btnIndietro.addStyleName("creaCorso__btn");
+                btnIndietro.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        try {
+                            form__esami();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                user__container.add(btnIndietro);
+
+                CellTable<Sostiene> tabella__sostiene = tabella__esamiSostenuti(result, "Nessun studente iscritto all'esame");
+                user__container.add(tabella__sostiene);
+            }
+        });
+
+    }
+
+    private CellTable<Sostiene> tabella__esamiSostenuti(Sostiene[] result, String msg){
+        CellTable<Sostiene> tabellaSostiene = new CellTable<>();
+        tabellaSostiene.addStyleName("tabella__corsi");
+        tabellaSostiene.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
+        tabellaSostiene.setEmptyTableWidget(new Label(msg));
+
+        TextColumn<Sostiene> colonna__matricola = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return "" + object.getMatricola();
+            }
+        };
+
+        tabellaSostiene.addColumn(colonna__matricola, "Matricola");
+
+        TextColumn<Sostiene> colonna__voto = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                if(object.getVoto()==-1){
+                    return " - ";
+                } else {
+                    return object.getVoto() + "/30";
+                }
+            }
+        };
+
+        tabellaSostiene.addColumn(colonna__voto, "Voto");
+        tabellaSostiene.setRowCount(result.length);
+        tabellaSostiene.setRowData(0, Arrays.asList(result));
+        return tabellaSostiene;
     }
 
     public Date StringToDate(String data){
