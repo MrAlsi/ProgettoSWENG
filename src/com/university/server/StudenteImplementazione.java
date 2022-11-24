@@ -80,7 +80,7 @@ public class StudenteImplementazione extends RemoteServiceServlet implements Stu
     @Override
     public Studente[] getStudenti() {
         chiamaDB();
-        return new Studente[0];
+        return repositoryStudenti.getAll();
     }
 
     @Override
