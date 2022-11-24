@@ -487,6 +487,8 @@ public class SchermataDocente {
         return tabella__esami;
     }
 
+
+    //metodo per modificare un esame
     public void formModificaEsame(int codEsame, String nomeCorso, String data, String ora, String aula, String durata) throws  ParseException{
         user__container.clear();
         FormPanel modificaEsame= new FormPanel();
@@ -703,11 +705,15 @@ public class SchermataDocente {
 
                     @Override
                     public void onSuccess(Boolean result) {
-                        Window.alert("corso creato");
-                        try {
-                            form__corsi();
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
+                        if(result==true) {
+                            Window.alert("corso creato");
+                            try {
+                                form__corsi();
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        }else{
+                            Window.alert("Impossibile creare il corso, corso "+ nome__textBox.getText()+ " già esistente.");
                         }
                     }
                 });

@@ -46,6 +46,13 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     public Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente) {
         try{
             createOrOpenDB();
+            Corso[] corsi= getCorsi();
+            //controllo se esiste già un corso con questo nome
+            for(Corso corso: corsi){
+                if(corso.getNome().equals(nome)){
+                    return false;
+                }
+            }
             map.put(map.size() + 1,
                     new Corso( nome, pulisciData(dataInizio), pulisciData(dataFine), descrizione, codocente, docente, -1));
             db.commit();
