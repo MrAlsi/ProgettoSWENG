@@ -52,6 +52,11 @@ public class RepositoryStudenti extends RemoteServiceServlet implements Reposito
     }
 
     @Override
+    public Studente GetByString(String stringa) {
+        return null;
+    }
+
+    @Override
     public Studente[] getAll() {
         createOrOpenDB();
         Studente[] studenti = new Studente[map.size()];
@@ -74,6 +79,11 @@ public class RepositoryStudenti extends RemoteServiceServlet implements Reposito
     @Override
     public boolean Remove(int id) {
         return true;
+    }
+
+    @Override
+    public boolean RemoveByString(String stringa) {
+        return false;
     }
 
     @Override

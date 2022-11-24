@@ -36,6 +36,10 @@
         <servlet-name>com.university.University SostieneService</servlet-name>
         <servlet-class>com.university.server.SostieneImpl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>com.university.ProgettoSWENGJUnit SegreteriaService</servlet-name>
+        <servlet-class>com.university.server.SegreteriaImplementazione</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>com.university.University UtenteService</servlet-name>
         <url-pattern>/University/utenti</url-pattern>
@@ -67,5 +71,9 @@
     <servlet-mapping>
         <servlet-name>com.university.University SostieneService</servlet-name>
         <url-pattern>/University/sostiene</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.ProgettoSWENGJUnit SegreteriaService</servlet-name>
+        <url-pattern>/progettosweng/segreteria</url-pattern>
     </servlet-mapping>
 </web-app>
