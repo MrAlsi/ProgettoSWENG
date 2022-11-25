@@ -16,7 +16,7 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class DocenteImpl extends RemoteServiceServlet implements DocenteService {
+public class DocenteImpl {} /*extends RemoteServiceServlet implements DocenteService {
     DB db;
     HTreeMap<Integer, Docente> map;
 
@@ -148,3 +148,4 @@ public class DocenteImpl extends RemoteServiceServlet implements DocenteService 
         }
     }
 }
+*/

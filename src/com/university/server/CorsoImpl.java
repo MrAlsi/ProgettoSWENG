@@ -14,7 +14,7 @@ import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
+public class CorsoImpl {} /* extends RemoteServiceServlet  implements CorsoService {
     DB db;
     HTreeMap<Integer, Corso> map;
 
@@ -154,3 +154,4 @@ public class CorsoImpl extends RemoteServiceServlet  implements CorsoService {
     }
 
 }
+*/

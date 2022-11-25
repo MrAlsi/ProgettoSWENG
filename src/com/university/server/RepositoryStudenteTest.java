@@ -2,13 +2,10 @@ package com.university.server;
 
 import com.university.client.model.Studente;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RepositoryStudenteTest  implements Repository<Studente> {
-    //String mail, String password, String dataNascita, int matricola) {
-
+public class RepositoryStudenteTest implements Repository<Studente> {
     List<Studente> studentiTest = Arrays.asList(
             new Studente("Gabriel","Alsina","gabriel.alsina@studente.university.com","password","22/08/1999",1),
             new Studente("Carltta","Carboni","carlotta.carboni@studente.university.com","totta","21/02/1999",2),
@@ -38,13 +35,7 @@ public class RepositoryStudenteTest  implements Repository<Studente> {
 
     @Override
     public boolean Create(Studente object) {
-        try{
-            studentiTest.add(object);
-            return true;
-        }catch(Exception e){
-            System.out.println("StudenteTest " + e);
-        }
-        return false;
+        return studentiTest.add(object);
     }
 
     @Override
