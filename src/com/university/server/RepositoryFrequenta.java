@@ -1,28 +1,19 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.model.Corso;
 import com.university.client.model.Frequenta;
-import com.university.client.model.Serializer.SerializerCorso;
 import com.university.client.model.Serializer.SerializerFrequenta;
-import com.university.client.model.Serializer.SerializerStudente;
-import com.university.client.model.Sostiene;
-import com.university.client.model.Studente;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
 import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-public class RepositoryFrequenta extends RemoteServiceServlet implements Repository<Frequenta> {
-
+public class RepositoryFrequenta extends RemoteServiceServlet implements RepositoryInt<Frequenta> {
     DB db;
     HTreeMap<Integer, Frequenta> map;
     ServletContext context;
-
 
     public RepositoryFrequenta(ServletContext servletContext){
         context = servletContext;

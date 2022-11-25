@@ -2,14 +2,14 @@ package com.university.server;
 
 import com.university.client.model.Esame;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RepositoryEsameTest implements Repository<Esame> {
+public class RepositoryEsameTest implements RepositoryInt<Esame> {
 
     List<Esame> esamiTest= Arrays.asList(
-            new Esame(1,"italiano", "12 12 2022", "9","2", "a" )
+            new Esame(1,"italiano", "12 12 2022", "9","2", "a" ),
+            new Esame(2, "Programmazione", "15 12 2022", "10", "2", "pippo")
     );
 
 

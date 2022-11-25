@@ -10,7 +10,7 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class CorsoRepository extends RemoteServiceServlet implements Repository<Corso> {
+public class CorsoRepository extends RemoteServiceServlet implements RepositoryString<Corso> {
     DB db;
     HTreeMap<Integer, Corso> map;
     ServletContext context;
@@ -34,12 +34,7 @@ public class CorsoRepository extends RemoteServiceServlet implements Repository<
     }
 
     @Override
-    public Corso GetById(int id) {
-        return null;
-    }
-
-    @Override
-    public Corso GetByString(String stringa) {
+    public Corso GetById(String stringa) {
         createOrOpenDB();
         for (int id : map.getKeys()) {
             if (map.get(id).getNome().equals(stringa)) {
@@ -80,12 +75,7 @@ public class CorsoRepository extends RemoteServiceServlet implements Repository<
     }
 
     @Override
-    public boolean Remove(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean RemoveByString(String stringa) {
+    public boolean Remove(String stringa) {
         try{
             createOrOpenDB();
             for(int i : map.getKeys()){
@@ -102,12 +92,7 @@ public class CorsoRepository extends RemoteServiceServlet implements Repository<
     }
 
     @Override
-    public boolean Update(Corso object) {
-        return false;
-    }
-
-    @Override
-    public boolean UpdateByString(Corso object, String stringa) {
+    public boolean Update(Corso object, String stringa) {
         createOrOpenDB();
         for(int i : map.getKeys()){
             if(map.get(i).getNome().equals(stringa)){
@@ -118,5 +103,4 @@ public class CorsoRepository extends RemoteServiceServlet implements Repository<
         }
         return false;
     }
-
 }

@@ -7,7 +7,7 @@ import com.university.client.services.StudenteService;
 import javax.servlet.ServletContext;
 
 public class StudenteImplementazione extends RemoteServiceServlet implements StudenteService {
-    Repository<Studente> repositoryStudenti;
+    RepositoryInt<Studente> repositoryStudenti;
     Boolean singleton = false;
     Boolean test = false;
 

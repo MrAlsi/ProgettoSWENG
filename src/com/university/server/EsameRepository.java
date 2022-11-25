@@ -3,8 +3,6 @@ package com.university.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Esame;
 import com.university.client.model.Serializer.SerializerEsame;
-import com.university.client.model.Serializer.SerializerStudente;
-import com.university.client.model.Studente;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
@@ -12,13 +10,13 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class RepositoryEsame extends RemoteServiceServlet implements Repository<Esame>  {
+public class EsameRepository extends RemoteServiceServlet implements RepositoryInt<Esame> {
 
     DB db;
     HTreeMap<Integer, Esame> map;
     ServletContext context;
 
-    public RepositoryEsame(ServletContext servletContext){
+    public EsameRepository(ServletContext servletContext){
         context = servletContext;
     }
     private DB getDb(){

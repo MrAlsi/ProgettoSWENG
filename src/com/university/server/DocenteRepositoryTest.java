@@ -5,7 +5,7 @@ import com.university.client.model.Docente;
 import java.util.Arrays;
 import java.util.List;
 
-public class DocenteRepositoryTest implements Repository<Docente>{
+public class DocenteRepositoryTest implements RepositoryInt<Docente> {
     List<Docente> docentiTest = Arrays.asList(
 
     );
@@ -19,12 +19,6 @@ public class DocenteRepositoryTest implements Repository<Docente>{
         }
         return null;
     }
-
-    @Override
-    public Docente GetByString(String stringa) {
-        return null;
-    }
-
     @Override
     public Docente[] getAll() {
         return docentiTest.toArray(new Docente[0]);
@@ -44,12 +38,6 @@ public class DocenteRepositoryTest implements Repository<Docente>{
         }
         return false;
     }
-
-    @Override
-    public boolean RemoveByString(String stringa) {
-        return false;
-    }
-
     @Override
     public boolean Update(Docente object) {
         for (Docente d : docentiTest) {
@@ -59,11 +47,6 @@ public class DocenteRepositoryTest implements Repository<Docente>{
                 return true;
             }
         }
-        return false;
-    }
-
-    @Override
-    public boolean UpdateByString(Docente object, String stringa) {
         return false;
     }
 }

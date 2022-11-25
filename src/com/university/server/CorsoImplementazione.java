@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class CorsoImplementazione extends RemoteServiceServlet implements CorsoService {
 
-    Repository<Corso> repositoryCorso;
+    RepositoryString<Corso> repositoryCorso;
     Boolean singleton = false;
     Boolean test = false;
 
@@ -57,7 +57,7 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
     @Override
     public Corso getCorso(String nome) {
         chiamaDB();
-        return repositoryCorso.GetByString(nome);
+        return repositoryCorso.GetById(nome);
     }
 
     @Override
@@ -75,13 +75,13 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
     @Override
     public boolean eliminaCorso(String nome) {
         chiamaDB();
-        return repositoryCorso.RemoveByString(nome);
+        return repositoryCorso.Remove(nome);
     }
 
     @Override
     public boolean modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
         chiamaDB();
-        return repositoryCorso.UpdateByString(
+        return repositoryCorso.Update(
                 new Corso(nome, pulisciData(dataInizio), pulisciData(dataFine), descrizione, codocente, docente, esame),
                 nomeCodice);
     }

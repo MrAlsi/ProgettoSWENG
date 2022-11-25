@@ -8,7 +8,6 @@
     <!-- Specify the app entry point class.                   -->
     <entry-point class='com.university.client.schermate.University'/>
 
-
     <!-- Specify the app servlets.                   -->
     <servlet path='/UniversityService' class='com.university.server.UniversityServiceImpl'/>
 
