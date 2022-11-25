@@ -5,7 +5,7 @@ import com.university.client.model.Studente;
 import java.util.Arrays;
 import java.util.List;
 
-public class RepositoryStudenteTest implements Repository<Studente> {
+public class RepositoryStudenteTest implements RepositoryInt<Studente> {
     List<Studente> studentiTest = Arrays.asList(
             new Studente("Gabriel","Alsina","gabriel.alsina@studente.university.com","password","22/08/1999",1),
             new Studente("Carltta","Carboni","carlotta.carboni@studente.university.com","totta","21/02/1999",2),

@@ -5,17 +5,13 @@ import com.university.client.model.Corso;
 import java.util.Arrays;
 import java.util.List;
 
-public class CorsoRepositoryTest implements Repository<Corso>{
+public class CorsoRepositoryTest implements RepositoryString<Corso> {
     List<Corso> corsiTest = Arrays.asList(
 
     );
-    @Override
-    public Corso GetById(int id) {
-        return null;
-    }
 
     @Override
-    public Corso GetByString(String stringa) {
+    public Corso GetById(String stringa) {
         for(Corso c : corsiTest){
             if(c.getNome().equals(stringa)){
                 return c;
@@ -41,12 +37,7 @@ public class CorsoRepositoryTest implements Repository<Corso>{
     }
 
     @Override
-    public boolean Remove(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean RemoveByString(String stringa) {
+    public boolean Remove(String stringa) {
         try{
             for(Corso c : corsiTest){
                 if(c.getNome().equals(stringa)){
@@ -60,12 +51,7 @@ public class CorsoRepositoryTest implements Repository<Corso>{
     }
 
     @Override
-    public boolean Update(Corso object) {
-        return false;
-    }
-
-    @Override
-    public boolean UpdateByString(Corso object, String stringa) {
+    public boolean Update(Corso object, String stringa) {
         try{
             for(Corso c : corsiTest){
                 if(c.getNome().equals(stringa)){

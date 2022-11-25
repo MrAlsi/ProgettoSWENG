@@ -8,7 +8,7 @@ import javax.servlet.ServletContext;
 
 public class SegreteriaImplementazione extends RemoteServiceServlet implements SegreteriaService {
 
-    Repository<Segreteria> repositorySegreteria;
+    RepositoryInt<Segreteria> repositorySegreteria;
     Boolean singleton = false;
     Boolean test = false;
 

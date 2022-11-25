@@ -3,18 +3,15 @@ package com.university.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Corso;
 import com.university.client.model.Esame;
-import com.university.client.model.Segreteria;
-import com.university.client.model.Studente;
 import com.university.client.services.EsameService;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class EsameImplementazione extends RemoteServiceServlet implements EsameService {
 
-    Repository<Esame> repositoryEsame;
+    RepositoryInt<Esame> repositoryEsame;
     Boolean singleton = false;
     Boolean test = false;
 
@@ -33,7 +30,7 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
         if(!singleton){
             if(!test){
                 ServletContext context = this.getServletContext();
-                repositoryEsame = new RepositoryEsame(context);
+                repositoryEsame = new EsameRepository(context);
                 singleton = true;
             }
         }

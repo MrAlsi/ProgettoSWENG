@@ -1,9 +1,9 @@
 package com.university.server;
 
-public interface Repository <K>{
+public interface RepositoryInt<K>{
     public K GetById(int id);
 
-    public K GetByString (String stringa );
+    //public K GetByString (String stringa );
 
     public K[] getAll();
 
@@ -11,9 +11,9 @@ public interface Repository <K>{
 
     public boolean Remove(int id);
 
-    public boolean RemoveByString(String stringa);
+    //public boolean RemoveByString(String stringa);
 
     public boolean Update(K object);
-    public boolean UpdateByString(K object, String stringa);
+    //public boolean UpdateByString(K object, String stringa);
 
 }

@@ -7,7 +7,7 @@ import com.university.client.services.DocenteService;
 import javax.servlet.ServletContext;
 
 public class DocenteImplementazione extends RemoteServiceServlet implements DocenteService {
-    Repository<Docente> repositoryDocente;
+    RepositoryInt<Docente> repositoryDocente;
     Boolean singleton = false;
     Boolean test = false;
 

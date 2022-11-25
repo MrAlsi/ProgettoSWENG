@@ -10,7 +10,7 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class RepositoryStudenti extends RemoteServiceServlet implements Repository<Studente> {
+public class RepositoryStudenti extends RemoteServiceServlet implements RepositoryInt<Studente> {
 
     DB db;
     HTreeMap<Integer,Studente> map;

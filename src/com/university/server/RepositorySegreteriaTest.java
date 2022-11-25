@@ -5,7 +5,7 @@ import com.university.client.model.Segreteria;
 import java.util.Arrays;
 import java.util.List;
 
-public class RepositorySegreteriaTest implements Repository<Segreteria> {
+public class RepositorySegreteriaTest implements RepositoryInt<Segreteria> {
 
     List<Segreteria> segreteriaTest = Arrays.asList(
             new Segreteria("Claudia", "Codeluppi", "claudia.codeluppi@segreteria.university.com", "mamma")

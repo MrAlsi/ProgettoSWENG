@@ -10,7 +10,7 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class DocenteRepository extends RemoteServiceServlet implements Repository<Docente> {
+public class DocenteRepository extends RemoteServiceServlet implements RepositoryInt<Docente> {
     DB db;
     HTreeMap<Integer, Docente> map;
     ServletContext context;
@@ -42,11 +42,6 @@ public class DocenteRepository extends RemoteServiceServlet implements Repositor
                 return map.get(i);
             }
         }
-        return null;
-    }
-
-    @Override
-    public Docente GetByString(String stringa) {
         return null;
     }
 
@@ -99,11 +94,6 @@ public class DocenteRepository extends RemoteServiceServlet implements Repositor
     }
 
     @Override
-    public boolean RemoveByString(String stringa) {
-        return false;
-    }
-
-    @Override
     public boolean Update(Docente object) {
         try{
             createOrOpenDB();
@@ -118,11 +108,6 @@ public class DocenteRepository extends RemoteServiceServlet implements Repositor
         } catch (Exception e) {
             System.out.println("Err modificaDocente " + e);
         }
-        return false;
-    }
-
-    @Override
-    public boolean UpdateByString(Docente object, String stringa) {
         return false;
     }
 }

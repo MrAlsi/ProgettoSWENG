@@ -13,7 +13,8 @@ class EsameImplementazioneTest {
     EsameImplementazione esameImplementazione= new EsameImplementazione(true);
 
     List<Esame> esamiTest= Arrays.asList(
-            new Esame(1,"italiano", "12 12 2022", "9","2", "a" )
+            new Esame(1,"italiano", "12 12 2022", "9","2", "a" ),
+            new Esame(2, "Programmazione", "15 12 2022", "10", "2", "pippo")
     );
 
 
@@ -36,7 +37,8 @@ class EsameImplementazioneTest {
 
     @Test
     void getEsami() {
-        assertArrayEquals(esamiTest.toArray(),esameImplementazione.getEsami());
+       // assertArrayEquals(esamiTest.toArray(),esameImplementazione.getEsami());
+        assertArrayEquals(esamiTest.toArray(), esameImplementazione.getEsami());
     }
 
 
