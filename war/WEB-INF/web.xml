@@ -37,6 +37,10 @@
         <servlet-name>com.university.University EsameService</servlet-name>
         <servlet-class>com.university.server.EsameImplementazione</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>com.university.ProgettoSWENGJUnit EsameService</servlet-name>
+        <servlet-class>com.university.server.FrequentaImplementazione</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>com.university.University UtenteService</servlet-name>
         <url-pattern>/University/utenti</url-pattern>
@@ -68,5 +72,9 @@
     <servlet-mapping>
         <servlet-name>com.university.University CorsoService</servlet-name>
         <url-pattern>/University/corso</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.ProgettoSWENGJUnit EsameService</servlet-name>
+        <url-pattern>/progettosweng/esame</url-pattern>
     </servlet-mapping>
 </web-app>
