@@ -20,7 +20,6 @@ public class RepositoryStudenti extends RemoteServiceServlet implements Reposito
     }
     private DB getDb(){
         try{
-            //ServletContext context = this.getServletContext();
             synchronized (context) {
                 DB db = (DB)context.getAttribute("studentiDb");
                 if(db == null) {
@@ -78,7 +77,19 @@ public class RepositoryStudenti extends RemoteServiceServlet implements Reposito
 
     @Override
     public boolean Remove(int id) {
-        return true;
+        try{
+            createOrOpenDB();
+            for(int i : map.getKeys()){
+                if(map.get(i).getMatricola()==id){
+                    map.remove(i);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: Studenti Remove " + e);
+        }
+        return false;
     }
 
     @Override
@@ -89,5 +100,10 @@ public class RepositoryStudenti extends RemoteServiceServlet implements Reposito
     @Override
     public boolean Update(Studente object) {
         return true;
+    }
+
+    @Override
+    public boolean UpdateByString(Studente object, String stringa) {
+        return false;
     }
 }

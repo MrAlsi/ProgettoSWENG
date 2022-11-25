@@ -53,4 +53,9 @@ public class RepositorySegreteriaTest implements Repository<Segreteria> {
     public boolean Update(Segreteria object) {
         return false;
     }
+
+    @Override
+    public boolean UpdateByString(Segreteria object, String stringa) {
+        return false;
+    }
 }
