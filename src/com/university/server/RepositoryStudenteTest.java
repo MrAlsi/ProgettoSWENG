@@ -11,7 +11,8 @@ public class RepositoryStudenteTest  implements Repository<Studente> {
 
     List<Studente> studentiTest = Arrays.asList(
             new Studente("Gabriel","Alsina","gabriel.alsina@studente.university.com","password","22/08/1999",1),
-            new Studente("Carltta","Carboni","carlotta.carboni@studente.university.com","totta","21/02/1999",2)
+            new Studente("Carltta","Carboni","carlotta.carboni@studente.university.com","totta","21/02/1999",2),
+            new Studente("Alessandro", "Pasi", "alessandro.pasi@studente.university.com", "Pesos", "25/06/1999", 3)
             //new Studente("Gabriel","Alsina","gabriel.alsina@studente.university.com","password","22/08/1999",1),
 
     );
@@ -37,14 +38,23 @@ public class RepositoryStudenteTest  implements Repository<Studente> {
 
     @Override
     public boolean Create(Studente object) {
-        return true;
-
+        try{
+            studentiTest.add(object);
+            return true;
+        }catch(Exception e){
+            System.out.println("StudenteTest " + e);
+        }
+        return false;
     }
 
     @Override
     public boolean Remove(int id) {
-        return true;
-
+        try{
+            studentiTest.remove(id);
+        }catch(Exception e){
+            System.out.println("StudenteTest " + e);
+        }
+        return false;
     }
 
     @Override
@@ -56,5 +66,9 @@ public class RepositoryStudenteTest  implements Repository<Studente> {
     public boolean Update(Studente object) {
         return true;
 
+    }
+    @Override
+    public boolean UpdateByString(Studente object, String stringa) {
+        return false;
     }
 }

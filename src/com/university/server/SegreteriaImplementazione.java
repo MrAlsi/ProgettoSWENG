@@ -20,7 +20,7 @@ public class SegreteriaImplementazione extends RemoteServiceServlet implements S
         repositorySegreteria = new RepositorySegreteriaTest();
     }
 
-    //Metodo Wrapper...
+    //Metodo Wrapper
     public void chiamaDB(){
         // Singleton è un modello di progettazione creazionale che consente di garantire che una classe abbia una
         // sola istanza, fornendo al tempo stesso un punto di accesso globale a questa istanza.

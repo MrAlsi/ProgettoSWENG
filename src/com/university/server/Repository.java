@@ -14,5 +14,6 @@ public interface Repository <K>{
     public boolean RemoveByString(String stringa);
 
     public boolean Update(K object);
+    public boolean UpdateByString(K object, String stringa);
 
 }

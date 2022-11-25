@@ -124,4 +124,9 @@ public class RepositorySegreteria extends RemoteServiceServlet implements Reposi
         }
         return false;
     }
+
+    @Override
+    public boolean UpdateByString(Segreteria object, String stringa) {
+        return false;
+    }
 }
