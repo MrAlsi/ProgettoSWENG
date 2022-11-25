@@ -12,7 +12,7 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaService {
+public class SegreteriaImpl{} /*extends RemoteServiceServlet implements SegreteriaService {
     DB db;
     HTreeMap<Integer, Segreteria> map;
 
@@ -138,3 +138,4 @@ public class SegreteriaImpl extends RemoteServiceServlet implements SegreteriaSe
         return null;
     }
 }
+*/

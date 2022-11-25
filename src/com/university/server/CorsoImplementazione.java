@@ -2,9 +2,7 @@ package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Corso;
-import com.university.client.model.Segreteria;
 import com.university.client.services.CorsoService;
-import com.university.client.services.SegreteriaService;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
@@ -33,14 +31,6 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
                 singleton = true;
             }
         }
-    }
-
-    public String pulisciData(String data){
-        if(data.contains("GMT")) {
-            String[] date = data.split(" ");
-            return date[2] + " " + date[1] + " " + date[5];
-        }
-        return data;
     }
 
     @Override
@@ -95,4 +85,13 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
                 new Corso(nome, pulisciData(dataInizio), pulisciData(dataFine), descrizione, codocente, docente, esame),
                 nomeCodice);
     }
+
+    public String pulisciData(String data){
+        if(data.contains("GMT")) {
+            String[] date = data.split(" ");
+            return date[2] + " " + date[1] + " " + date[5];
+        }
+        return data;
+    }
+
 }

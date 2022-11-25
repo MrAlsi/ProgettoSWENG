@@ -19,7 +19,6 @@ public class CorsoRepository extends RemoteServiceServlet implements Repository<
         context = servletContext;
     }
     private DB getDb(){
-        ServletContext context = this.getServletContext();
         synchronized (context) {
             DB db = (DB)context.getAttribute("corsiDb");
             if(db == null) {

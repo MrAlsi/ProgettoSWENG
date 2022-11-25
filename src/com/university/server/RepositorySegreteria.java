@@ -3,7 +3,6 @@ package com.university.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Segreteria;
 import com.university.client.model.Serializer.SerializerSegreteria;
-import com.university.client.model.Studente;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;

@@ -10,7 +10,6 @@ public interface CorsoServiceAsync {
 
     void eliminaCorso(String nome, AsyncCallback<Boolean> async);
 
-
     void getCorso(String nome, AsyncCallback<Corso> async);
 
     void getCorsi(AsyncCallback<Corso[]> async);

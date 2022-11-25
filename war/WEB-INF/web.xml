@@ -13,18 +13,6 @@
         <servlet-class>com.university.server.StudenteImplementazione</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>com.university.University CorsoService</servlet-name>
-        <servlet-class>com.university.server.CorsoImpl</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>com.university.University DocenteService</servlet-name>
-        <servlet-class>com.university.server.DocenteImpl</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>com.university.University SegreteriaService</servlet-name>
-        <servlet-class>com.university.server.SegreteriaImpl</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>com.university.University FrequentaService</servlet-name>
         <servlet-class>com.university.server.FrequentaImpl</servlet-class>
     </servlet>
@@ -37,13 +25,18 @@
         <servlet-class>com.university.server.SostieneImpl</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>com.university.ProgettoSWENGJUnit SegreteriaService</servlet-name>
+        <servlet-name>com.university.University DocenteService</servlet-name>
+        <servlet-class>com.university.server.DocenteImplementazione</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>com.university.University SegreteriaService</servlet-name>
         <servlet-class>com.university.server.SegreteriaImplementazione</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>com.university.ProgettoSWENGJUnit SegreteriaService</servlet-name>
+        <servlet-name>com.university.University CorsoService</servlet-name>
         <servlet-class>com.university.server.CorsoImplementazione</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>com.university.University UtenteService</servlet-name>
         <url-pattern>/University/utenti</url-pattern>
@@ -51,18 +44,6 @@
     <servlet-mapping>
         <servlet-name>com.university.University StudenteService</servlet-name>
         <url-pattern>/University/studenti</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>com.university.University CorsoService</servlet-name>
-        <url-pattern>/University/corso</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>com.university.University DocenteService</servlet-name>
-        <url-pattern>/University/docente</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>com.university.University SegreteriaService</servlet-name>
-        <url-pattern>/University/segreteria</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>com.university.University FrequentaService</servlet-name>
@@ -77,11 +58,15 @@
         <url-pattern>/University/sostiene</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>com.university.ProgettoSWENGJUnit SegreteriaService</servlet-name>
-        <url-pattern>/progettosweng/segreteria</url-pattern>
+        <servlet-name>com.university.University SegreteriaService</servlet-name>
+        <url-pattern>/University/segreteria</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>com.university.ProgettoSWENGJUnit SegreteriaService</servlet-name>
-        <url-pattern>/progettosweng/segreteria</url-pattern>
+        <servlet-name>com.university.University DocenteService</servlet-name>
+        <url-pattern>/University/docente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University CorsoService</servlet-name>
+        <url-pattern>/University/corso</url-pattern>
     </servlet-mapping>
 </web-app>
