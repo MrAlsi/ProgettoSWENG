@@ -36,6 +36,12 @@ public class RepositorySegreteriaTest implements Repository<Segreteria> {
 
     @Override
     public boolean Create(Segreteria object) {
+        try{
+            segreteriaTest.add(object);
+            return true;
+        }catch(Exception e){
+            System.out.println("segreteriaTest " + e);
+        }
         return false;
     }
 
@@ -46,6 +52,11 @@ public class RepositorySegreteriaTest implements Repository<Segreteria> {
 
     @Override
     public boolean RemoveByString(String stringa) {
+        try{
+            segreteriaTest.remove(stringa);
+        }catch(Exception e){
+            System.out.println("segreteriaTest " + e);
+        }
         return false;
     }
 
