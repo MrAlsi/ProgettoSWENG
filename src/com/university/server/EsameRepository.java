@@ -53,11 +53,6 @@ public class EsameRepository extends RemoteServiceServlet implements RepositoryI
     }
 
     @Override
-    public Esame GetByString(String stringa) {
-        return null;
-    }
-
-    @Override
     public Esame[] getAll() {
         createOrOpenDB();
         Esame[] esami = new Esame[map.size()];
@@ -95,11 +90,6 @@ public class EsameRepository extends RemoteServiceServlet implements RepositoryI
     }
 
     @Override
-    public boolean RemoveByString(String stringa) {
-        return false;
-    }
-
-    @Override
     public boolean Update(Esame object) {
         try{
             createOrOpenDB();
@@ -113,11 +103,6 @@ public class EsameRepository extends RemoteServiceServlet implements RepositoryI
         } catch(Exception e){
             System.out.println("Err: modifica esame " + e);
         }
-        return false;
-    }
-
-    @Override
-    public boolean UpdateByString(Esame object, String stringa) {
         return false;
     }
 }

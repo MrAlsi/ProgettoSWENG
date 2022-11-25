@@ -5,7 +5,7 @@ import com.university.client.model.Esame;
 import java.util.Arrays;
 import java.util.List;
 
-public class RepositoryEsameTest implements RepositoryInt<Esame> {
+public class EsameRepositoryTest implements RepositoryInt<Esame> {
 
     List<Esame> esamiTest= Arrays.asList(
             new Esame(1,"italiano", "12 12 2022", "9","2", "a" ),
@@ -20,11 +20,6 @@ public class RepositoryEsameTest implements RepositoryInt<Esame> {
                 return e;
             }
         }
-        return null;
-    }
-
-    @Override
-    public Esame GetByString(String stringa) {
         return null;
     }
 
@@ -55,11 +50,6 @@ public class RepositoryEsameTest implements RepositoryInt<Esame> {
     }
 
     @Override
-    public boolean RemoveByString(String stringa) {
-        return false;
-    }
-
-    @Override
     public boolean Update(Esame object) {
         for(Esame e: esamiTest){
             if(e.getCodEsame()==object.getCodEsame()){
@@ -68,11 +58,6 @@ public class RepositoryEsameTest implements RepositoryInt<Esame> {
                 return true;
             }
         }
-        return false;
-    }
-
-    @Override
-    public boolean UpdateByString(Esame object, String stringa) {
         return false;
     }
 }

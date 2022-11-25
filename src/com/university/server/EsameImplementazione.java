@@ -20,7 +20,7 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
     //Costruttore per il test
     public EsameImplementazione(Boolean test){
         this.test = test;
-        repositoryEsame = new RepositoryEsameTest();
+        repositoryEsame = new EsameRepositoryTest();
     }
 
     //Metodo Wrapper...
