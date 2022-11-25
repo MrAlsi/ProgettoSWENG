@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>com.university.University UtenteService</servlet-name>
-        <servlet-class>com.university.server.UtenteImpl</servlet-class>
+        <servlet-class>com.university.server.UtenteImplementazione</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>com.university.University StudenteService</servlet-name>

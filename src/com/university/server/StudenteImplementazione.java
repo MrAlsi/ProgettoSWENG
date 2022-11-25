@@ -16,7 +16,7 @@ public class StudenteImplementazione extends RemoteServiceServlet implements Stu
     //Costruttore per il test
     public StudenteImplementazione(Boolean test){
         this.test = test;
-        repositoryStudenti = new RepositoryStudenteTest();
+        repositoryStudenti = new StudenteRepositoryTest();
     }
 
     //Metodo Wrapper...
@@ -26,7 +26,7 @@ public class StudenteImplementazione extends RemoteServiceServlet implements Stu
         if(!singleton){
             if(!test){
                 ServletContext context = this.getServletContext();
-                repositoryStudenti = new RepositoryStudenti(context);
+                repositoryStudenti = new StudentiRepository(context);
                 singleton = true;
             }
         }

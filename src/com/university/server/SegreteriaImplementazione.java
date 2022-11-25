@@ -8,7 +8,7 @@ import javax.servlet.ServletContext;
 
 public class SegreteriaImplementazione extends RemoteServiceServlet implements SegreteriaService {
 
-    RepositoryInt<Segreteria> repositorySegreteria;
+    RepositoryString<Segreteria> repositorySegreteria;
     Boolean singleton = false;
     Boolean test = false;
 
@@ -16,7 +16,7 @@ public class SegreteriaImplementazione extends RemoteServiceServlet implements S
 
     public SegreteriaImplementazione(Boolean test){
         this.test = test;
-        repositorySegreteria = new RepositorySegreteriaTest();
+        repositorySegreteria = new SegreteriaRepositoryTest();
     }
 
     //Metodo Wrapper
@@ -26,7 +26,7 @@ public class SegreteriaImplementazione extends RemoteServiceServlet implements S
         if(!singleton){
             if(!test){
                 ServletContext context = this.getServletContext();
-                repositorySegreteria = new RepositorySegreteria(context);
+                repositorySegreteria = new SegreteriaRepository(context);
                 singleton = true;
             }
         }
@@ -47,19 +47,19 @@ public class SegreteriaImplementazione extends RemoteServiceServlet implements S
     @Override
     public boolean modificaSegreteria(String nome, String cognome, String mail, String password) {
         chiamaDB();
-        return repositorySegreteria.Update(new Segreteria(nome,cognome,mail,password));
+        return repositorySegreteria.Update(new Segreteria(nome,cognome,mail,password), mail);
     }
 
     @Override
     public boolean eliminaSegreteria(String mail) {
         chiamaDB();
-        return repositorySegreteria.RemoveByString(mail);
+        return repositorySegreteria.Remove(mail);
     }
 
     @Override
     public Segreteria getSegreteria(String mail) {
         chiamaDB();
-        return repositorySegreteria.GetByString(mail);
+        return repositorySegreteria.GetById(mail);
     }
 
     @Override

@@ -1,12 +1,10 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.university.client.model.*;
 import com.university.client.services.UtenteService;
 
 
-public class UtenteImpl extends RemoteServiceServlet implements UtenteService {
-
+public class UtenteImplementazione extends RemoteServiceServlet implements UtenteService {
     @Override
     public String login(String mail) {
         try{
