@@ -5,16 +5,17 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.university.client.model.Studente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mapdb.DB;
 import org.mapdb.HTreeMap;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class StudenteServiceTest extends GWTTestCase{
     StudenteServiceAsync service;
     HTreeMap<Integer, Studente> mappa;
 
 
-    //StudenteTest studenteService = new StudenteTest(mappa);
 
 
     @BeforeEach
