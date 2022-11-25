@@ -10,13 +10,13 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class RepositorySegreteria extends RemoteServiceServlet implements RepositoryInt<Segreteria> {
+public class SegreteriaRepository extends RemoteServiceServlet implements RepositoryString<Segreteria> {
 
     DB db;
     HTreeMap<Integer, Segreteria> map;
     ServletContext context;
 
-    public RepositorySegreteria(ServletContext servletContext) {
+    public SegreteriaRepository(ServletContext servletContext) {
         context = servletContext;
     }
 
@@ -36,12 +36,7 @@ public class RepositorySegreteria extends RemoteServiceServlet implements Reposi
     }
 
     @Override
-    public Segreteria GetById(int id) {
-        return null;
-    }
-
-    @Override
-    public Segreteria GetByString(String stringa) {
+    public Segreteria GetById(String stringa) {
         try{
             createOrOpenDB();
             for(int i : map.getKeys()){
@@ -86,12 +81,7 @@ public class RepositorySegreteria extends RemoteServiceServlet implements Reposi
     }
 
     @Override
-    public boolean Remove(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean RemoveByString(String stringa) {
+    public boolean Remove(String stringa) {
         try{
             createOrOpenDB();
             for(int i : map.getKeys()){
@@ -108,7 +98,7 @@ public class RepositorySegreteria extends RemoteServiceServlet implements Reposi
     }
 
     @Override
-    public boolean Update(Segreteria object) {
+    public boolean Update(Segreteria object, String stringa) {
         try{
             createOrOpenDB();
             for(int i : map.getKeys()){
@@ -121,11 +111,6 @@ public class RepositorySegreteria extends RemoteServiceServlet implements Reposi
         } catch(Exception e){
             System.out.println("Err: modifica segreteria " + e);
         }
-        return false;
-    }
-
-    @Override
-    public boolean UpdateByString(Segreteria object, String stringa) {
         return false;
     }
 }

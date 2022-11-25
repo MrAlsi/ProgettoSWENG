@@ -10,12 +10,12 @@ import org.mapdb.Serializer;
 
 import javax.servlet.ServletContext;
 
-public class RepositoryStudenti extends RemoteServiceServlet implements RepositoryInt<Studente> {
+public class StudentiRepository extends RemoteServiceServlet implements RepositoryInt<Studente> {
 
     DB db;
     HTreeMap<Integer,Studente> map;
     ServletContext context;
-    public RepositoryStudenti(ServletContext servletContext){
+    public StudentiRepository(ServletContext servletContext){
         context = servletContext;
     }
     private DB getDb(){
@@ -47,11 +47,6 @@ public class RepositoryStudenti extends RemoteServiceServlet implements Reposito
                 return map.get(matricola);
             }
         }
-        return null;
-    }
-
-    @Override
-    public Studente GetByString(String stringa) {
         return null;
     }
 
@@ -93,17 +88,7 @@ public class RepositoryStudenti extends RemoteServiceServlet implements Reposito
     }
 
     @Override
-    public boolean RemoveByString(String stringa) {
-        return false;
-    }
-
-    @Override
     public boolean Update(Studente object) {
         return true;
-    }
-
-    @Override
-    public boolean UpdateByString(Studente object, String stringa) {
-        return false;
     }
 }

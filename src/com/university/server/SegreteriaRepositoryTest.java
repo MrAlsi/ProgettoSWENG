@@ -5,18 +5,13 @@ import com.university.client.model.Segreteria;
 import java.util.Arrays;
 import java.util.List;
 
-public class RepositorySegreteriaTest implements RepositoryInt<Segreteria> {
+public class SegreteriaRepositoryTest implements RepositoryString<Segreteria> {
 
     List<Segreteria> segreteriaTest = Arrays.asList(
             new Segreteria("Claudia", "Codeluppi", "claudia.codeluppi@segreteria.university.com", "mamma")
     );
     @Override
-    public Segreteria GetById(int id) {
-        return null;
-    }
-
-    @Override
-    public Segreteria GetByString(String stringa) {
+    public Segreteria GetById(String stringa) {
         try{
             for(Segreteria s: segreteriaTest){
                 if(s.getMail().equals(stringa)){
@@ -46,12 +41,7 @@ public class RepositorySegreteriaTest implements RepositoryInt<Segreteria> {
     }
 
     @Override
-    public boolean Remove(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean RemoveByString(String stringa) {
+    public boolean Remove(String stringa) {
         try{
             segreteriaTest.remove(stringa);
         }catch(Exception e){
@@ -61,12 +51,7 @@ public class RepositorySegreteriaTest implements RepositoryInt<Segreteria> {
     }
 
     @Override
-    public boolean Update(Segreteria object) {
-        return false;
-    }
-
-    @Override
-    public boolean UpdateByString(Segreteria object, String stringa) {
+    public boolean Update(Segreteria object, String stringa) {
         return false;
     }
 }
