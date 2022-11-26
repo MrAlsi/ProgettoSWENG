@@ -17,7 +17,7 @@ import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SostieneImpl extends RemoteServiceServlet implements SostieneService {
+public class SostieneImpl {} /*extends RemoteServiceServlet implements SostieneService {
 
     DB db;
     HTreeMap<Integer, Sostiene> map;
@@ -111,7 +111,7 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
     }
 
     //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui non è stato assegnato un voto
-    @Override
+   /* @Override
     public Sostiene[] getSostieneStudenteConVoto(int matricola) {
         try {
             createOrOpenDB();
@@ -127,10 +127,10 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
             System.out.println("Errore: " + e);
             return null;
         }
-    }
+    }*/
 
     //ottengo i voti dello studente
-    @Override
+ /*   @Override
     public Sostiene[] getEsamiLibretto(int matricola) {
         try {
             createOrOpenDB();
@@ -148,7 +148,6 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
     }
 
-    //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui è stato assegnato un voto
     @Override
     public Sostiene[] getStudenti(int codEsame) {
         try {
@@ -167,7 +166,6 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         }
     }
 
-    // Metodo per aggiungere il voto allo studente
     @Override
     public boolean inserisciVoto(int esame, int matricola, int voto) {
         try {
@@ -221,7 +219,6 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         return false;
     }
 
-    //Metodo per avere tutti gli esami a cui manca l'accettazione della segreteria
     @Override
     public Sostiene[] esamiSostenuti() {
         try {
@@ -337,15 +334,5 @@ public class SostieneImpl extends RemoteServiceServlet implements SostieneServic
         mapEsami = dbEsami.hashMap("esamiMap").counterEnable().keySerializer(Serializer.INTEGER).valueSerializer(new SerializerEsame()).createOrOpen();
     }
 
-    @Override
-    public Esame traduciEsame(int codEsame) {
-        getEsami();
-        for(int i : mapEsami.getKeys()){
-            if(mapEsami.get(i).getCodEsame() == codEsame){
-                return mapEsami.get(i);
-            }
-        }
-        return null;
-    }
 
-}
+}*/

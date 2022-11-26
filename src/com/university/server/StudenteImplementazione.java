@@ -68,6 +68,7 @@ public class StudenteImplementazione extends RemoteServiceServlet implements Stu
 
     @Override
     public boolean modificaStudente(String nome, String cognome, String mail, String password, String dataNascita, int matricola) {
+        chiamaDB();
         return repositoryStudenti.Update(new Studente(nome, cognome, mail, password, dataNascita, matricola));
     }
 

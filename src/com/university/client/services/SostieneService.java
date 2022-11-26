@@ -19,7 +19,7 @@ public interface SostieneService extends RemoteService {
     Sostiene[] getSostieneStudenteSenzaVoto(int matricola);
 
     //Restituisce tutti gli oggetti sostiene di un determinato studente con voto
-    Sostiene[] getSostieneStudenteConVoto(int matricola);
+    //Sostiene[] getSostieneStudenteConVoto(int matricola);
 
     //ottengo i voti dello studente
     Sostiene[] getEsamiLibretto(int matricola);
@@ -42,13 +42,6 @@ public interface SostieneService extends RemoteService {
     //Crea un oggetto sostiene
     boolean creaSostiene(int matricola, int codEsame, String nomeCorso, String data, String ora);
 
-    //Con l'inserimento di un array di Sostiene restituisce la media aritmentica dell'array
-    //è possibile usarlo sia per gli studenti che per i docenti
-    long calcolaMedia(Sostiene[] s);
-    Esame traduciEsame(int codEsame);
-
     // restituisce tutti gli esami sostenibili dallo studente
     Esame[] getEsamiSostenibili(int matricola, Corso[] mieiCorsi);
-
-    ArrayList<Sostiene> getMieiEsami(int matricola);
 }

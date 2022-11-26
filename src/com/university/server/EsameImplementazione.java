@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class EsameImplementazione extends RemoteServiceServlet implements EsameService {
-
     RepositoryInt<Esame> repositoryEsame;
     Boolean singleton = false;
     Boolean test = false;

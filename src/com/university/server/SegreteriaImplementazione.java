@@ -64,6 +64,7 @@ public class SegreteriaImplementazione extends RemoteServiceServlet implements S
 
     @Override
     public Segreteria loginSegreteria(String mail, String password) {
+        chiamaDB();
         Segreteria[] segreteria = repositorySegreteria.getAll();
         for (Segreteria s: segreteria) {
             if (s.getMail().equals(mail) && s.getPassword().equals(password)) {
