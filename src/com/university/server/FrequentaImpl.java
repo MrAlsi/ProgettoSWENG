@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FrequentaImpl extends RemoteServiceServlet implements FrequentaService {
+public class FrequentaImpl{} /*extends RemoteServiceServlet implements FrequentaService {
 
     DB db;
     HTreeMap<Integer, Frequenta> map;
@@ -300,3 +300,4 @@ public class FrequentaImpl extends RemoteServiceServlet implements FrequentaServ
         return false;
     }
 }
+*/

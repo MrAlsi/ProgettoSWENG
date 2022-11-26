@@ -11,7 +11,6 @@ import org.mapdb.Serializer;
 import javax.servlet.ServletContext;
 
 public class EsameRepository extends RemoteServiceServlet implements RepositoryInt<Esame> {
-
     DB db;
     HTreeMap<Integer, Esame> map;
     ServletContext context;

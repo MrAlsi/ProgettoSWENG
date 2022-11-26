@@ -14,11 +14,7 @@
     </servlet>
     <servlet>
         <servlet-name>com.university.University FrequentaService</servlet-name>
-        <servlet-class>com.university.server.FrequentaImpl</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>com.university.University SostieneService</servlet-name>
-        <servlet-class>com.university.server.SostieneImpl</servlet-class>
+        <servlet-class>com.university.server.FrequentaImplementazione</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>com.university.University DocenteService</servlet-name>
@@ -38,9 +34,11 @@
         <servlet-class>com.university.server.EsameImplementazione</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>com.university.ProgettoSWENGJUnit EsameService</servlet-name>
-        <servlet-class>com.university.server.FrequentaImplementazione</servlet-class>
+        <servlet-name>com.university.University SostieneService</servlet-name>
+        <servlet-class>com.university.server.SostieneImplementazione</servlet-class>
     </servlet>
+
+
     <servlet-mapping>
         <servlet-name>com.university.University UtenteService</servlet-name>
         <url-pattern>/University/utenti</url-pattern>
@@ -58,10 +56,6 @@
         <url-pattern>/University/esame</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>com.university.University SostieneService</servlet-name>
-        <url-pattern>/University/sostiene</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>com.university.University SegreteriaService</servlet-name>
         <url-pattern>/University/segreteria</url-pattern>
     </servlet-mapping>
@@ -74,7 +68,7 @@
         <url-pattern>/University/corso</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>com.university.ProgettoSWENGJUnit EsameService</servlet-name>
-        <url-pattern>/progettosweng/esame</url-pattern>
+        <servlet-name>com.university.University SostieneService</servlet-name>
+        <url-pattern>/University/sostiene</url-pattern>
     </servlet-mapping>
 </web-app>

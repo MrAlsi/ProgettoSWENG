@@ -24,11 +24,6 @@ public class StudenteRepositoryTest implements RepositoryInt<Studente> {
     }
 
     @Override
-    public Studente GetByString(String stringa) {
-        return null;
-    }
-
-    @Override
     public Studente[] getAll() {
         return studentiTest.toArray(new Studente[0]);
     }
@@ -47,19 +42,9 @@ public class StudenteRepositoryTest implements RepositoryInt<Studente> {
         }
         return false;
     }
-
-    @Override
-    public boolean RemoveByString(String stringa) {
-        return false;
-    }
-
     @Override
     public boolean Update(Studente object) {
         return true;
 
-    }
-    @Override
-    public boolean UpdateByString(Studente object, String stringa) {
-        return false;
     }
 }

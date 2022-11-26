@@ -89,6 +89,18 @@ public class StudentiRepository extends RemoteServiceServlet implements Reposito
 
     @Override
     public boolean Update(Studente object) {
-        return true;
+        try{
+            createOrOpenDB();
+            for(int i : map.getKeys()){
+                if(map.get(i).getMatricola() == object.getMatricola()){
+                    map.replace(i, object);
+                    db.commit();
+                    return true;
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Err: Studenti Update " + e);
+        }
+        return false;
     }
 }

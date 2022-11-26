@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class EsameImpl extends RemoteServiceServlet implements EsameService {
+public class EsameImpl {} /* extends RemoteServiceServlet implements EsameService {
     DB db;
     HTreeMap<Integer, Esame> map;
 
@@ -145,3 +145,4 @@ public class EsameImpl extends RemoteServiceServlet implements EsameService {
         return data;
     }
 }
+*/
