@@ -1,14 +1,13 @@
 package com.university.server;
 
+import com.google.common.collect.Lists;
 import com.university.client.model.Docente;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class DocenteRepositoryTest implements RepositoryInt<Docente> {
-    List<Docente> docentiTest = Arrays.asList(
-
-    );
+    List<Docente> docentiTest= Lists.newArrayList(new Docente("Gabriel", "alsina", "gabriel.alsina@docente.university.com", "prova", 1));
 
     @Override
     public Docente GetById(int id) {
@@ -26,7 +25,13 @@ public class DocenteRepositoryTest implements RepositoryInt<Docente> {
 
     @Override
     public boolean Create(Docente object) {
-        return docentiTest.add(object);
+        try{
+            docentiTest.add(object);
+            return true;
+        } catch(Exception e){
+            System.out.println("Create Docente Repository test " + e);
+        }
+        return false;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.university.server;
 
+import com.google.common.collect.Lists;
 import com.university.client.model.Esame;
 
 import java.util.Arrays;
@@ -7,7 +8,7 @@ import java.util.List;
 
 public class EsameRepositoryTest implements RepositoryInt<Esame> {
 
-    List<Esame> esamiTest= Arrays.asList(
+    List<Esame> esamiTest= Lists.newArrayList(
             new Esame(1,"italiano", "12 12 2022", "9","2", "a" ),
             new Esame(2, "Programmazione", "15 12 2022", "10", "2", "pippo")
     );
@@ -43,6 +44,7 @@ public class EsameRepositoryTest implements RepositoryInt<Esame> {
     public boolean Remove(int id) {
         try{
             esamiTest.remove(id);
+            return true;
         }catch(Exception e){
             System.out.println("esameTest " + e);
         }

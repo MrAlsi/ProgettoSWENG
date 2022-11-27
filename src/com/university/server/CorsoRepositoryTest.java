@@ -1,12 +1,14 @@
 package com.university.server;
 
+import com.google.common.collect.Lists;
 import com.university.client.model.Corso;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CorsoRepositoryTest implements RepositoryString<Corso> {
-    List<Corso> corsiTest = Arrays.asList();
+    List<Corso> corsiTest= Lists.newArrayList(new Corso("italiano", "12/12/2022", "1/2/2023", "prova", 1,2,3));
+
 
     @Override
     public Corso GetById(String stringa) {
@@ -40,6 +42,7 @@ public class CorsoRepositoryTest implements RepositoryString<Corso> {
             for(Corso c : corsiTest){
                 if(c.getNome().equals(stringa)){
                     corsiTest.remove(c);
+                    return true;
                 }
             }
         }catch(Exception e){

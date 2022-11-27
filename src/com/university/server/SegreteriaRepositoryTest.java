@@ -1,5 +1,6 @@
 package com.university.server;
 
+import com.google.common.collect.Lists;
 import com.university.client.model.Segreteria;
 
 import java.util.Arrays;
@@ -7,7 +8,7 @@ import java.util.List;
 
 public class SegreteriaRepositoryTest implements RepositoryString<Segreteria> {
 
-    List<Segreteria> segreteriaTest = Arrays.asList(
+    List<Segreteria> segreteriaTest= Lists.newArrayList(
             new Segreteria("Claudia", "Codeluppi", "claudia.codeluppi@segreteria.university.com", "mamma")
     );
     @Override
@@ -44,6 +45,7 @@ public class SegreteriaRepositoryTest implements RepositoryString<Segreteria> {
     public boolean Remove(String stringa) {
         try{
             segreteriaTest.remove(stringa);
+            return true;
         }catch(Exception e){
             System.out.println("segreteriaTest " + e);
         }
@@ -52,6 +54,13 @@ public class SegreteriaRepositoryTest implements RepositoryString<Segreteria> {
 
     @Override
     public boolean Update(Segreteria object, String stringa) {
+        for(Segreteria s : segreteriaTest){
+            if(s.getMail().equals(object.getMail())){
+                segreteriaTest.set(segreteriaTest.indexOf(s), object);
+                segreteriaTest.remove(s);
+                return true;
+            }
+        }
         return false;
     }
 }
