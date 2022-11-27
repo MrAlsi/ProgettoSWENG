@@ -3,6 +3,7 @@ package com.university.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Corso;
 import com.university.client.model.Frequenta;
+import com.university.client.model.Sostiene;
 import com.university.client.services.FrequentaService;
 
 import javax.servlet.ServletContext;
@@ -10,10 +11,12 @@ import java.util.ArrayList;
 
 public class FrequentaImplementazione extends RemoteServiceServlet implements FrequentaService {
     RepositoryIntString<Frequenta> frequentaRepository;
+    RepositoryDoubleInt<Sostiene>  sostieneRepository;
+    RepositoryString<Corso> corsoRepository;
+
     Boolean singleton = false;
     Boolean test = false;
 
-    RepositoryString<Corso> corsoRepository;
 
     public FrequentaImplementazione(){ }
 
@@ -21,6 +24,8 @@ public class FrequentaImplementazione extends RemoteServiceServlet implements Fr
     public FrequentaImplementazione(Boolean test){
         this.test = test;
         frequentaRepository = new FrequentaRepositoryTest();
+        corsoRepository = new CorsoRepositoryTest();
+        sostieneRepository = new SostieneRepositoryTest();
     }
 
     //Metodo Wrapper...
@@ -32,7 +37,8 @@ public class FrequentaImplementazione extends RemoteServiceServlet implements Fr
                 ServletContext context = this.getServletContext();
                 frequentaRepository = new FrequentaRepository(context);
                 corsoRepository = new CorsoRepository(context);
-                singleton = true;
+                sostieneRepository= new SostieneRepository(context);
+               singleton = true;
             }
         }
     }

@@ -49,6 +49,4 @@ public interface SostieneService extends RemoteService {
     Esame[] getEsamiSostenibili(int matricola, Corso[] mieiCorsi);
 
     Sostiene[] getStudentiInserisciVoto(int codEsame);
-
-    ArrayList<Sostiene> getMieiEsami(int matricola);
 }

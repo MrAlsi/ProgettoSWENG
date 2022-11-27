@@ -6,9 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CorsoRepositoryTest implements RepositoryString<Corso> {
-    List<Corso> corsiTest = Arrays.asList(
-
-    );
+    List<Corso> corsiTest = Arrays.asList();
 
     @Override
     public Corso GetById(String stringa) {

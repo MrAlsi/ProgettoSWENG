@@ -2,6 +2,8 @@ package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.university.client.model.Corso;
+import com.university.client.model.Esame;
+import com.university.client.model.Frequenta;
 import com.university.client.services.CorsoService;
 
 import javax.servlet.ServletContext;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 public class CorsoImplementazione extends RemoteServiceServlet implements CorsoService {
 
     RepositoryString<Corso> repositoryCorso;
+    RepositoryInt<Esame> repositoryEsame;
+    RepositoryIntString<Frequenta> repositoryFrequenta;
     Boolean singleton = false;
     Boolean test = false;
 
@@ -18,6 +22,8 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
     public CorsoImplementazione(Boolean test){
         this.test = test;
         repositoryCorso = new CorsoRepositoryTest();
+        repositoryEsame= new EsameRepositoryTest();
+        repositoryFrequenta= new FrequentaRepositoryTest();
     }
 
     //Metodo Wrapper
@@ -28,6 +34,8 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
             if(!test){
                 ServletContext context = this.getServletContext();
                 repositoryCorso = new CorsoRepository(context);
+                repositoryEsame = new EsameRepository(context);
+                repositoryFrequenta = new FrequentaRepository(context);
                 singleton = true;
             }
         }
@@ -42,10 +50,16 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
     @Override
     public Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente) {
         chiamaDB();
-        return repositoryCorso.Create(
-                new Corso( nome, pulisciData(dataInizio),
-                        pulisciData(dataFine), descrizione,
-                        codocente, docente, -1));
+        if(controlloCorso(nome)==null){
+            return repositoryCorso.Create(new Corso( nome, pulisciData(dataInizio),
+            pulisciData(dataFine), descrizione, codocente, docente, -1));
+        }
+        return false;
+    }
+
+    public Corso controlloCorso(String nome){
+        chiamaDB();
+        return repositoryCorso.GetById(nome);
     }
 
     @Override
@@ -75,6 +89,18 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
     @Override
     public boolean eliminaCorso(String nome) {
         chiamaDB();
+        for(Esame e : repositoryEsame.getAll()){
+            if(e.getNomeCorso().equals(nome)){
+                repositoryEsame.Remove(e.getCodEsame());
+                break;
+            }
+        }
+        for(Frequenta f : repositoryFrequenta.getAll()){
+            if(f.getNomeCorso().equals(nome)){
+                repositoryFrequenta.Remove(f.getMatricola(), f.getNomeCorso());
+            }
+        }
+
         return repositoryCorso.Remove(nome);
     }
 

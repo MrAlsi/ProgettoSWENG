@@ -703,11 +703,15 @@ public class SchermataDocente {
 
                     @Override
                     public void onSuccess(Boolean result) {
-                        Window.alert("corso creato");
-                        try {
-                            form__corsi();
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
+                        if(result==true){
+                            Window.alert("corso creato");
+                            try {
+                                form__corsi();
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        } else {
+                            Window.alert("Impossibile creare il corso: nome \""+nome__textBox.getText()+"\"  già esistente");
                         }
                     }
                 });
@@ -875,8 +879,11 @@ public class SchermataDocente {
         esameContainer.add(ora__listBox);
         final Label durata__label = new Label("Durata: ");
         esameContainer.add(durata__label);
-        final TextBox durata__textBox = new TextBox();
-        esameContainer.add(durata__textBox);
+        final ListBox durata__listBox = new ListBox();
+        for(int i=1; i<=4; i++){
+            durata__listBox.addItem((String.valueOf(i)));
+        }
+        esameContainer.add(durata__listBox);
         final Label corso__label = new Label("Corso: ");
         esameContainer.add(corso__label);
         final ListBox corso__list = new ListBox();
@@ -910,34 +917,18 @@ public class SchermataDocente {
             @Override
             public void onSubmit(FormPanel.SubmitEvent event) {
                 //Controllo che tutti i campi siano pieni
-                if (aula__textBox.getText().length() == 0 || durata__textBox.getText().length() == 0 || data__dataBox.getValue() == null ||
+                if (aula__textBox.getText().length() == 0 || durata__listBox.getSelectedValue() == null|| data__dataBox.getValue() == null ||
                         corso__list.getSelectedValue() == null || ora__listBox.getSelectedValue()== null) {
                     Window.alert("Compilare tutti i campi!");
                     event.cancel();
                 }
-                //controllo che l'esame sia dopo la fine del corso
-                serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore nel caricare i dati dell'esame " + caught);
-
-                    }
-
-                    @Override
-                    public void onSuccess(Corso result) {
-                        if (data__dataBox.getValue().before(StringToDate(result.dataFine))) {
-                            Window.alert("l'esame deve essere dopo la fine del corso: " + result.getDataFine());
-                            event.cancel();
-                        }
-                    }
-                });
             }
         });
 
         creaEsame.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                serviceEsame.creaEsame(corso__list.getSelectedValue(), data__dataBox.getValue().toString(),ora__listBox.getSelectedValue(), durata__textBox.getText(), aula__textBox.getText(), new AsyncCallback<Integer>() {
+                serviceEsame.creaEsame(corso__list.getSelectedValue(), data__dataBox.getValue().toString(),ora__listBox.getSelectedValue(), durata__listBox.getSelectedValue(), aula__textBox.getText(), new AsyncCallback<Integer>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Errore nel creare l'esame "+caught);
@@ -946,32 +937,37 @@ public class SchermataDocente {
                     @Override
                     public void onSuccess(Integer codEsame) {
                         try {
-                            //aggiungo l'esame creato anche nella tabella dei corsi al corso a cui è stato associato
-                            serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
-                                @Override
-                                public void onFailure(Throwable caught) {
-                                    Window.alert("Errore nel caricare i dati dell'esame "+ caught);
-                                }
-                                @Override
-                                public void onSuccess(Corso result) {
-                                    serviceCorso.modificaCorso(result.getNome(), result.getNome(), result.getDataInizio(), result.getDataFine().toString(), result.getDescrizione(), result.getCoDocente(), result.getDocente(), codEsame, new AsyncCallback<Boolean>() {
-                                        @Override
-                                        public void onFailure(Throwable caught) {
-                                            Window.alert("Errore nel modificare il corso "+caught);
-                                        }
-
-                                        @Override
-                                        public void onSuccess(Boolean result) {
-                                            Window.alert("Esame creato");
-                                            try {
-                                                form__esami();
-                                            } catch (Exception e) {
-                                                throw new RuntimeException(e);
+                            if(codEsame!=-1){
+                                //aggiungo l'esame creato anche nella tabella dei corsi al corso a cui è stato associato
+                                serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
+                                    @Override
+                                    public void onFailure(Throwable caught) {
+                                        Window.alert("Errore nel caricare i dati dell'esame "+ caught);
+                                    }
+                                    @Override
+                                    public void onSuccess(Corso result) {
+                                        serviceCorso.modificaCorso(result.getNome(), result.getNome(), result.getDataInizio(), result.getDataFine().toString(), result.getDescrizione(), result.getCoDocente(), result.getDocente(), codEsame, new AsyncCallback<Boolean>() {
+                                            @Override
+                                            public void onFailure(Throwable caught) {
+                                                Window.alert("Errore nel modificare il corso "+caught);
                                             }
-                                        }
-                                    });
-                                }
-                            });
+
+                                            @Override
+                                            public void onSuccess(Boolean result) {
+                                                Window.alert("Esame creato");
+                                                try {
+                                                    form__esami();
+                                                } catch (Exception e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }else{
+                                Window.alert("L'esame deve essere dopo la fine del corso");
+                            }
+
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }

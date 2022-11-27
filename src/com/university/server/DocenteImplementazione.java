@@ -1,6 +1,7 @@
 package com.university.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.university.client.model.Corso;
 import com.university.client.model.Docente;
 import com.university.client.services.DocenteService;
 
@@ -8,6 +9,7 @@ import javax.servlet.ServletContext;
 
 public class DocenteImplementazione extends RemoteServiceServlet implements DocenteService {
     RepositoryInt<Docente> repositoryDocente;
+    RepositoryString<Corso> repositoryCorso;
     Boolean singleton = false;
     Boolean test = false;
 
@@ -16,6 +18,7 @@ public class DocenteImplementazione extends RemoteServiceServlet implements Doce
     public DocenteImplementazione(Boolean test){
         this.test = test;
         repositoryDocente = new DocenteRepositoryTest();
+        repositoryCorso = new CorsoRepositoryTest();
     }
 
     //Metodo Wrapper
@@ -26,6 +29,7 @@ public class DocenteImplementazione extends RemoteServiceServlet implements Doce
             if(!test){
                 ServletContext context = this.getServletContext();
                 repositoryDocente = new DocenteRepository(context);
+                repositoryCorso= new CorsoRepository(context);
                 singleton = true;
             }
         }

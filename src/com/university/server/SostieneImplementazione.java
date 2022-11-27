@@ -19,6 +19,10 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
 
     public SostieneImplementazione(Boolean test) {
         this.test = test;
+        repositorySostiene= new SostieneRepositoryTest();
+        repositoryEsame= new EsameRepositoryTest();
+        repositoryFrequenta= new FrequentaRepositoryTest();
+        repositoryCorso= new CorsoRepositoryTest();
     }
 
     //Metodo Wrapper...
@@ -149,6 +153,16 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         return esamiSostenibili.toArray(new Esame[0]);
     }
 
+    @Override
+    public Sostiene[] getStudentiInserisciVoto(int codEsame) {
+        ArrayList<Sostiene> sostenuti= new ArrayList<>();
+        for(Sostiene s: repositorySostiene.getArrayById2(codEsame)){
+            if(s.getVoto()==-1){
+                sostenuti.add(s);
+            }
+        }
+        return sostenuti.toArray(new Sostiene[0]);
+    }
     public boolean eliminaEsameSostiene(int esame){
         chiamaDB();
         for(Sostiene s : repositorySostiene.getArrayById2(esame)){

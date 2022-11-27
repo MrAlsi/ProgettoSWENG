@@ -28,7 +28,6 @@
         <servlet-name>com.university.University CorsoService</servlet-name>
         <servlet-class>com.university.server.CorsoImplementazione</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>com.university.University EsameService</servlet-name>
         <servlet-class>com.university.server.EsameImplementazione</servlet-class>
