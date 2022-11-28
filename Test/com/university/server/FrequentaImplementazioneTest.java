@@ -48,6 +48,7 @@ class FrequentaImplementazioneTest {
 
     @Test
     void getStudentiIscritti() {
+        assertEquals(frequentaTest.get(0).getMatricola(),frequnetaImplementazione.getStudentiIscritti("italiano").get(0).getMatricola());
     }
 
     @Test
