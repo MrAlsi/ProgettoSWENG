@@ -37,10 +37,6 @@ class SegreteriaImplementazioneTest {
     }
 
     @Test
-    void testGetSegreteria() {
-    }
-
-    @Test
     void loginSegreteria() {
         assertEquals(new Segreteria("Claudia", "Codeluppi", "claudia.codeluppi@segreteria.university.com", "mamma"),
                 implementazione.loginSegreteria("claudia.codeluppi@segreteria.university.com","mamma"));

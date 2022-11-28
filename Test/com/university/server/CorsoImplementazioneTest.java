@@ -20,6 +20,8 @@ class CorsoImplementazioneTest {
     @Test
     void creaCorso() {
         assertEquals(true, corsoImplementazione.creaCorso("mate", "12/12/2022","1/02/2023","prova",1,2));
+        assertEquals(false,corsoImplementazione.creaCorso("italiano", "12/12/2022","1/02/2023","prova",1,2));
+        assertEquals(true,corsoImplementazione.creaCorso("ita", "12/12/2022","1/02/2023","prova",-1,2));
 
     }
 
@@ -31,12 +33,11 @@ class CorsoImplementazioneTest {
     @Test
     void getCorso() {
         assertEquals(corsiTest.get(0).getNome(), corsoImplementazione.getCorso("italiano").getNome());
-
     }
 
     @Test
     void getCorsiDocente() {
-        //assertArrayEquals("boh",corsoImplementazione.getCorsiDocente(2));
+        //assertArrayEquals(corsiTest.toArray(corsiTest.get()),corsoImplementazione.getCorsiDocente(2));
     }
 
     @Test
@@ -44,7 +45,4 @@ class CorsoImplementazioneTest {
         assertEquals(true,corsoImplementazione.eliminaCorso("italiano"));
     }
 
-    @Test
-    void modificaCorso() {
-    }
 }

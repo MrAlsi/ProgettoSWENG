@@ -36,7 +36,7 @@ class EsameImplementazioneTest {
 
     @Test
     void getEsame() {
-        //Non funzionava assertArray per qualche motivo, comunque tutti i dati combaciano
+        //Non funzionava assertEquals per qualche motivo, comunque tutti i dati combaciano
         assertEquals(esamiTest.get(0).getCodEsame(),esameImplementazione.getEsame(1).getCodEsame());
         assertEquals(esamiTest.get(0).getNomeCorso(),esameImplementazione.getEsame(1).getNomeCorso());
         assertEquals(esamiTest.get(0).getData(),esameImplementazione.getEsame(1).getData());

@@ -58,6 +58,7 @@ public class SostieneRepositoryTest implements RepositoryDoubleInt<Sostiene> {
             for(Sostiene s : sostieneTest){
                 if(s.getCodEsame() == id1 && s.getMatricola() == id2){
                     sostieneTest.remove(s);
+                    return true;
                 }
             }
         }catch(Exception e){

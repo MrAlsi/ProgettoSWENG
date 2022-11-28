@@ -18,11 +18,6 @@ class StudenteImplementazioneTest {
             new Studente("Carlotta","Carboni","carlotta.carboni@studente.university.com","totta","21/02/1999",2),
             new Studente("Alessandro", "Pasi", "alessandro.pasi@studente.university.com", "Pesos", "25/06/1999", 3)
     );
-    /*List<Studente> studentiTest = Arrays.asList(
-            new Studente("Gabriel","Alsina","gabriel.alsina@studente.university.com","password","22/08/1999",1),
-            new Studente("Carlotta","Carboni","carlotta.carboni@studente.university.com","totta","21/02/1999",2),
-            new Studente("Alessandro", "Pasi", "alessandro.pasi@studente.university.com", "Pesos", "25/06/1999", 3)
-    );*/
 
     Studente nuovoStudente = new Studente("Nuovo", "Studente", "nuovo.studente@studente.university.com", "nuovo", "01/01/1999", 4);
 
@@ -42,6 +37,7 @@ class StudenteImplementazioneTest {
 
     @Test
     void creaStudente() {
+        assertEquals(true, studenteImplementazione.creaStudente("Nuovo", "Studente", "nuovo", "01/01/1999"));
     }
 
     @Test
@@ -50,10 +46,7 @@ class StudenteImplementazioneTest {
 
     @Test
     void eliminaStudente() {
-    }
-
-    @Test
-    void testGetStudenteByMatricola() {
+        assertEquals(true, studenteImplementazione.eliminaStudente(1));
     }
 
     @Test

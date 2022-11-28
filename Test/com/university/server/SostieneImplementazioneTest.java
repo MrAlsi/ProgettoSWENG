@@ -21,6 +21,8 @@ class SostieneImplementazioneTest {
 
     @Test
     void getSostiene() {
+        assertEquals(sostieneTest.toArray().length, sostieneImplementazione.getSostiene().length);
+
     }
 
     @Test
@@ -41,10 +43,12 @@ class SostieneImplementazioneTest {
 
     @Test
     void eliminaSostiene() {
+        assertEquals(true,sostieneImplementazione.eliminaSostiene(1,1));
     }
 
     @Test
     void creaSostiene() {
+        assertEquals(true,sostieneImplementazione.creaSostiene(1,2,"ita","12/12/2022", "9"));
     }
 
     @Test
@@ -56,6 +60,7 @@ class SostieneImplementazioneTest {
     }
 
     @Test
-    void eliminaEsameSostiene() {
+    void eliminaEsameSostiene(){
+        assertEquals(true,sostieneImplementazione.eliminaEsameSostiene(1));
     }
 }

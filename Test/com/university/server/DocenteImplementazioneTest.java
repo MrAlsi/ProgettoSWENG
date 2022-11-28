@@ -40,4 +40,13 @@ class DocenteImplementazioneTest {
     void creaDocente() {
         assertEquals(true,docenteImplementazione.creaDocente("Gabriel", "alsina", "prova"));
     }
+
+    @Test
+    void loginDocente() {
+        //Controllo login con credenziali giuste
+        assertEquals(docentiTest.get(0), docenteImplementazione.loginDocente("gabriel.alsina@docente.university.com", "prova"));
+        //Controllo login con credenziali sbagliate
+        assertNotEquals(docentiTest.get(0), docenteImplementazione.loginDocente("gabriel.alsina@docente.university.com", "p"));
+        assertNotEquals(docentiTest.get(0), docenteImplementazione.loginDocente("gabriel.alsina1@docente.university.com", "prova"));
+    }
 }

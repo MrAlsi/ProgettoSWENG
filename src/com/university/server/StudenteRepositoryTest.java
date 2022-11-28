@@ -43,6 +43,7 @@ public class StudenteRepositoryTest implements RepositoryInt<Studente> {
     public boolean Remove(int id) {
         try{
             studentiTest.remove(id);
+            return true;
         }catch(Exception e){
             System.out.println("StudenteTest " + e);
         }
