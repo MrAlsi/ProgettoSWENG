@@ -21,11 +21,12 @@ class EsameImplementazioneTest {
 
     @Test
     void creaEsame() {
-        //assertEquals(true,esameImplementazione.creaEsame("Prova", "12 12 2022", "9", "2", "4"));
-    }
-
-    @Test
-    void modificaEsame() {
+        //Data giusta
+        assertEquals(3, esameImplementazione.creaEsame("italiano", "10/Aug/2023", "9", "2", "4"));
+        //Data dell'esame prima della data della fine del corso, dovrebbe ritornare -1 codice che l'operazione non è andata a buon fine
+        assertEquals(-1, esameImplementazione.creaEsame("italiano", "10/Dec/2022", "9", "2", "4"));
+        //Assegna esame a corso che non esiste
+        assertEquals(-1, esameImplementazione.creaEsame("matemitica", "10/Dec/2022", "9", "2", "4"));
     }
 
     @Test
@@ -35,17 +36,17 @@ class EsameImplementazioneTest {
 
     @Test
     void getEsame() {
+        //Non funzionava assertArray per qualche motivo, comunque tutti i dati combaciano
+        assertEquals(esamiTest.get(0).getCodEsame(),esameImplementazione.getEsame(1).getCodEsame());
         assertEquals(esamiTest.get(0).getNomeCorso(),esameImplementazione.getEsame(1).getNomeCorso());
+        assertEquals(esamiTest.get(0).getData(),esameImplementazione.getEsame(1).getData());
+        assertEquals(esamiTest.get(0).getDurata(),esameImplementazione.getEsame(1).getDurata());
+        assertEquals(esamiTest.get(0).getAula(),esameImplementazione.getEsame(1).getAula());
     }
 
     @Test
     void getEsami() {
-       // assertArrayEquals(esamiTest.toArray(),esameImplementazione.getEsami());
         assertEquals(esamiTest.toArray().length, esameImplementazione.getEsami().length);
     }
 
-
-    @Test
-    void getEsamiCorso() {
-    }
 }

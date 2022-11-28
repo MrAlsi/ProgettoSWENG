@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CorsoRepositoryTest implements RepositoryString<Corso> {
-    List<Corso> corsiTest= Lists.newArrayList(new Corso("italiano", "12/12/2022", "1/2/2023", "prova", 1,2,3));
+    List<Corso> corsiTest= Lists.newArrayList(
+            new Corso("italiano", "12/Dec/2022", "1/Mar/2023", "prova", 1,2,1),
+            new Corso("Programmazione", "01/Jan/2023", "05/May/2023", "Corso di programmazione", 2, 1, 2));
 
 
     @Override

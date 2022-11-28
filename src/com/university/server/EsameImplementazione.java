@@ -46,12 +46,14 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
     @Override
     public int creaEsame(String nomeCorso, String data, String ora, String durata, String aula) {
         chiamaDB();
-        Esame[] esami = repositoryEsame.getAll();
-        if(!controllaDate(data,repositoryCorso.GetById(nomeCorso).dataFine)){
-            repositoryEsame.Create(new Esame((esami.length)+1,nomeCorso,pulisciData(data),ora,durata,aula));
-            return (esami.length)+1;
-        }
-        return -1;
+        try {
+            Esame[] esami = repositoryEsame.getAll();
+            if (!controllaDate(data, repositoryCorso.GetById(nomeCorso).dataFine)) {
+                repositoryEsame.Create(new Esame((esami.length) + 1, nomeCorso, pulisciData(data), ora, durata, aula));
+                return (esami.length) + 1;
+            }
+        }  catch (NullPointerException e){}
+           return -1;
     }
 
     @Override
@@ -110,8 +112,12 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
     public  Boolean controllaDate(String dataEsame, String dataCorso){
         String[] prima = stringToDate(dataEsame).split("/");
         String[] dopo = stringToDate(dataCorso).split("/");
-        if(Integer.parseInt(prima[2])<=Integer.parseInt(dopo[2])){
-            if(Integer.parseInt(prima[1])<=Integer.parseInt(dopo[1])){
+        if(Integer.parseInt(prima[2])<Integer.parseInt(dopo[2])) {
+            return true;
+        } else if(Integer.parseInt(prima[2]) == Integer.parseInt(dopo[2])){
+            if(Integer.parseInt(prima[1])<Integer.parseInt(dopo[1])) {
+                return true;
+            } else if(Integer.parseInt(prima[1])==Integer.parseInt(dopo[1])){
                 if(Integer.parseInt(prima[0])<Integer.parseInt(dopo[0])){
                     return true;
                 }
@@ -121,7 +127,12 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
     }
 
     public String stringToDate (String data){
-        String[] amg = data.split(" ");
+        String[] amg;
+        if(data.contains("/")){
+            amg = data.split("/");
+        } else {
+            amg = data.split(" ");
+        }
         int mese;
         //Window.alert(amg[2]);
         switch(amg[1]){

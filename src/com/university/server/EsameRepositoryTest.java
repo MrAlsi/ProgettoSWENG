@@ -31,13 +31,7 @@ public class EsameRepositoryTest implements RepositoryInt<Esame> {
 
     @Override
     public boolean Create(Esame object) {
-        try{
-            esamiTest.add(object);
-            return true;
-        }catch(Exception e){
-            System.out.println("esameTest " + e);
-        }
-        return false;
+        return true;
     }
 
     @Override
