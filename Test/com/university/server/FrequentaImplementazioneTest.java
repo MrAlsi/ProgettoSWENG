@@ -28,12 +28,12 @@ class FrequentaImplementazioneTest {
 
     @Test
     void getFrequenta() {
-        assertEquals(frequentaTest.toArray().length,frequnetaImplementazione.getFrequenta().length);
+        assertEquals(1,frequnetaImplementazione.getFrequenta().length);
     }
 
     @Test
     void getCorsiDisponibili() {
-        //assertEquals(corsoTest.get(0),frequnetaImplementazione.getCorsiDisponibili(1));
+        assertEquals(1,frequnetaImplementazione.getCorsiDisponibili(1).length);
     }
 
     @Test
@@ -43,7 +43,7 @@ class FrequentaImplementazioneTest {
 
     @Test
     void getCorsiStudente() {
-        //assertEquals(corsoTest.get(1),frequnetaImplementazione.getCorsiStudente(1));
+        assertEquals(1,frequnetaImplementazione.getCorsiStudente(1).length);
     }
 
     @Test

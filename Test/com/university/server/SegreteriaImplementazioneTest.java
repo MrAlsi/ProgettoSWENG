@@ -28,10 +28,6 @@ class SegreteriaImplementazioneTest {
     }
 
     @Test
-    void modificaSegreteria() {
-    }
-
-    @Test
     void eliminaSegreteria() {
         assertEquals(true,implementazione.eliminaSegreteria("claudia.codeluppi@segreteria.university.com"));
     }

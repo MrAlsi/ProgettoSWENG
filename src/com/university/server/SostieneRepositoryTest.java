@@ -10,7 +10,11 @@ import java.util.List;
 
 public class SostieneRepositoryTest implements RepositoryDoubleInt<Sostiene> {
     List<Sostiene> sostieneTest= Lists.newArrayList(
-            new Sostiene(1, 1, "prova", "12/12/2022", "9", -1,false)
+            new Sostiene(1, 1, "prova", "12/12/2022", "9", -1,false),
+            new Sostiene(1, 2, "Programmazione", "13/12/2022", "10", -1, false),
+            new Sostiene(2, 2, "Programmazione", "13/12/2022", "10", 30, false),
+            new Sostiene(3, 2, "Programmazione", "13/12/2022", "10", 30, true),
+            new Sostiene(1, 3, "Sistemi", "14/12/2022", "10", 27, true)
     );
 
     @Override

@@ -41,10 +41,6 @@ class StudenteImplementazioneTest {
     }
 
     @Test
-    void modificaStudente() {
-    }
-
-    @Test
     void eliminaStudente() {
         assertEquals(true, studenteImplementazione.eliminaStudente(1));
     }

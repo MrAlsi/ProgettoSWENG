@@ -12,17 +12,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CorsoImplementazioneTest {
     CorsoImplementazione corsoImplementazione= new CorsoImplementazione(true);
-   List<Corso> corsiTest= Lists.newArrayList(new Corso("italiano", "12/12/2022", "1/2/2023", "prova", 1,2,3));
-
-
-    //Corso nuovoCorso= new Corso("matematica", "12/12/2022","1/02/2023","prova",1,2,3);
+   List<Corso> corsiTest= Lists.newArrayList(
+           new Corso("italiano", "12/12/2022", "1/2/2023", "prova", 1,2,3),
+           new Corso("Programmazione", "01/Jan/2023", "05/May/2023", "Corso di programmazione", 2, 1, 2));
 
     @Test
     void creaCorso() {
         assertEquals(true, corsoImplementazione.creaCorso("mate", "12/12/2022","1/02/2023","prova",1,2));
-        assertEquals(false,corsoImplementazione.creaCorso("italiano", "12/12/2022","1/02/2023","prova",1,2));
-        assertEquals(true,corsoImplementazione.creaCorso("ita", "12/12/2022","1/02/2023","prova",-1,2));
-
+        assertEquals(false, corsoImplementazione.creaCorso("italiano", "12/12/2022","1/02/2023","prova",1,2));
+        assertEquals(true, corsoImplementazione.creaCorso("ita", "12/12/2022","1/02/2023","prova",-1,2));
     }
 
     @Test
@@ -37,7 +35,7 @@ class CorsoImplementazioneTest {
 
     @Test
     void getCorsiDocente() {
-        //assertArrayEquals(corsiTest.toArray(corsiTest.get()),corsoImplementazione.getCorsiDocente(2));
+        assertEquals(1,corsoImplementazione.getCorsiDocente(2).length);
     }
 
     @Test

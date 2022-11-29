@@ -5,6 +5,7 @@ import com.university.client.model.Corso;
 import com.university.client.model.Segreteria;
 import com.university.client.model.Sostiene;
 import com.university.client.model.Studente;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -14,12 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SostieneImplementazioneTest {
     SostieneImplementazione sostieneImplementazione= new SostieneImplementazione(true);
+    FrequentaImplementazione frequentaImplementazione = new FrequentaImplementazione(true);
 
     List<Sostiene> sostieneTest= Lists.newArrayList(
             new Sostiene(1, 1, "prova", "12/12/2022", "9", -1,false),
             new Sostiene(2, 1, "prova", "12/12/2022", "9", 18,false)
 
     );
+
+    /*Corso[] corsi = new Corso[]{
+            new Corso("Programmazione", )
+    }*/
 
     List <Studente> studenteTest= Lists.newArrayList(
             new Studente("Carlotta","Carboni","carlotta.carboni@studente.university.com","pp","21/02/1999",1)
@@ -28,25 +34,27 @@ class SostieneImplementazioneTest {
 
     @Test
     void getSostiene() {
-        assertEquals(sostieneTest.toArray().length, sostieneImplementazione.getSostiene().length);
+        assertEquals(5, sostieneImplementazione.getSostiene().length);
     }
 
     @Test
     void getSostieneStudenteSenzaVoto() {
-        //assertEquals(sostieneTest.get(0),sostieneImplementazione.getSostieneStudenteSenzaVoto(1));
+        assertEquals(2, sostieneImplementazione.getSostieneStudenteSenzaVoto(1).length);
     }
 
     @Test
     void getEsamiLibretto() {
+        assertEquals(1, sostieneImplementazione.getEsamiLibretto(1).length);
     }
 
     @Test
     void getStudenti() {
-        //assertEquals(sostieneTest.get(0),sostieneImplementazione.getStudenti(1));
+        assertEquals(1,sostieneImplementazione.getStudenti(1).length);
     }
 
     @Test
     void esamiSostenuti() {
+        assertEquals(1, sostieneImplementazione.esamiSostenuti().length);
     }
 
     @Test
@@ -61,10 +69,12 @@ class SostieneImplementazioneTest {
 
     @Test
     void getEsamiSostenibili() {
+        assertEquals(1, sostieneImplementazione.getEsamiSostenibili(1, frequentaImplementazione.getCorsiStudente(1)).length);
     }
 
     @Test
     void getStudentiInserisciVoto() {
+        assertEquals(1, sostieneImplementazione.getStudentiInserisciVoto(2).length);
     }
 
     @Test
