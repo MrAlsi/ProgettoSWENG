@@ -161,7 +161,7 @@ public class SchermataAdmin {
             @Override
             public void update(int index, Studente object, String value) {
                 try {
-                    form__visualizzaCorsi(object.getMatricola(), object.getCognome(), object.getCognome());
+                    form__visualizzaCorsi(object.getMatricola(), object.getCognome(), object.getNome());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -290,18 +290,18 @@ public class SchermataAdmin {
         creaStudente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                    studenteServiceAsync.creaStudente(nome__textBox.getText(), cognome__textBox.getText(), password__textBox.getText(), controlloMese(data[0].getSelectedValue(), data[1].getSelectedValue(), data[2].getSelectedValue()), new AsyncCallback<Boolean>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            Window.alert("Errore nel creare lo studente: " + caught);
-                        }
+                studenteServiceAsync.creaStudente(nome__textBox.getText(), cognome__textBox.getText(), password__textBox.getText(), controlloMese(data[0].getSelectedValue(), data[1].getSelectedValue(), data[2].getSelectedValue()), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Errore nel creare lo studente: " + caught);
+                    }
 
-                        @Override
-                        public void onSuccess(Boolean result) {
-                            Window.alert("Studente creato");
-                            listaStudenti();
-                        }
-                    });
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Window.alert("Studente creato");
+                        listaStudenti();
+                    }
+                });
             }
         });
 
@@ -390,17 +390,17 @@ public class SchermataAdmin {
                 studenteServiceAsync.modificaStudente(nome__textBox.getText(), cognome__textBox.getText(), mail,
                         password__textBox.getText(), controlloMese(data[0].getSelectedValue(), data[1].getSelectedValue(), data[2].getSelectedValue()),
                         matricola, new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore nel creare lo studente: "+caught);
-                    }
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                Window.alert("Errore nel creare lo studente: "+caught);
+                            }
 
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        Window.alert("Studente modificato");
-                        listaStudenti();
-                    }
-                });
+                            @Override
+                            public void onSuccess(Boolean result) {
+                                Window.alert("Studente modificato");
+                                listaStudenti();
+                            }
+                        });
             }
         });
         user__container.add(new HTML("<div class=\"user__title\">Modifica i dati dello studente</div>"));
@@ -484,6 +484,9 @@ public class SchermataAdmin {
         TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
             @Override
             public String getValue(Corso object) {
+                if(String.valueOf(object.getCoDocente()).equals("-1")){
+                    return "nessun codocente";
+                }
                 return String.valueOf(object.getCoDocente());
             }
         };
@@ -848,7 +851,7 @@ public class SchermataAdmin {
     }
 
     //Tabella con le segreterie
-   private CellTable<Segreteria> tabella__segreteria(Segreteria[] result, String msg) {
+    private CellTable<Segreteria> tabella__segreteria(Segreteria[] result, String msg) {
 
         CellTable<Segreteria> tabellaSegreteria = new CellTable<>();
         tabellaSegreteria.addStyleName("tabella__segreteria");
@@ -864,39 +867,39 @@ public class SchermataAdmin {
         tabellaSegreteria.addColumn(colonna__nome, "Nome");
 
         //Colonna cognome
-       TextColumn<Segreteria> colonna__cognome = new TextColumn<Segreteria>() {
-           @Override
-           public String getValue(Segreteria object) {
-               return object.getCognome();
-           }
-       };
-       tabellaSegreteria.addColumn(colonna__cognome, "Cognome");
+        TextColumn<Segreteria> colonna__cognome = new TextColumn<Segreteria>() {
+            @Override
+            public String getValue(Segreteria object) {
+                return object.getCognome();
+            }
+        };
+        tabellaSegreteria.addColumn(colonna__cognome, "Cognome");
 
-       //Colonna mail
-       TextColumn<Segreteria> colonna__mail = new TextColumn<Segreteria>() {
-           @Override
-           public String getValue(Segreteria object) {
-               return object.getMail();
-           }
-       };
-       tabellaSegreteria.addColumn(colonna__mail, "Email");
+        //Colonna mail
+        TextColumn<Segreteria> colonna__mail = new TextColumn<Segreteria>() {
+            @Override
+            public String getValue(Segreteria object) {
+                return object.getMail();
+            }
+        };
+        tabellaSegreteria.addColumn(colonna__mail, "Email");
 
-       //Colonna password
-       TextColumn<Segreteria> colonna__password = new TextColumn<Segreteria>() {
-           @Override
-           public String getValue(Segreteria object) {
-               return object.getPassword();
-           }
-       };
-       tabellaSegreteria.addColumn(colonna__password, "Password");
+        //Colonna password
+        TextColumn<Segreteria> colonna__password = new TextColumn<Segreteria>() {
+            @Override
+            public String getValue(Segreteria object) {
+                return object.getPassword();
+            }
+        };
+        tabellaSegreteria.addColumn(colonna__password, "Password");
 
 
-       //--> CSS
+        //--> CSS
 
-       tabellaSegreteria.setRowCount(result.length);
-       tabellaSegreteria.setRowData(0, Arrays.asList(result));
-       return tabellaSegreteria;
-   }
+        tabellaSegreteria.setRowCount(result.length);
+        tabellaSegreteria.setRowData(0, Arrays.asList(result));
+        return tabellaSegreteria;
+    }
 
     //form per creare una "segreteria"
     public void formSegreteria(){

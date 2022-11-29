@@ -93,11 +93,13 @@ public class University implements EntryPoint {
         dipartimenti__btn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                RootPanel.get("container").clear();
-                try {
-                    index.aggiungiContenuto();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if(!RootPanel.get("container").getWidget(0).getElement().getId().equals("homepage__panel")) {
+                    RootPanel.get("container").clear();
+                    try {
+                        index.aggiungiContenuto();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -105,12 +107,13 @@ public class University implements EntryPoint {
         contatti__btn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                RootPanel.get("container").clear();
-                try {
-                    index.aggiungiContenuto();
-                    //creaStudente();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if(!RootPanel.get("container").getWidget(0).getElement().getId().equals("homepage__panel")) {
+                    RootPanel.get("container").clear();
+                    try {
+                        index.aggiungiContenuto();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
