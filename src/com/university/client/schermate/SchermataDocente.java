@@ -607,6 +607,7 @@ public class SchermataDocente {
         });
         modificaEsameContainer.add(crea__btn);
         modificaEsame.add(modificaEsameContainer);
+        user__container.add(new HTML("<div class=\"user__title\">Modifica l'esame</div>"));
         user__container.add(modificaEsame);
     }
 
@@ -615,6 +616,7 @@ public class SchermataDocente {
         FormPanel creaCorso = new FormPanel();
         creaCorso.setAction("/creanuovoCorso");
         creaCorso.setMethod(FormPanel.METHOD_POST);
+        creaCorso.addStyleName("form__crea-modifica");
         VerticalPanel corsoContainer = new VerticalPanel();
         final Label nome__label = new Label("Nome: ");
         corsoContainer.add(nome__label);
@@ -723,6 +725,7 @@ public class SchermataDocente {
         corsoContainer.add(crea__btn);
 
         creaCorso.add(corsoContainer);
+        user__container.add(new HTML("<div class=\"user__title\">Crea un nuovo corso</div>"));
         user__container.add(creaCorso);
     }
 
@@ -731,6 +734,7 @@ public class SchermataDocente {
         FormPanel modificaCorso = new FormPanel();
         modificaCorso.setAction("/modificaCorso");
         modificaCorso.setMethod(FormPanel.METHOD_POST);
+        modificaCorso.addStyleName("form__crea-modifica");
         VerticalPanel modificaCorsoContainer = new VerticalPanel();
         final Label nome__label = new Label("Nome: ");
         modificaCorsoContainer.add(nome__label);
@@ -854,6 +858,7 @@ public class SchermataDocente {
         modificaCorsoContainer.add(crea__btn);
 
         modificaCorso.add(modificaCorsoContainer);
+        user__container.add(new HTML("<div class=\"user__title\">Modifica il corso</div>"));
         user__container.add(modificaCorso);
     }
 
@@ -862,6 +867,7 @@ public class SchermataDocente {
         FormPanel creaEsame = new FormPanel();
         creaEsame.setAction("/creanuovoEsame");
         creaEsame.setMethod(FormPanel.METHOD_POST);
+        creaEsame.addStyleName("form__crea-modifica");
         VerticalPanel esameContainer = new VerticalPanel();
         final Label aula__label = new Label("Aula: ");
         esameContainer.add(aula__label);
@@ -987,6 +993,7 @@ public class SchermataDocente {
         });
         esameContainer.add(crea__btn);
         creaEsame.add(esameContainer);
+        user__container.add(new HTML("<div class=\"user__title\">Crea un nuovo esame</div>"));
         user__container.add(creaEsame);
     }
 
@@ -1012,9 +1019,11 @@ public class SchermataDocente {
                         }
                     }
                 });
+                user__container.add(new HTML("<div class=\"user__title\">Valutazioni</div>"));
                 user__container.add(btnIndietro);
 
                 CellTable<Sostiene> tabella__sostiene = tabella__esamiSostenuti(result, "Nessun studente iscritto all'esame");
+
                 user__container.add(tabella__sostiene);
             }
         });

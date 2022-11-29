@@ -107,6 +107,7 @@ public class SchermataAdmin {
                 });
                 //Tabella con tutti gli stundenti
                 CellTable <Studente> tabella__studenti= tabella__studenti(result,"Sembra non ci siano studenti");
+                user__container.add(new HTML("<div class=\"user__title\">Studenti iscritti alla piattaforma</div>"));
                 user__container.add(btn__creaStudente);
                 user__container.add(tabella__studenti);
             }
@@ -209,38 +210,6 @@ public class SchermataAdmin {
         tabellaStudente.addColumn(colonna__modifica,"");
         colonna__modifica.setCellStyleNames("modifica__btn");
 
-        ButtonCell cella__elimina= new ButtonCell();
-        Column<Studente, String> colonna__elimina=new Column<Studente, String>(cella__elimina) {
-            @Override
-            public String getValue(Studente object) {
-                return "Elimina";
-            }
-        };
-        colonna__elimina.setFieldUpdater(new FieldUpdater<Studente, String>() {
-            @Override
-            public void update(int index, Studente object, String value) {
-                studenteServiceAsync.eliminaStudente(object.getMatricola(), new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore durante l'eliminazione dello studente "+caught);
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        Window.alert("Studente eliminato");
-                        try{
-                            listaStudenti();
-                        }catch (Exception e){
-                            Window.alert("oi"+ e);
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-            }
-        });
-
-        tabellaStudente.addColumn(colonna__elimina,"");
-        colonna__elimina.setCellStyleNames("elimina__btn");
         tabellaStudente.setRowCount(result.length);
         tabellaStudente.setRowData(0, Arrays.asList(result));
         return tabellaStudente;
@@ -336,6 +305,7 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(new HTML("<div class=\"user__title\">Crea un nuovo profilo Studente</div>"));
         user__container.add(btn__chiudi);
         studenteContainer.add(crea__btn);
         creaStudente.add(studenteContainer);
@@ -433,6 +403,7 @@ public class SchermataAdmin {
                 });
             }
         });
+        user__container.add(new HTML("<div class=\"user__title\">Modifica i dati dello studente</div>"));
         user__container.add(btn__chiudi);
         studenteContainer.add(crea__btn);
         modificaStudente.add(studenteContainer);
@@ -624,6 +595,7 @@ public class SchermataAdmin {
 
                 //Tabella con tutti i docenti
                 CellTable <Docente> tabella__docenti = tabella__docenti(result,"Sembra non ci siano docenti");
+                user__container.add(new HTML("<div class=\"user__title\">Docenti iscritti alla piattaforma</div>"));
                 user__container.add(btn__creaDocente);
                 user__container.add(tabella__docenti);
 
@@ -685,39 +657,6 @@ public class SchermataAdmin {
         });
         tabellaDocente.addColumn(colonna__modifica,"");
         colonna__modifica.setCellStyleNames("modifica__btn");
-
-        ButtonCell cella__elimina= new ButtonCell();
-        Column<Docente, String> colonna__elimina=new Column<Docente, String>(cella__elimina) {
-            @Override
-            public String getValue(Docente object) {
-                return "Elimina";
-            }
-        };
-
-        colonna__elimina.setFieldUpdater(new FieldUpdater<Docente, String>() {
-            @Override
-            public void update(int index, Docente object, String value) {
-                docenteServiceAsync.eliminaDocente(object.getCodDocente(), new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore durante l'eliminazione del docente "+caught);
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        Window.alert("Docente eliminato");
-                        try{
-                            listaDocenti();
-                        }catch (Exception e){
-                            Window.alert("oi"+ e);
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-            }
-        });
-        tabellaDocente.addColumn(colonna__elimina,"");
-        colonna__elimina.setCellStyleNames("elimina__btn");
 
         tabellaDocente.setRowCount(result.length);
         tabellaDocente.setRowData(0, Arrays.asList(result));
@@ -792,6 +731,7 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(new HTML("<div class=\"user__title\">Crea un nuovo profilo Docente</div>"));
         user__container.add(btn__chiudi);
         docenteContainer.add(crea__btn);
 
@@ -868,6 +808,7 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(new HTML("<div class=\"user__title\">Modifica i dati del docente</div>"));
         user__container.add(btn__chiudi);
         docenteContainer.add(crea__btn);
         creaDocente.add(docenteContainer);
@@ -899,6 +840,7 @@ public class SchermataAdmin {
                 });
                 //Tabella con tutti gli stundenti
                 CellTable <Segreteria> tabella__segreteria= tabella__segreteria(result,"Sembra non ci siano segreterie");
+                user__container.add(new HTML("<div class=\"user__title\">Segreterie iscritte alla piattaforma</div>"));
                 user__container.add(btn__creaSegreteria);
                 user__container.add(tabella__segreteria);
             }
@@ -948,40 +890,6 @@ public class SchermataAdmin {
        };
        tabellaSegreteria.addColumn(colonna__password, "Password");
 
-       //Colonna elimina
-       ButtonCell cella__elimina= new ButtonCell();
-       Column<Segreteria, String> colonna__elimina = new Column<Segreteria, String>(cella__elimina) {
-           @Override
-           public String getValue(Segreteria object) {
-               return "Elimina";
-           }
-       };
-
-       colonna__elimina.setFieldUpdater(new FieldUpdater<Segreteria, String>() {
-           @Override
-           public void update(int index, Segreteria object, String value) {
-               segreteriaServiceAsync.eliminaSegreteria(object.getMail(), new AsyncCallback<Boolean>() {
-                   @Override
-                   public void onFailure(Throwable caught) {
-
-                   }
-
-                   @Override
-                   public void onSuccess(Boolean result) {
-                        Window.alert("Segreteria elinata");
-                       try{
-                           listaSegreteria();
-                       }catch (Exception e){
-                           Window.alert("Errore nel ricaricare la pagina: "+ e);
-                           throw new RuntimeException(e);
-                       }
-                   }
-               });
-           }
-       });
-
-       colonna__elimina.setCellStyleNames("elimina__btn");
-       tabellaSegreteria.addColumn(colonna__elimina, "");
 
        //--> CSS
 
@@ -1059,6 +967,7 @@ public class SchermataAdmin {
             }
         });
 
+        user__container.add(new HTML("<div class=\"user__title\">Crea un nuovo profilo Segreteria</div>"));
         user__container.add(btn__chiudi);
         segreteriaContainer.add(crea__btn);
         creaSegreteria.add(segreteriaContainer);
