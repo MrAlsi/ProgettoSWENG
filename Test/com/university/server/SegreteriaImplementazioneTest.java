@@ -38,9 +38,12 @@ class SegreteriaImplementazioneTest {
 
     @Test
     void loginSegreteria() {
+        //Prova login con credenziali giuste
         assertEquals(new Segreteria("Claudia", "Codeluppi", "claudia.codeluppi@segreteria.university.com", "mamma"),
                 implementazione.loginSegreteria("claudia.codeluppi@segreteria.university.com","mamma"));
+
+        //Prova login con credenziali sbagliate
         assertNotEquals(new Segreteria("Claudia", "Codeluppi", "claudia.codeluppi@segreteria.university.com", "mamma"),
-                implementazione.loginSegreteria("claudia.codeluppi@segreteria.university.com","mammma"));
+                implementazione.loginSegreteria("claudia.codeluppi@segreteria.university.com","passwordsbagliata"));
     }
 }
