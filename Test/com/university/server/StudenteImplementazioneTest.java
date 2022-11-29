@@ -19,8 +19,6 @@ class StudenteImplementazioneTest {
             new Studente("Alessandro", "Pasi", "alessandro.pasi@studente.university.com", "Pesos", "25/06/1999", 3)
     );
 
-    Studente nuovoStudente = new Studente("Nuovo", "Studente", "nuovo.studente@studente.university.com", "nuovo", "01/01/1999", 4);
-
     @Test
     void getStudenteByMatricola() {
         assertEquals(studentiTest.get(0), studenteImplementazione.getStudenteByMatricola(1));
