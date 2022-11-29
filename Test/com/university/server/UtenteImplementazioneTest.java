@@ -8,6 +8,7 @@ class UtenteImplementazioneTest {
 
     UtenteImplementazione implementazioneUtente = new UtenteImplementazione();
 
+    //Controllo per i vari scenari al momento del login
     @Test
     void login() {
         assertEquals("Studente", implementazioneUtente.login("studente.studente@studente.university.com"));
