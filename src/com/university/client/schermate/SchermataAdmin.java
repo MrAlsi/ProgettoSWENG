@@ -210,38 +210,6 @@ public class SchermataAdmin {
         tabellaStudente.addColumn(colonna__modifica,"");
         colonna__modifica.setCellStyleNames("modifica__btn");
 
-        ButtonCell cella__elimina= new ButtonCell();
-        Column<Studente, String> colonna__elimina=new Column<Studente, String>(cella__elimina) {
-            @Override
-            public String getValue(Studente object) {
-                return "Elimina";
-            }
-        };
-        colonna__elimina.setFieldUpdater(new FieldUpdater<Studente, String>() {
-            @Override
-            public void update(int index, Studente object, String value) {
-                studenteServiceAsync.eliminaStudente(object.getMatricola(), new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore durante l'eliminazione dello studente "+caught);
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        Window.alert("Studente eliminato");
-                        try{
-                            listaStudenti();
-                        }catch (Exception e){
-                            Window.alert("oi"+ e);
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-            }
-        });
-
-        tabellaStudente.addColumn(colonna__elimina,"");
-        colonna__elimina.setCellStyleNames("elimina__btn");
         tabellaStudente.setRowCount(result.length);
         tabellaStudente.setRowData(0, Arrays.asList(result));
         return tabellaStudente;
@@ -690,39 +658,6 @@ public class SchermataAdmin {
         tabellaDocente.addColumn(colonna__modifica,"");
         colonna__modifica.setCellStyleNames("modifica__btn");
 
-        ButtonCell cella__elimina= new ButtonCell();
-        Column<Docente, String> colonna__elimina=new Column<Docente, String>(cella__elimina) {
-            @Override
-            public String getValue(Docente object) {
-                return "Elimina";
-            }
-        };
-
-        colonna__elimina.setFieldUpdater(new FieldUpdater<Docente, String>() {
-            @Override
-            public void update(int index, Docente object, String value) {
-                docenteServiceAsync.eliminaDocente(object.getCodDocente(), new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore durante l'eliminazione del docente "+caught);
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        Window.alert("Docente eliminato");
-                        try{
-                            listaDocenti();
-                        }catch (Exception e){
-                            Window.alert("oi"+ e);
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-            }
-        });
-        tabellaDocente.addColumn(colonna__elimina,"");
-        colonna__elimina.setCellStyleNames("elimina__btn");
-
         tabellaDocente.setRowCount(result.length);
         tabellaDocente.setRowData(0, Arrays.asList(result));
         return tabellaDocente;
@@ -955,40 +890,6 @@ public class SchermataAdmin {
        };
        tabellaSegreteria.addColumn(colonna__password, "Password");
 
-       //Colonna elimina
-       ButtonCell cella__elimina= new ButtonCell();
-       Column<Segreteria, String> colonna__elimina = new Column<Segreteria, String>(cella__elimina) {
-           @Override
-           public String getValue(Segreteria object) {
-               return "Elimina";
-           }
-       };
-
-       colonna__elimina.setFieldUpdater(new FieldUpdater<Segreteria, String>() {
-           @Override
-           public void update(int index, Segreteria object, String value) {
-               segreteriaServiceAsync.eliminaSegreteria(object.getMail(), new AsyncCallback<Boolean>() {
-                   @Override
-                   public void onFailure(Throwable caught) {
-
-                   }
-
-                   @Override
-                   public void onSuccess(Boolean result) {
-                        Window.alert("Segreteria elinata");
-                       try{
-                           listaSegreteria();
-                       }catch (Exception e){
-                           Window.alert("Errore nel ricaricare la pagina: "+ e);
-                           throw new RuntimeException(e);
-                       }
-                   }
-               });
-           }
-       });
-
-       colonna__elimina.setCellStyleNames("elimina__btn");
-       tabellaSegreteria.addColumn(colonna__elimina, "");
 
        //--> CSS
 

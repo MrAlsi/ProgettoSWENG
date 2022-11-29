@@ -28,7 +28,7 @@ public class University implements EntryPoint {
     final HTML login__img = new HTML("" +
             "<img src=\"img/ragazza__login.png\" class=\"login__img\">" +
             "");
-
+    Index index = new Index();
     /**
      * This is the entry point method.
      */
@@ -38,7 +38,6 @@ public class University implements EntryPoint {
 
         // Di default mostro il contenuto della homepage
         try {
-            Index index = new Index();
             index.aggiungiContenuto();
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,8 +47,8 @@ public class University implements EntryPoint {
 
     public void Navbar() {
 
-        HorizontalPanel hPanel = new HorizontalPanel();
-        hPanel.setSpacing(5);
+        HorizontalPanel navbar__panel = new HorizontalPanel();
+        navbar__panel.setSpacing(5);
 
         Button home__btn = new Button("");
         home__btn.getElement().setId("home__GWTbtn");
@@ -73,6 +72,42 @@ public class University implements EntryPoint {
                 RootPanel.get("container").clear();
                 try {
                     caricaLogin();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        home__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                RootPanel.get("container").clear();
+                try {
+                    index.aggiungiContenuto();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        dipartimenti__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                RootPanel.get("container").clear();
+                try {
+                    index.aggiungiContenuto();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        contatti__btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                RootPanel.get("container").clear();
+                try {
+                    index.aggiungiContenuto();
                     //creaStudente();
                 } catch (Exception e) {
                     e.printStackTrace();
