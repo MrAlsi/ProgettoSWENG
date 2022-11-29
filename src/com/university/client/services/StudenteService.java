@@ -4,7 +4,6 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.university.client.model.*;
 
-
 @RemoteServiceRelativePath("studenti")
 public interface StudenteService extends RemoteService {
     int getNumeroStudenti();

@@ -5,11 +5,16 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.university.client.services.*;
+import com.university.server.StudenteImplementazione;
+
 
 public class Index implements Contenuto {
     private static CorsoServiceAsync corsoServiceAsync = GWT.create(CorsoService.class);
     private static DocenteServiceAsync docenteServiceAsync = GWT.create(DocenteService.class);
     private static StudenteServiceAsync studenteServiceAsync = GWT.create(StudenteService.class);
+
+    // public static StudenteImplementazione studenteImpl = new StudenteImplementazione();
+
     final static HTML sfondo = new HTML("" +
             "<section id=\"sfondo__div\">" +
                 "<img src=\"img/homepage__bg.jpg\" class=\"sfondo__img\">" +
@@ -79,6 +84,8 @@ public class Index implements Contenuto {
         RootPanel.get("container").clear();
         VerticalPanel homepage__panel = new VerticalPanel();
         homepage__panel.addStyleName("homepage__panel");
+
+
 
         corsoServiceAsync.getNumeroCorsi(new AsyncCallback<Integer>() {
             @Override

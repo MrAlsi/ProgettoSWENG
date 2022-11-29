@@ -5,9 +5,7 @@ import java.io.Serializable;
 public class Sostiene implements Serializable {
     public int matricola;
     public int codEsame;
-
     public String nomeCorso;
-
     public String data;
     public String ora;
     public int voto;

@@ -453,7 +453,7 @@ public class SchermataSegreteria {
                     @Override
                     public void onSuccess(Boolean check) {
                         Window.alert("Voto pubblicato con successo!");
-                        serviceFrequenta.cancellaIscrizione(object.getMatricola(), object.getNomeCorso(), new AsyncCallback<Boolean>() {
+                        /*serviceFrequenta.cancellaIscrizione(object.getMatricola(), object.getNomeCorso(), new AsyncCallback<Boolean>() {
                             @Override
                             public void onFailure(Throwable throwable) {
                                 Window.alert("Errore durante la pubblicazione del voto: " + throwable.getMessage());
@@ -468,7 +468,7 @@ public class SchermataSegreteria {
                                     e.printStackTrace();
                                 }
                             }
-                        });
+                        });*/
                     }
                 });
             }

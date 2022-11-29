@@ -21,13 +21,13 @@ public interface SostieneServiceAsync {
 
     void accettaVoto(int esame, int matricola, AsyncCallback<Boolean> async);
 
-    void calcolaMedia(Sostiene[] s, AsyncCallback<Long> async);
+    //void calcolaMedia(Sostiene[] s, AsyncCallback<Long> async);
 
     //Restituisce tutti gli oggetti sostiene di un determinato studente senza voto
     void getSostieneStudenteSenzaVoto(int matricola, AsyncCallback<Sostiene[]> async);
 
     //Restituisce tutti gli oggetti sostiene di un determinato studente con voto
-    void getSostieneStudenteConVoto(int matricola, AsyncCallback<Sostiene[]> async);
+    //void getSostieneStudenteConVoto(int matricola, AsyncCallback<Sostiene[]> async);
 
     //ottengo i voti dello studente
     void getEsamiLibretto(int matricola, AsyncCallback<Sostiene[]> async);
@@ -35,11 +35,11 @@ public interface SostieneServiceAsync {
     //Metodo per eliminare un oggetto sostiene
     void eliminaSostiene(int esame, int matricola, AsyncCallback<Boolean> async);
 
-    void traduciEsame(int codEsame, AsyncCallback<Esame> async);
+    //void traduciEsame(int codEsame, AsyncCallback<Esame> async);
 
     void getEsamiSostenibili(int matricola, Corso[] mieiCorsi, AsyncCallback<Esame[]> async);
 
-    void getMieiEsami(int matricola, AsyncCallback<ArrayList<Sostiene>> async);
+    //void getMieiEsami(int matricola, AsyncCallback<ArrayList<Sostiene>> async);
 
     //metodo per eliminare tutti i sostiene con un codice esame
     void eliminaEsameSostiene(int esame, AsyncCallback<Boolean> async);

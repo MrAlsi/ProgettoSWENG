@@ -707,15 +707,15 @@ public class SchermataDocente {
 
                     @Override
                     public void onSuccess(Boolean result) {
-                        if(result==true) {
+                        if(result==true){
                             Window.alert("corso creato");
                             try {
                                 form__corsi();
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
-                        }else{
-                            Window.alert("Impossibile creare il corso, corso "+ nome__textBox.getText()+ " già esistente.");
+                        } else {
+                            Window.alert("Impossibile creare il corso: nome \""+nome__textBox.getText()+"\"  già esistente");
                         }
                     }
                 });

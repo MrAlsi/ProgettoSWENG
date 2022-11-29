@@ -6,36 +6,38 @@
 
     <servlet>
         <servlet-name>com.university.University UtenteService</servlet-name>
-        <servlet-class>com.university.server.UtenteImpl</servlet-class>
+        <servlet-class>com.university.server.UtenteImplementazione</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>com.university.University StudenteService</servlet-name>
-        <servlet-class>com.university.server.StudenteImpl</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>com.university.University CorsoService</servlet-name>
-        <servlet-class>com.university.server.CorsoImpl</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>com.university.University DocenteService</servlet-name>
-        <servlet-class>com.university.server.DocenteImpl</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>com.university.University SegreteriaService</servlet-name>
-        <servlet-class>com.university.server.SegreteriaImpl</servlet-class>
+        <servlet-class>com.university.server.StudenteImplementazione</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>com.university.University FrequentaService</servlet-name>
-        <servlet-class>com.university.server.FrequentaImpl</servlet-class>
+        <servlet-class>com.university.server.FrequentaImplementazione</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>com.university.University DocenteService</servlet-name>
+        <servlet-class>com.university.server.DocenteImplementazione</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>com.university.University SegreteriaService</servlet-name>
+        <servlet-class>com.university.server.SegreteriaImplementazione</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>com.university.University CorsoService</servlet-name>
+        <servlet-class>com.university.server.CorsoImplementazione</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>com.university.University EsameService</servlet-name>
-        <servlet-class>com.university.server.EsameImpl</servlet-class>
+        <servlet-class>com.university.server.EsameImplementazione</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>com.university.University SostieneService</servlet-name>
-        <servlet-class>com.university.server.SostieneImpl</servlet-class>
+        <servlet-class>com.university.server.SostieneImplementazione</servlet-class>
     </servlet>
+
+
     <servlet-mapping>
         <servlet-name>com.university.University UtenteService</servlet-name>
         <url-pattern>/University/utenti</url-pattern>
@@ -43,18 +45,6 @@
     <servlet-mapping>
         <servlet-name>com.university.University StudenteService</servlet-name>
         <url-pattern>/University/studenti</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>com.university.University CorsoService</servlet-name>
-        <url-pattern>/University/corso</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>com.university.University DocenteService</servlet-name>
-        <url-pattern>/University/docente</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>com.university.University SegreteriaService</servlet-name>
-        <url-pattern>/University/segreteria</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>com.university.University FrequentaService</servlet-name>
@@ -65,7 +55,19 @@
         <url-pattern>/University/esame</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>com.university.University SegreteriaService</servlet-name>
+        <url-pattern>/University/segreteria</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University DocenteService</servlet-name>
+        <url-pattern>/University/docente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.university.University CorsoService</servlet-name>
+        <url-pattern>/University/corso</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>com.university.University SostieneService</servlet-name>
         <url-pattern>/University/sostiene</url-pattern>
     </servlet-mapping>
-  </web-app>
+</web-app>
