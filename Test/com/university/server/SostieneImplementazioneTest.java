@@ -23,15 +23,6 @@ class SostieneImplementazioneTest {
 
     );
 
-    /*Corso[] corsi = new Corso[]{
-            new Corso("Programmazione", )
-    }*/
-
-    List <Studente> studenteTest= Lists.newArrayList(
-            new Studente("Carlotta","Carboni","carlotta.carboni@studente.university.com","pp","21/02/1999",1)
-    );
-
-
     @Test
     void getSostiene() {
         assertEquals(5, sostieneImplementazione.getSostiene().length);
