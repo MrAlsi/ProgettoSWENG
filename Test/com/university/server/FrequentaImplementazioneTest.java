@@ -20,12 +20,6 @@ class FrequentaImplementazioneTest {
             new Frequenta(2,"matematica")
     );
 
-    List <Corso> corsoTest= Lists.newArrayList(
-            new Corso("matematica","12/12/2022","14/12/2022","prova",3,1,2),
-            new Corso("italiano","12/12/2022","14/12/2022","prova",3,1,2)
-
-    );
-
     @Test
     void getFrequenta() {
         assertEquals(1,frequnetaImplementazione.getFrequenta().length);
