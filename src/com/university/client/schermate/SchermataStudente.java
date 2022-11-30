@@ -60,7 +60,7 @@ public class SchermataStudente {
 
         btn__profilo.addClickHandler(clickEvent -> {
             try {
-                form__profilo();
+                profilo();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -68,7 +68,7 @@ public class SchermataStudente {
 
         btn__voti__studente.addClickHandler(clickEvent -> {
             try {
-                form__libretto();
+                libretto();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -76,7 +76,7 @@ public class SchermataStudente {
 
         btn__esami.addClickHandler(clickEvent -> {
             try {
-                form__pianificaProve();
+                pianificaProve();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -84,7 +84,7 @@ public class SchermataStudente {
 
         btn__esami__studente.addClickHandler(clickEvent -> {
             try {
-                form__esamiPrenotati();
+                esamiPrenotati();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -92,7 +92,7 @@ public class SchermataStudente {
 
         btn__corsi__studente.addClickHandler(clickEvent -> {
             try {
-                form__mieiCorsi();
+                mieiCorsi();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -100,7 +100,7 @@ public class SchermataStudente {
 
         btn__corsi.addClickHandler(clickEvent -> {
             try {
-                form__corsi();
+                corsi();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -121,7 +121,7 @@ public class SchermataStudente {
 
 
     //Profilo dello studente
-    public void form__profilo(){
+    public void profilo(){
         serviceStudente.getStudenteByMatricola(studente.getMatricola(), new AsyncCallback<Studente>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -143,7 +143,7 @@ public class SchermataStudente {
     }
 
     //Libretto dello studente, tutti gli esami che ha svolto
-    public void form__libretto() throws Exception {
+    public void libretto() throws Exception {
         user__container.clear();
         serviceSostiene.getEsamiLibretto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
@@ -178,7 +178,7 @@ public class SchermataStudente {
     }
 
     //Pagina che mostra tutti i corsi che posso prenotare un esame
-    public void form__pianificaProve() throws Exception {
+    public void pianificaProve() throws Exception {
 
         user__container.clear();
         serviceFrequenta.getCorsiStudente(studente.getMatricola(),new AsyncCallback<Corso[]>() {
@@ -208,7 +208,7 @@ public class SchermataStudente {
     }
 
     //Pagina che mostra gli esami prenotati che non ancora un voto
-    public void form__esamiPrenotati() throws Exception {
+    public void esamiPrenotati() throws Exception {
         user__container.clear();
         serviceSostiene.getSostieneStudenteSenzaVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
@@ -247,7 +247,7 @@ public class SchermataStudente {
     }
 
     //Pagina per vedere i corsi a cui sono iscritto
-    public void form__mieiCorsi() throws Exception {
+    public void mieiCorsi() throws Exception {
 
         user__container.clear();
         serviceFrequenta.getCorsiStudente(studente.getMatricola(), new AsyncCallback<Corso[]>() {
@@ -268,7 +268,7 @@ public class SchermataStudente {
     }
 
     //Pagina con tutti i corsi disponibili, ovvero a quelli a cui non sono iscritto
-    public void form__corsi() throws Exception {
+    public void corsi() throws Exception {
 
         user__container.clear();
         serviceFrequenta.getCorsiDisponibili(studente.getMatricola(), new AsyncCallback<Corso[]>() {
@@ -404,7 +404,7 @@ public class SchermataStudente {
                     public void onSuccess(Boolean check) {
                         Window.alert("Iscrizione all'esame avvenuta con successo!");
                         try {
-                            form__pianificaProve();
+                            pianificaProve();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -601,7 +601,7 @@ public class SchermataStudente {
                     public void onSuccess(Boolean check) {
                         Window.alert("Iscrizione al corso avvenuta con successo!");
                         try {
-                            form__corsi();
+                            corsi();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

@@ -15,9 +15,7 @@ import com.google.gwt.user.client.ui.*;
 import com.university.client.model.*;
 import com.university.client.services.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class SchermataSegreteria {
     Segreteria segreteria;
@@ -53,7 +51,7 @@ public class SchermataSegreteria {
 
         btn__studenti.addClickHandler(clickEvent -> {
             try {
-                form__studenti();
+                studenti();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -61,7 +59,7 @@ public class SchermataSegreteria {
 
         btn__valutazioni.addClickHandler(clickEvent -> {
             try {
-                form__valutazioni();
+                valutazioni();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -76,7 +74,7 @@ public class SchermataSegreteria {
 
     }
 
-    public void form__studenti() throws Exception {
+    public void studenti() throws Exception {
         user__container.clear();
         serviceStudente.getStudenti(new AsyncCallback<Studente[]>() {
             @Override
@@ -95,7 +93,7 @@ public class SchermataSegreteria {
         });
     }
 
-    public void form__valutazioni() throws Exception {
+    public void valutazioni() throws Exception {
         user__container.clear();
         serviceSostiene.esamiSostenuti(new AsyncCallback<Sostiene[]>() {
             @Override
@@ -113,7 +111,7 @@ public class SchermataSegreteria {
         });
     }
 
-    public void form__visualizzaCorsi(int matricola, String nome, String cognome) throws Exception {
+    public void visualizzaCorsi(int matricola, String nome, String cognome) throws Exception {
         user__container.clear();
         serviceFrequenta.getCorsiStudente(matricola, new AsyncCallback<Corso[]>() {
             @Override
@@ -133,7 +131,7 @@ public class SchermataSegreteria {
                     @Override
                     public void onClick(ClickEvent event) {
                         try {
-                            form__studenti();
+                            studenti();
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -145,7 +143,7 @@ public class SchermataSegreteria {
         });
     }
 
-    public void form__visualizzaEsami(int matricola, String nome, String cognome) throws Exception {
+    public void visualizzaEsami(int matricola, String nome, String cognome) throws Exception {
         user__container.clear();
 
         serviceSostiene.getEsamiLibretto(matricola, new AsyncCallback<Sostiene[]>() {
@@ -166,7 +164,7 @@ public class SchermataSegreteria {
                     @Override
                     public void onClick(ClickEvent event) {
                         try {
-                            form__studenti();
+                            studenti();
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -243,7 +241,7 @@ public class SchermataSegreteria {
             public void update(int index, Studente object, String value) {
 
                 try {
-                    form__visualizzaCorsi(object.getMatricola(), object.getNome(), object.getCognome());
+                    visualizzaCorsi(object.getMatricola(), object.getNome(), object.getCognome());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -268,7 +266,7 @@ public class SchermataSegreteria {
             public void update(int index, Studente object, String value) {
 
                 try {
-                    form__visualizzaEsami(object.getMatricola(), object.getNome(), object.getCognome());
+                    visualizzaEsami(object.getMatricola(), object.getNome(), object.getCognome());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -457,7 +455,7 @@ public class SchermataSegreteria {
                     public void onSuccess(Boolean check) {
                         Window.alert("Voto pubblicato con successo!");
                         try {
-                            form__valutazioni();
+                            valutazioni();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

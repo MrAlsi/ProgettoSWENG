@@ -2,12 +2,9 @@ package com.university.client.schermate;
 
 import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
@@ -28,7 +25,6 @@ import com.university.client.model.Esame;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Set;
 
 public class SchermataDocente {
     Docente docente;
@@ -64,7 +60,7 @@ public class SchermataDocente {
 
         btn__profilo.addClickHandler(clickEvent -> {
             try {
-                form__profilo();
+                profilo();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -72,7 +68,7 @@ public class SchermataDocente {
 
         btn__corsi.addClickHandler(clickEvent -> {
             try {
-                form__corsi();
+                corsi();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -80,7 +76,7 @@ public class SchermataDocente {
 
         btn__esami.addClickHandler(clickEvent -> {
             try {
-                form__esami();
+                esami();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -97,7 +93,7 @@ public class SchermataDocente {
     }
 
 
-    public void form__profilo(){
+    public void profilo(){
         serviceDocente.getDocente(docente.getCodDocente(), new AsyncCallback<Docente>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -120,7 +116,7 @@ public class SchermataDocente {
 
 
 
-    public void form__corsi() throws Exception {
+    public void corsi() throws Exception {
         user__container.clear();
         serviceCorso.getCorsiDocente(docente.getCodDocente(), new AsyncCallback<Corso[]>() {
             @Override
@@ -149,7 +145,7 @@ public class SchermataDocente {
         });
     }
 
-    public void form__esami() throws Exception {
+    public void esami() throws Exception {
         user__container.clear();
         serviceCorso.getCorsiDocente(docente.getCodDocente(), new AsyncCallback<Corso[]>() {
             @Override
@@ -258,15 +254,6 @@ public class SchermataDocente {
                 }
             }
         });
-        /*
-        colonna__modifica.setFieldUpdater(new FieldUpdater<Corso, String>() {
-            @Override
-            public void update(Corso object) {
-                user__container.clear();
-                user__container.add(new HTML("<div class=\"user__title\">Modifica corso</div>"));
-                user__container.add((new form__modificaCorso(docente, object)).getForm());
-            }
-        }); */
 
         ButtonCell cella__elimina = new ButtonCell();
         Column<Corso, String> colonna__elimina = new Column<Corso, String>(cella__elimina) {
@@ -289,7 +276,7 @@ public class SchermataDocente {
                     public void onSuccess(Boolean result) {
                         Window.alert("Corso eliminato");
                         try {
-                            form__corsi();
+                            corsi();
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -397,17 +384,6 @@ public class SchermataDocente {
             }
         });
 
-
-        /*
-        colonna__modifica.setFieldUpdater(new FieldUpdater<Corso, String>() {
-            @Override
-            public void update(Corso object) {
-                user__container.clear();
-                user__container.add(new HTML("<div class=\"user__title\">Modifica corso</div>"));
-                user__container.add((new form__modificaCorso(docente, object)).getForm());
-            }
-        }); */
-
         ButtonCell cella__elimina = new ButtonCell();
         Column<Esame, String> colonna__elimina = new Column<Esame, String>(cella__elimina) {
             @Override
@@ -458,7 +434,7 @@ public class SchermataDocente {
                                                     public void onSuccess(Boolean result) {
                                                         Window.alert("Esame eliminato");
                                                         try {
-                                                            form__esami();
+                                                            esami();
                                                         } catch (Exception e) {
                                                             throw new RuntimeException(e);
                                                         }
@@ -597,7 +573,7 @@ public class SchermataDocente {
                     public void onSuccess(Boolean result) {
                         Window.alert("esame aggiornato");
                         try {
-                            form__corsi();
+                            corsi();
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -710,7 +686,7 @@ public class SchermataDocente {
                                 if(result==true) {
                                     Window.alert("corso creato");
                                     try {
-                                        form__corsi();
+                                        corsi();
                                     } catch (Exception e) {
                                         throw new RuntimeException(e);
                                     }
@@ -846,7 +822,7 @@ public class SchermataDocente {
                             public void onSuccess(Boolean result) {
                                 Window.alert("corso aggiornato");
                                 try {
-                                    form__corsi();
+                                    corsi();
                                 } catch (Exception e) {
                                     throw new RuntimeException(e);
                                 }
@@ -976,7 +952,7 @@ public class SchermataDocente {
                                         public void onSuccess(Boolean result) {
                                             Window.alert("Esame creato");
                                             try {
-                                                form__esami();
+                                                esami();
                                             } catch (Exception e) {
                                                 throw new RuntimeException(e);
                                             }
@@ -1013,7 +989,7 @@ public class SchermataDocente {
                     @Override
                     public void onClick(ClickEvent event) {
                         try {
-                            form__esami();
+                            esami();
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
