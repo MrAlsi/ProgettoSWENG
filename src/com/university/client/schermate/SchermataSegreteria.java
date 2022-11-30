@@ -324,6 +324,9 @@ public class SchermataSegreteria {
         TextColumn<Corso> colonna__coDocente = new TextColumn<Corso>() {
             @Override
             public String getValue(Corso object) {
+                if(String.valueOf(object.getCoDocente()).equals("-1")){
+                    return "nessun codocente";
+                }
                 return String.valueOf(object.getCoDocente());
             }
         };
@@ -453,22 +456,11 @@ public class SchermataSegreteria {
                     @Override
                     public void onSuccess(Boolean check) {
                         Window.alert("Voto pubblicato con successo!");
-                        /*serviceFrequenta.cancellaIscrizione(object.getMatricola(), object.getNomeCorso(), new AsyncCallback<Boolean>() {
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                Window.alert("Errore durante la pubblicazione del voto: " + throwable.getMessage());
-                            }
-
-                            @Override
-                            public void onSuccess(Boolean check) {
-                                Window.alert("Iscrizione al corso rimossa con successo!");
-                                try {
-                                    form__valutazioni();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });*/
+                        try {
+                            form__valutazioni();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }

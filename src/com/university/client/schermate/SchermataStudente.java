@@ -322,6 +322,9 @@ public class SchermataStudente {
         TextColumn<Sostiene> colonna__voto = new TextColumn<Sostiene>() {
             @Override
             public String getValue(Sostiene object) {
+                if(String.valueOf(object.getVoto()).equals("31") || String.valueOf(object.getVoto()).equals("32")) {
+                    return "30 e lode";
+                }
                 return String.valueOf(object.getVoto());
             }
         };

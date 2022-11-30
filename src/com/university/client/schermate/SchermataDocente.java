@@ -250,8 +250,8 @@ public class SchermataDocente {
             public void update(int index, Corso object, String value) {
                 try {
                     formModificaCorso(object.getNome(), object.getDataInizio(),
-                                        object.getDataFine(), object.getDescrizione(),
-                                        object.getCoDocente(), object.getEsame());
+                            object.getDataFine(), object.getDescrizione(),
+                            object.getCoDocente(), object.getEsame());
                 } catch (ParseException e) {
                     System.out.println("ERRORE:  " + e);
                     throw new RuntimeException(e);
@@ -560,7 +560,7 @@ public class SchermataDocente {
             public void onSubmit(FormPanel.SubmitEvent event) {
                 //controllo che tutti i campi siano pieni
                 if(aula__textBox.getText().length()==0 || data__dateBox.getValue() == null  || ora__listBox.getSelectedValue()== null
-                || durata__listBox.getSelectedValue()== null || corso__list.getSelectedValue()==null){
+                        || durata__listBox.getSelectedValue()== null || corso__list.getSelectedValue()==null){
                     Window.alert("Compilare tutti i campi!");
                     event.cancel();
                 }
@@ -682,7 +682,7 @@ public class SchermataDocente {
                     if (!(nome__textBox.getText().contains("viaggi nel tempo"))) {
                         //Window.alert("T1: " + dataI__dateBox.getValue().after(dataF__dataBox.getValue()) + "\nT2: " + !(nome__textBox.getText().contains("viaggi nel tempo")));
                         Window.alert("Data di fine corso non può essere prima di data inizio corso, a meno che non sia un" +
-                            " corso sul come viaggiare nel tempo");
+                                " corso sul come viaggiare nel tempo");
                         event.cancel();
                     }
                 }
@@ -699,26 +699,26 @@ public class SchermataDocente {
                     codocente = Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]);
                 }
                 serviceCorso.creaCorso(nome__textBox.getText(), dataI__dateBox.getValue().toString(), dataF__dataBox.getValue().toString(),
-                descrizione__text.getText(), codocente, docente.getCodDocente(), new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Errore nel creare il corso "+ caught);
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if(result==true){
-                            Window.alert("corso creato");
-                            try {
-                                form__corsi();
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
+                        descrizione__text.getText(), codocente, docente.getCodDocente(), new AsyncCallback<Boolean>() {
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                Window.alert("Errore nel creare il corso "+ caught);
                             }
-                        } else {
-                            Window.alert("Impossibile creare il corso: nome \""+nome__textBox.getText()+"\"  già esistente");
-                        }
-                    }
-                });
+
+                            @Override
+                            public void onSuccess(Boolean result) {
+                                if(result==true) {
+                                    Window.alert("corso creato");
+                                    try {
+                                        form__corsi();
+                                    } catch (Exception e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }else{
+                                    Window.alert("Impossibile creare il corso, corso "+ nome__textBox.getText()+ " già esistente.");
+                                }
+                            }
+                        });
             }
         });
 
@@ -1044,6 +1044,15 @@ public class SchermataDocente {
         };
         tabellaSostiene.addColumn(colonna__matricola, "Matricola");
 
+        //Colonna per mostrare il corso
+        TextColumn<Sostiene> colonna__corso = new TextColumn<Sostiene>() {
+            @Override
+            public String getValue(Sostiene object) {
+                return  object.getNomeCorso();
+            }
+        };
+        tabellaSostiene.addColumn(colonna__corso, "Corso");
+
         //TextInput per aggiungere voto
         TextInputCell inputVoto = new TextInputCell();
 
@@ -1054,6 +1063,7 @@ public class SchermataDocente {
             }
         };
 
+        colonna__aggiungiVoto.setCellStyleNames("aggiungiVoto");
         colonna__aggiungiVoto.setFieldUpdater(new FieldUpdater<Sostiene, String>() {
             @Override
             public void update(int index, Sostiene object, String value) {
@@ -1072,9 +1082,10 @@ public class SchermataDocente {
         Column<Sostiene, String> colonna__mandaVoto = new Column<Sostiene, String>(cella__mandaVoto) {
             @Override
             public String getValue(Sostiene object) {
-                return "Manda";
+                return "Invia";
             }
         };
+        colonna__mandaVoto.setCellStyleNames("invia__btn");
 
         colonna__mandaVoto.setFieldUpdater(new FieldUpdater<Sostiene, String>() {
             @Override
@@ -1112,7 +1123,7 @@ public class SchermataDocente {
             }
         });
 
-        tabellaSostiene.addColumn(colonna__mandaVoto, "Manda voto");
+        tabellaSostiene.addColumn(colonna__mandaVoto, "Invia voto");
 
         tabellaSostiene.setRowCount(result.length);
         tabellaSostiene.setRowData(0, Arrays.asList(result));
