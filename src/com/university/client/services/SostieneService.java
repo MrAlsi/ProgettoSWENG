@@ -18,9 +18,6 @@ public interface SostieneService extends RemoteService {
     //Restituisce tutti gli oggetti sostiene di un determinato studente senza voto
     Sostiene[] getSostieneStudenteSenzaVoto(int matricola);
 
-    //Restituisce tutti gli oggetti sostiene di un determinato studente con voto
-    //Sostiene[] getSostieneStudenteConVoto(int matricola);
-
     //ottengo i voti dello studente
     Sostiene[] getEsamiLibretto(int matricola);
 
@@ -48,5 +45,6 @@ public interface SostieneService extends RemoteService {
     // restituisce tutti gli esami sostenibili dallo studente
     Esame[] getEsamiSostenibili(int matricola, Corso[] mieiCorsi);
 
+    //Restituisce tutti gli studenti che sono iscritti all'esame ma che ancora non hanno il voto
     Sostiene[] getStudentiInserisciVoto(int codEsame);
 }

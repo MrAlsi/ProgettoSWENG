@@ -9,14 +9,14 @@ import java.util.ArrayList;
 
 public interface FrequentaServiceAsync {
 
-    void getMieiCorsi(int matricola, AsyncCallback<ArrayList<Frequenta>> async);
+    void getMieiCorsi(int matricola, AsyncCallback<Frequenta[]> async);
 
     void getCorsiStudente(int matricola, AsyncCallback<Corso[]> async);
 
 
     void getFrequenta(AsyncCallback<Frequenta[]> async);
 
-    void getStudentiIscritti(String nomeCorso, AsyncCallback<ArrayList<Frequenta>> async);
+    void getStudentiIscritti(String nomeCorso, AsyncCallback<Frequenta[]> async);
 
     void iscrivi(int matricola, String nomeCorso, AsyncCallback<Boolean> async);
 

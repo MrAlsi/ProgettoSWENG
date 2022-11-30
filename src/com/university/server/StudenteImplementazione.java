@@ -19,7 +19,7 @@ public class StudenteImplementazione extends RemoteServiceServlet implements Stu
         repositoryStudenti = new StudenteRepositoryTest();
     }
 
-    //Metodo Wrapper...
+    //Metodo Wrapper
     public void chiamaDB(){
         // Singleton è un modello di progettazione creazionale che consente di garantire che una classe abbia una
         // sola istanza, fornendo al tempo stesso un punto di accesso globale a questa istanza.
@@ -31,13 +31,14 @@ public class StudenteImplementazione extends RemoteServiceServlet implements Stu
             }
         }
     }
-
+    //Restituisce il numero di studenti nel Database
     @Override
     public int getNumeroStudenti() {
         chiamaDB();
         return repositoryStudenti.getAll().length;
     }
 
+    //Crea un nuovo studente
     @Override
     public boolean creaStudente(String nome, String cognome, String password, String dataNascita) {
         chiamaDB();
@@ -66,30 +67,35 @@ public class StudenteImplementazione extends RemoteServiceServlet implements Stu
         }
     }
 
+    //Modifica i dati di uno studente
     @Override
     public boolean modificaStudente(String nome, String cognome, String mail, String password, String dataNascita, int matricola) {
         chiamaDB();
         return repositoryStudenti.Update(new Studente(nome, cognome, mail, password, dataNascita, matricola));
     }
 
+    //Elimina studente
     @Override
     public boolean eliminaStudente(int matricola) {
         chiamaDB();
         return repositoryStudenti.Remove(matricola);
     }
 
+    //Restituisce tutti gli studenti
     @Override
     public Studente[] getStudenti() {
         chiamaDB();
         return repositoryStudenti.getAll();
     }
 
+    //Cerca uno studente con la matricola
     @Override
     public Studente getStudenteByMatricola(int matricola) {
         chiamaDB();
         return repositoryStudenti.GetById(matricola);
     }
 
+    //controlla le credenziali per effetturare l'accesso
     @Override
     public Studente loginStudente(String mail, String password) {
         chiamaDB();

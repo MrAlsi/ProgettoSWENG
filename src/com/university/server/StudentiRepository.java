@@ -29,7 +29,6 @@ public class StudentiRepository extends RemoteServiceServlet implements Reposito
                 return db;
             }
         } catch(Exception e){
-            System.out.println("-----Errore: " + e);
             return null;
         }
     }

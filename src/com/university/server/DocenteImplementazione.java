@@ -35,42 +35,49 @@ public class DocenteImplementazione extends RemoteServiceServlet implements Doce
         }
     }
 
+    //Restituisce il numero di docenti nel DB
     @Override
     public int getNumeroDocenti() {
         chiamaDB();
         return repositoryDocente.getAll().length;
     }
 
+    //Restituisce tutti i docenti
     @Override
     public Docente[] getDocenti() {
         chiamaDB();
         return repositoryDocente.getAll();
     }
 
+    //Restituisce un docente identificato dal codice docente
     @Override
     public Docente getDocente(int codDocente) {
         chiamaDB();
         return repositoryDocente.GetById(codDocente);
     }
 
+    //Elimina docente
     @Override
     public Boolean eliminaDocente(int codDocente) {
         chiamaDB();
         return repositoryDocente.Remove(codDocente);
     }
 
+    //Modifica un docente
     @Override
     public Boolean modificaDocente(String nome, String cognome, String mail, String password, int codDocente) {
         chiamaDB();
         return repositoryDocente.Update(new Docente(nome, cognome, mail, password, codDocente));
     }
 
+    //Crea un docente
     @Override
     public Boolean creaDocente(String nome, String cognome, String password) {
         chiamaDB();
         return repositoryDocente.Create(new Docente( nome, cognome,getMailDocente(nome,cognome), password, repositoryDocente.getAll().length+1));
     }
 
+    //Controlla tutti i docenti per trovare una corrispondenza con mail e password
     @Override
     public Docente loginDocente(String mail, String password) {
         chiamaDB();
@@ -83,7 +90,7 @@ public class DocenteImplementazione extends RemoteServiceServlet implements Doce
     }
 
     /**
-     * Metodo che crea la mail per studenti nome.cognomeN@studente.university.com
+     * Metodo che crea la mail per studenti nome.cognomeN@docente.university.com
      * controlla se esistono degli ononimi nel DB, nel caso aggiunge un numero N alla mail
      * come la mail unibo
      */

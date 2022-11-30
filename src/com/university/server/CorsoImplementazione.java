@@ -41,12 +41,14 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
         }
     }
 
+    //Restituisce il numero dei corsi nel DB
     @Override
     public int getNumeroCorsi() {
         chiamaDB();
         return repositoryCorso.getAll().length;
     }
 
+    //Crea un corso
     @Override
     public Boolean creaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente) {
         chiamaDB();
@@ -57,6 +59,7 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
         return false;
     }
 
+    //Restituisce tutti i corsi
     public Corso controlloCorso(String nome){
         chiamaDB();
         return repositoryCorso.GetById(nome);
@@ -68,12 +71,14 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
         return repositoryCorso.getAll();
     }
 
+    //Ricerca i dati di un corso attraverso il suo nome
     @Override
     public Corso getCorso(String nome) {
         chiamaDB();
         return repositoryCorso.GetById(nome);
     }
 
+    //Restituisce tutti i corsi di un docente
     @Override
     public Corso[] getCorsiDocente(int docente) {
         chiamaDB();
@@ -86,6 +91,7 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
         return corsi.toArray(new Corso[0]);
     }
 
+    //Elimina un corso
     @Override
     public boolean eliminaCorso(String nome) {
         chiamaDB();
@@ -104,6 +110,7 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
         return repositoryCorso.Remove(nome);
     }
 
+    //Modifica un corso
     @Override
     public boolean modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
         chiamaDB();
@@ -112,6 +119,7 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
                 nomeCodice);
     }
 
+    //Sistema le date in formato Date, li riconosco perché contengono la stringa "GMT"
     public String pulisciData(String data){
         if(data.contains("GMT")) {
             String[] date = data.split(" ");

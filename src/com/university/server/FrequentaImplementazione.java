@@ -13,11 +13,10 @@ public class FrequentaImplementazione extends RemoteServiceServlet implements Fr
     RepositoryIntString<Frequenta> frequentaRepository;
     RepositoryDoubleInt<Sostiene>  sostieneRepository;
     RepositoryString<Corso> corsoRepository;
-
     Boolean singleton = false;
     Boolean test = false;
 
-
+    //Costruttore
     public FrequentaImplementazione(){ }
 
     //Costruttore per il test
@@ -43,12 +42,14 @@ public class FrequentaImplementazione extends RemoteServiceServlet implements Fr
         }
     }
 
+    //Restituisce tutti gli oggetti frequenta
     @Override
     public Frequenta[] getFrequenta() {
         chiamaDB();
         return frequentaRepository.getAll();
     }
 
+    //Restituisce tutti i corsi disponibili per uno studente, ovvero quelli a cui non è iscritto
     @Override
     public Corso[] getCorsiDisponibili(int matricola) {
         chiamaDB();
@@ -68,8 +69,9 @@ public class FrequentaImplementazione extends RemoteServiceServlet implements Fr
         return corsiDisponibili.toArray(new Corso[0]);
     }
 
+    //Restitusice gli oggetti frequenta a cui è iscritto uno studente
     @Override
-    public ArrayList<Frequenta> getMieiCorsi(int matricola) {
+    public Frequenta[] getMieiCorsi(int matricola) {
         chiamaDB();
         ArrayList<Frequenta> mieiCorsi = new ArrayList<>();
         for(Frequenta f : frequentaRepository.getAll()){
@@ -77,9 +79,10 @@ public class FrequentaImplementazione extends RemoteServiceServlet implements Fr
                 mieiCorsi.add(f);
             }
         }
-        return mieiCorsi;
+        return mieiCorsi.toArray(new Frequenta[0]);
     }
 
+    //Restituisce tutti gli oggetti corso a cui c'è corrispondenza in Frequenta
     @Override
     public Corso[] getCorsiStudente(int matricola) {
         chiamaDB();
@@ -92,8 +95,9 @@ public class FrequentaImplementazione extends RemoteServiceServlet implements Fr
         return corsiStudente.toArray(new Corso[0]);
     }
 
+    //Restituisce tutti gli iscritti a un corso
     @Override
-    public ArrayList<Frequenta> getStudentiIscritti(String nomeCorso) {
+    public Frequenta[] getStudentiIscritti(String nomeCorso) {
         chiamaDB();
         ArrayList<Frequenta> studentiIscritti = new ArrayList<>();
         for(Frequenta f : frequentaRepository.getAll()){
@@ -101,15 +105,17 @@ public class FrequentaImplementazione extends RemoteServiceServlet implements Fr
                 studentiIscritti.add(f);
             }
         }
-        return studentiIscritti;
+        return studentiIscritti.toArray(new Frequenta[0]);
     }
 
+    //iscrivi uno studente a un corso, in pratica crea un oggetto Frequenta
     @Override
     public boolean iscrivi(int matricola, String nomeCorso) {
         chiamaDB();
         return frequentaRepository.Create(new Frequenta(matricola, nomeCorso));
     }
 
+    //cancella l'iscrizione a un corso, in pratica elimina un oggetto Frequenta
     @Override
     public boolean cancellaIscrizione(int matricola, String nomeCorso) {
         chiamaDB();

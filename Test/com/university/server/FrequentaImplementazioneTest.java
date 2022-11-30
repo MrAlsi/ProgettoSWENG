@@ -32,7 +32,7 @@ class FrequentaImplementazioneTest {
 
     @Test
     void getMieiCorsi() {
-        assertEquals(frequentaTest.get(0).getNomeCorso(),frequnetaImplementazione.getMieiCorsi(1).get(0).getNomeCorso());
+        assertEquals(frequentaTest.get(0).getNomeCorso(),frequnetaImplementazione.getMieiCorsi(1)[0].getNomeCorso());
     }
 
     @Test
@@ -42,7 +42,7 @@ class FrequentaImplementazioneTest {
 
     @Test
     void getStudentiIscritti() {
-        assertEquals(frequentaTest.get(0).getMatricola(),frequnetaImplementazione.getStudentiIscritti("italiano").get(0).getMatricola());
+        assertEquals(frequentaTest.get(0).getMatricola(),frequnetaImplementazione.getStudentiIscritti("italiano")[0].getMatricola());
     }
 
     @Test

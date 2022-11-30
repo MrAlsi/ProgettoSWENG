@@ -9,5 +9,6 @@ import com.university.client.model.Utente;
 
 @RemoteServiceRelativePath("utenti")
 public interface UtenteService extends RemoteService {
+    //Metodo per indirizzare al login delle varie classi
     String login(String mail);
 }

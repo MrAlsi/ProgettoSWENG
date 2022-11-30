@@ -43,6 +43,7 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
         }
     }
 
+    //Crea un esame
     @Override
     public int creaEsame(String nomeCorso, String data, String ora, String durata, String aula) {
         chiamaDB();
@@ -56,6 +57,7 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
            return -1;
     }
 
+    //Modifica un esame
     @Override
     public boolean modificaEsame(int codEsame, String nomeCorso, String data, String ora, String durata, String aula) {
         chiamaDB();
@@ -63,6 +65,7 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
 
     }
 
+    //Elimina un esame
     @Override
     public boolean eliminaEsame(int codEsame) {
         chiamaDB();
@@ -74,18 +77,21 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
         return repositoryEsame.Remove(codEsame);
     }
 
+    //Ricerca un esame per ID(codice Esame)
     @Override
     public Esame getEsame(int codEsame) {
         chiamaDB();
         return repositoryEsame.GetById(codEsame);
     }
 
+    //Restituisce tutti gli esami
     @Override
     public Esame[] getEsami() {
         chiamaDB();
         return repositoryEsame.getAll();
     }
 
+    //Restituisce tutti gli esami dei corsi di un docente
     @Override
     public Esame[] getEsamiCorso(Corso[] corsiDocente) {
         chiamaDB();
@@ -101,6 +107,7 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
         return esami.toArray(new Esame[0]);
     }
 
+    //Metodo per pulire la data in caso sia in formato Date
     public String pulisciData(String data){
         if(data.contains("GMT")) {
             String[] date = data.split(" ");
@@ -109,6 +116,8 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
         return data;
     }
 
+    //Metodo che prendere in input due date e controlla se la prima viene prima
+    //della seconda
     public  Boolean controllaDate(String dataEsame, String dataCorso){
         String[] prima = stringToDate(dataEsame).split("/");
         String[] dopo = stringToDate(dataCorso).split("/");
@@ -126,6 +135,8 @@ public class EsameImplementazione extends RemoteServiceServlet implements EsameS
         return false;
     }
 
+    //Metodo che converte la stringa con mesi scritti a lettere in numero, il numero
+    // del mese è numMese-1 poiché parte da 0
     public String stringToDate (String data){
         String[] amg;
         if(data.contains("/")){

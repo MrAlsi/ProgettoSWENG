@@ -11,8 +11,10 @@ public class SegreteriaImplementazione extends RemoteServiceServlet implements S
     Boolean singleton = false;
     Boolean test = false;
 
+    //Costruttore
     public SegreteriaImplementazione(){}
 
+    //Costruttore per i test
     public SegreteriaImplementazione(Boolean test){
         this.test = test;
         repositorySegreteria = new SegreteriaRepositoryTest();
@@ -31,36 +33,42 @@ public class SegreteriaImplementazione extends RemoteServiceServlet implements S
         }
     }
 
+    //Crea oggetto segreteria
     @Override
     public boolean creaSegretaria(String nome, String cognome, String password) {
         chiamaDB();
         return  repositorySegreteria.Create(new Segreteria(nome,cognome,creaMailSegreteria(nome,cognome), password));
     }
 
+    //Restituisce tutti gli oggetti segreteria
     @Override
     public Segreteria[] getSegreteria() {
         chiamaDB();
         return repositorySegreteria.getAll();
     }
 
+    //Modifica una segreteria
     @Override
     public boolean modificaSegreteria(String nome, String cognome, String mail, String password) {
         chiamaDB();
         return repositorySegreteria.Update(new Segreteria(nome,cognome,mail,password), mail);
     }
 
+    //Elimina una segreteria
     @Override
     public boolean eliminaSegreteria(String mail) {
         chiamaDB();
         return repositorySegreteria.Remove(mail);
     }
 
+    //Ricerca una segreteria in base alla mail
     @Override
     public Segreteria getSegreteria(String mail) {
         chiamaDB();
         return repositorySegreteria.GetById(mail);
     }
 
+    //Cerca una corrispondenza tra mail e password per il login
     @Override
     public Segreteria loginSegreteria(String mail, String password) {
         chiamaDB();
@@ -73,6 +81,11 @@ public class SegreteriaImplementazione extends RemoteServiceServlet implements S
         return null;
     }
 
+    /**
+     * Metodo che crea la mail per studenti nome.cognomeN@segreteria.university.com
+     * controlla se esistono degli ononimi nel DB, nel caso aggiunge un numero N alla mail
+     * come la mail unibo
+     */
     public String creaMailSegreteria(String nome, String cognome){
         int num = 0;
         Segreteria[] segreteria = repositorySegreteria.getAll();

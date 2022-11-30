@@ -15,8 +15,10 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
     Boolean singleton = false;
     Boolean test = false;
 
+    //Costruttore
     public SostieneImplementazione() {}
 
+    //Costruttore per test
     public SostieneImplementazione(Boolean test) {
         this.test = test;
         repositorySostiene= new SostieneRepositoryTest();
@@ -25,7 +27,7 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         repositoryCorso= new CorsoRepositoryTest();
     }
 
-    //Metodo Wrapper...
+    //Metodo Wrapper
     public void chiamaDB(){
         // Singleton è un modello di progettazione creazionale che consente di garantire che una classe abbia una
         // sola istanza, fornendo al tempo stesso un punto di accesso globale a questa istanza.
@@ -41,12 +43,14 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         }
     }
 
+    //Restituisce tutti gli oggetti sostiene
     @Override
     public Sostiene[] getSostiene() {
         chiamaDB();
         return repositorySostiene.getAll();
     }
 
+    //Restituisce tutti gli oggetti sostiene di un determinato studente senza voto
     @Override
     public Sostiene[] getSostieneStudenteSenzaVoto(int matricola) {
         chiamaDB();
@@ -60,6 +64,7 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         return esamiSenzaVoto.toArray(new Sostiene[0]);
     }
 
+    //ottengo i voti dello studente
     @Override
     public Sostiene[] getEsamiLibretto(int matricola) {
         chiamaDB();
@@ -73,14 +78,14 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         return esamiSenzaVoto.toArray(new Sostiene[0]);
     }
 
-    //ottengo i voti di tutti gli studenti che hanno dato l'esame e cui è stato assegnato un voto
+    //Restituisce tutti gli oggetti sostiene di un determinato studente
     @Override
     public Sostiene[] getStudenti(int codEsame) {
         chiamaDB();
         return repositorySostiene.getArrayById2(codEsame);
     }
 
-    // Metodo per aggiungere il voto allo studente
+    //Aggiungi il voto all'esame sostenuto
     @Override
     public boolean inserisciVoto(int esame, int matricola, int voto) {
         chiamaDB();
@@ -121,18 +126,21 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         return false;
     }
 
+    //Metodo per eliminare un oggetto sostiene
     @Override
     public boolean eliminaSostiene(int esame, int matricola) {
         chiamaDB();
         return repositorySostiene.Remove(esame, matricola);
     }
 
+    //Crea un oggetto sostiene
     @Override
     public boolean creaSostiene(int matricola, int codEsame, String nomeCorso, String data, String ora) {
         chiamaDB();
         return repositorySostiene.Create(new Sostiene(matricola, codEsame, nomeCorso, data, ora, -1, false));
     }
 
+    //Restituisce tutti gli esami sostenibili dallo studente
     @Override
     public Esame[] getEsamiSostenibili(int matricola, Corso[] mieiCorsi) {
         chiamaDB();
@@ -153,6 +161,16 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         return esamiSostenibili.toArray(new Esame[0]);
     }
 
+    //metodo per eliminare tutti i sostiene con un codice esame
+    public boolean eliminaEsameSostiene(int esame){
+        chiamaDB();
+        for(Sostiene s : repositorySostiene.getArrayById2(esame)){
+            repositorySostiene.Remove(s.matricola, esame);
+        }
+        return true;
+    }
+
+    //Restituisce tutti gli studenti che sono iscritti all'esame ma che ancora non hanno il voto
     @Override
     public Sostiene[] getStudentiInserisciVoto(int codEsame) {
         ArrayList<Sostiene> sostenuti= new ArrayList<>();
@@ -163,14 +181,8 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         }
         return sostenuti.toArray(new Sostiene[0]);
     }
-    public boolean eliminaEsameSostiene(int esame){
-        chiamaDB();
-        for(Sostiene s : repositorySostiene.getArrayById2(esame)){
-            repositorySostiene.Remove(s.matricola, esame);
-        }
-        return true;
-    }
 
+    //Da un oggetto frequenta reperisco tutti i dati dell'esame associato
     public Esame traduciEsame(Frequenta f){
         chiamaDB();
         for(Esame e : repositoryEsame.getAll()){
@@ -180,5 +192,4 @@ public class SostieneImplementazione extends RemoteServiceServlet implements Sos
         }
         return null;
     }
-
 }

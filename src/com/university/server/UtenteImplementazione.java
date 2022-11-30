@@ -5,6 +5,7 @@ import com.university.client.services.UtenteService;
 
 
 public class UtenteImplementazione extends RemoteServiceServlet implements UtenteService {
+    //Metodo per indirizzare al login delle varie classi
     @Override
     public String login(String mail) {
         try{
