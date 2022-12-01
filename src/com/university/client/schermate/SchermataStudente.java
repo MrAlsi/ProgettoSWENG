@@ -1,3 +1,17 @@
+/*
+ * La classe SchermataStudente permette di creare e rendere visualizzabile la pagina del portale
+ * dedicata all'utente Studente. Questa pagina è accessibile solamente eseguendo l'accesso attraverso il
+ * form di login con le credenziali di un utente Studente.
+ *
+ * In questa pagina è possibile eseguire le seguenti opperazioni:
+ *  -   Visualizzare la lista dei corsi disponibili.
+ *  -   Iscriversi a un corso.
+ *  -   Registrarsi per un esame di un corso.
+ *  -   Visualizzare le informazioni personali (nome, cognome, email, corsi ed esami a cui sono iscritti).
+ *  -   Visualizzare i voti degli esami svolti.
+
+ * */
+
 package com.university.client.schermate;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -27,7 +41,9 @@ public class SchermataStudente {
     private FrequentaServiceAsync serviceFrequenta = GWT.create(FrequentaService.class);
     private CorsoServiceAsync serviceCorso = GWT.create(CorsoService.class);
 
-
+    // Metodo richiamato all'interno di University.java durante il login
+    // Si occupa di creare il menu laterale nav__user e il container user__container
+    // nel quale verranno visualizzate tutte le funzioni dell'utente
     public void accesso(Studente studente) {
         RootPanel.get("container").clear();
 
@@ -120,7 +136,7 @@ public class SchermataStudente {
     }
 
 
-    //Profilo dello studente
+    // Metodo per la visualizzazione delle informazioni personali dello studente
     public void profilo(){
         serviceStudente.getStudenteByMatricola(studente.getMatricola(), new AsyncCallback<Studente>() {
             @Override
@@ -142,7 +158,8 @@ public class SchermataStudente {
         RootPanel.get("container").add(user__container);
     }
 
-    //Libretto dello studente, tutti gli esami che ha svolto
+    // Metodo per la visualizzazione dei voti presi dallo studente agli esami sostenuti
+    // all'interno della tabella "tabella__libretto"
     public void libretto() throws Exception {
         user__container.clear();
         serviceSostiene.getEsamiLibretto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
@@ -157,30 +174,19 @@ public class SchermataStudente {
 
                 CellTable<Sostiene> tabella__libretto = tabella__libretto(result, "Sembra che tu non abbia ancora valutazioni disponibili!");
                 user__container.add(tabella__libretto);
-/*
-                serviceSostiene.calcolaMedia(result, new AsyncCallback<Long>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Long result) {
-                        Label mediaVoto = new Label("Media:" + result);
-                        user__container.add(mediaVoto);
-                    }
-                });
-
- */
 
             }
         });
     }
 
-    //Pagina che mostra tutti i corsi che posso prenotare un esame
+
+    // Metodo per la visualizzazione degli esami a cui uno studente può iscriversi
+    // all'interno della tabella "tabella__pianificaProve"
     public void pianificaProve() throws Exception {
 
         user__container.clear();
+
+        // Metodo che ritorna una lista dei corsi ai quali lo studente è iscritto
         serviceFrequenta.getCorsiStudente(studente.getMatricola(),new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -188,6 +194,9 @@ public class SchermataStudente {
             }
             @Override
             public void onSuccess(Corso[] result) {
+
+                // Metodo che, dati i corsi ai quali lo studente è iscritto, ritonra tutti gli esami sostenibili
+                // ai quali non è ancora iscritto
                 serviceSostiene.getEsamiSostenibili(studente.getMatricola(), result,  new AsyncCallback<Esame[]>() {
                     @Override
                     public void onFailure(Throwable throwable) {
@@ -207,9 +216,14 @@ public class SchermataStudente {
         });
     }
 
-    //Pagina che mostra gli esami prenotati che non ancora un voto
+
+    // Metodo per la visualizzazione degli esami a cui uno studente è iscritto ma che non hanno ancora un voto
+    // all'interno della tabella "tabella__pianificaProve"
     public void esamiPrenotati() throws Exception {
         user__container.clear();
+
+        // Metodo chge ritorna tutti gli oggetti sostiene relativi agli esami prenotati dallo studente
+        // che non hanno ancora una valutazione
         serviceSostiene.getSostieneStudenteSenzaVoto(studente.getMatricola(), new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -217,6 +231,8 @@ public class SchermataStudente {
             }
             @Override
             public void onSuccess(Sostiene[] result) {
+
+                // Metodo che, dati i sostiene, ritorna i relativi oggetti Esame
                 serviceEsame.getEsami( new AsyncCallback<Esame[]>() {
                     @Override
                     public void onFailure(Throwable throwable) {
@@ -246,10 +262,14 @@ public class SchermataStudente {
         });
     }
 
-    //Pagina per vedere i corsi a cui sono iscritto
+
+    // Metodo per la visualizzazione dei corsi ai quali uno studente è iscritto
+    // all'interno della tabella "tabella__mieiCorsi"
     public void mieiCorsi() throws Exception {
 
         user__container.clear();
+
+        // Metodo che ritorna tutti gli oggetti Corso ai quali lo studente è iscritto
         serviceFrequenta.getCorsiStudente(studente.getMatricola(), new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -267,10 +287,13 @@ public class SchermataStudente {
         });
     }
 
-    //Pagina con tutti i corsi disponibili, ovvero a quelli a cui non sono iscritto
+    // Metodo per la visualizzazione dei corsi ai quali uno studente non è ancora iscritto
+    // all'interno della tabella "tabella__corsi"
     public void corsi() throws Exception {
 
         user__container.clear();
+
+        // Metodo che ritorna tutti i corsi ai quali lo studente non è ancora iscritto
         serviceFrequenta.getCorsiDisponibili(studente.getMatricola(), new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -288,6 +311,7 @@ public class SchermataStudente {
         });
     }
 
+    // Oggetto tabella contenente i voti degli esami sostenuti dallo studente
     private CellTable<Sostiene> tabella__libretto(Sostiene[] result, String msg) {
 
         CellTable<Sostiene> tabella__libretto = new CellTable<>();
@@ -336,6 +360,7 @@ public class SchermataStudente {
         return tabella__libretto;
     }
 
+    // Oggetto tabella contenente gli esami ai quali uno studente può iscriversi in base ai suoi corsi
     private CellTable<Esame> tabella__pianificaProve(Esame[] esami, String msg) {
 
         CellTable<Esame> tabella__pianificaProve = new CellTable<>();
@@ -394,6 +419,9 @@ public class SchermataStudente {
         colonna__sostieni.setFieldUpdater(new FieldUpdater<Esame, String>() {
             @Override
             public void update(int index, Esame object, String value) {
+
+                // Metodo per la creazione di un oggettto "Sostiene" all'interno del DB
+                // Questo oggetto tiene traccia della relazione Studente/Esame
                 serviceSostiene.creaSostiene(studente.getMatricola(), object.getCodEsame(), object.getNomeCorso(), object.getData(), object.getOra(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable throwable) {
@@ -419,6 +447,7 @@ public class SchermataStudente {
         return tabella__pianificaProve;
     }
 
+    // Oggetto tabella contenente gli esami ai quali uno studente è iscritto e deve ancora sostenere
     private CellTable<Esame> tabella__esamiPrenotati(List<Esame> result, String msg) {
 
         CellTable<Esame> tabella__esamiPrenotati = new CellTable<>();
@@ -467,6 +496,7 @@ public class SchermataStudente {
         return tabella__esamiPrenotati;
     }
 
+    // Oggetto tabella contenente i corsi ai quali lo studente è iscritto e che frequenta
     private CellTable<Corso> tabella__mieiCorsi(Corso[] corsi, String msg) {
 
         CellTable<Corso> tabella__mieiCorsi = new CellTable<>();
@@ -524,6 +554,7 @@ public class SchermataStudente {
         return tabella__mieiCorsi;
     }
 
+    // Oggetto tabella contenente i corsi ai quali uno studente può iscriversi
     private CellTable<Corso> tabella__corsi(Corso[] corsi, String msg) {
 
         CellTable<Corso> tabella__corsi = new CellTable<>();
@@ -591,6 +622,9 @@ public class SchermataStudente {
         colonna__frequenta.setFieldUpdater(new FieldUpdater<Corso, String>() {
             @Override
             public void update(int index, Corso object, String value) {
+
+                // Metodo per la creazione di un oggettto "Frequenta" all'interno del DB
+                // Questo oggetto tiene traccia della relazione Studente/Corso
                 serviceFrequenta.iscrivi(studente.getMatricola(), object.getNome(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable throwable) {
@@ -617,10 +651,7 @@ public class SchermataStudente {
         return tabella__corsi;
     }
 
-
-    /**
-     * Dati un arraylist di esami svolti calcola la media complessiva
-     */
+    // Metodo per calcolare la media dei voti di uno studente
     public long calcolaMedia(ArrayList<Sostiene> esami){
         int totale = 0;
         for(Sostiene esame : esami ){

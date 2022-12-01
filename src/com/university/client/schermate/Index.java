@@ -1,3 +1,11 @@
+
+/*
+* La classe Index permette di creare e rendere visualizzabile la pagina iniziale del sito web.
+* Essa è raggiungibile da qualsiasi utente attraverso il link http://127.0.0.1:8888/University.html.
+* Questa pagina contiene diverse informazioni relative all'università.
+* */
+
+
 package com.university.client.schermate;
 
 import com.google.gwt.core.client.GWT;
@@ -81,6 +89,7 @@ public class Index implements Contenuto {
         homepage__panel.addStyleName("homepage__panel");
         homepage__panel.getElement().setId("homepage__panel");
 
+        // Metodo che restituisce il numero di corsi presenti nel portale
         corsoServiceAsync.getNumeroCorsi(new AsyncCallback<Integer>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -90,6 +99,8 @@ public class Index implements Contenuto {
             @Override
             public void onSuccess(Integer result) {
                 infoPaginaIniziale[0] = result;
+
+                // Metodo che restituisce il numero di docenti iscritti al portale
                 docenteServiceAsync.getNumeroDocenti(new AsyncCallback<Integer>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -100,6 +111,8 @@ public class Index implements Contenuto {
                     @Override
                     public void onSuccess(Integer result) {
                         infoPaginaIniziale[1] = result;
+
+                        // Metodo che restituisce il numero di studenti iscritti al portale
                         studenteServiceAsync.getNumeroStudenti(new AsyncCallback<Integer>() {
                             @Override
                             public void onFailure(Throwable caught) {

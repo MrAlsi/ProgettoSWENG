@@ -1,3 +1,15 @@
+/*
+ * La classe SchermataDocente permette di creare e rendere visualizzabile la pagina del portale
+ * dedicata all'utente Docente. Questa pagina è accessibile solamente eseguendo l'accesso attraverso il
+ * form di login con le credenziali di un utente Docente.
+ *
+ * In questa pagina è possibile eseguire le seguenti opperazioni:
+ *  -   Creare/Modificare/Cancellare un corso. Per creare un corso, il docente deve inserire il nome del corso, la data di inizio e fine del corso, una descrizione del corso, e opzionale un co-docente o un esame. Un corso può avere solo un esame.
+ *  -   Aggiungere/Modificare/Cancellare un esame. Per creare un esame, il docente deve aggiungere la data, l'ora e durezza dell'esame e l’aula dove si svolgerà l'esame. In un esame, un studente può registrarsi solo una volta.
+ *  -   Visualizzare le proprie informazioni personali (nome, cognome, corsi che insegna con relativo esame)
+ *  -   Inviare i voti dell'esame alla segreteria
+ * */
+
 package com.university.client.schermate;
 
 import com.google.gwt.cell.client.*;
@@ -35,7 +47,9 @@ public class SchermataDocente {
     private EsameServiceAsync serviceEsame = GWT.create(EsameService.class);
     private SostieneServiceAsync serviceSostiene = GWT.create(SostieneService.class);
 
-
+    // Metodo richiamato all'interno di University.java durante il login
+    // Si occupa di creare il menu laterale nav__user e il container user__container
+    // nel quale verranno visualizzate tutte le funzioni dell'utente
     public void accesso(Docente docente) {
         RootPanel.get("container").clear();
 
@@ -92,7 +106,7 @@ public class SchermataDocente {
 
     }
 
-
+    // Metodo per la visualizzazione delle informazioni personali del Docente
     public void profilo(){
         serviceDocente.getDocente(docente.getCodDocente(), new AsyncCallback<Docente>() {
             @Override
@@ -114,10 +128,12 @@ public class SchermataDocente {
         RootPanel.get("container").add(user__container);
     }
 
-
-
+    // Metodo per la visualizzazione dei corsi tenuti dal docente
+    // all'interno della tabella "tabella__corsi"
     public void corsi() throws Exception {
         user__container.clear();
+
+        // Metodo che restituisce una lista di corsi sostenuti dal docente
         serviceCorso.getCorsiDocente(docente.getCodDocente(), new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -128,6 +144,8 @@ public class SchermataDocente {
 
                 user__container.add(new HTML("<div class=\"user__title\">Gestione Corsi</div>"));
 
+                // Bottone che attraverso il metodo "formCreaCorso" fa visualizzare il form
+                // per la creazione di un nuovo corso all'interno del container
                 Button btnCreaCorso = new Button("Crea corso");
                 btnCreaCorso.addStyleName("creaCorso__btn");
                 btnCreaCorso.addClickHandler(new ClickHandler() {
@@ -145,8 +163,12 @@ public class SchermataDocente {
         });
     }
 
+    // Metodo per la visualizzazione degli esami tenuti dal docente
+    // all'interno della tabella "tabella__esami"
     public void esami() throws Exception {
         user__container.clear();
+
+        // Metodo che restituisce una lista di corsi tenuti dal docente
         serviceCorso.getCorsiDocente(docente.getCodDocente(), new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -156,6 +178,8 @@ public class SchermataDocente {
             @Override
             public void onSuccess(Corso[] result) {
 
+                // Metodo che restituisce una lista degli esami programmati dal docente
+                // a seconda dei corsi tenuti
                 serviceEsame.getEsamiCorso(result, new AsyncCallback<Esame[]>() {
 
                     @Override
@@ -168,6 +192,8 @@ public class SchermataDocente {
 
                         user__container.add(new HTML("<div class=\"user__title\">Gestione Esami</div>"));
 
+                        // Bottone che attraverso il metodo "formCreaEsame" fa visualizzare il form
+                        // per la creazione di un nuovo esame all'interno del container
                         Button btnCreaEsame = new Button("Crea esame");
                         btnCreaEsame.addStyleName("creaEsame__btn");
                         btnCreaEsame.addClickHandler(new ClickHandler() {
@@ -187,6 +213,7 @@ public class SchermataDocente {
         });
     }
 
+    // Oggetto tabella contenente i corsi sostenuti dal docente
     private CellTable<Corso> tabella__corsi(Corso[] result, String msg) {
 
         CellTable<Corso> tabella__corsi = new CellTable<>();
@@ -230,6 +257,10 @@ public class SchermataDocente {
         };
         tabella__corsi.addColumn(colonna__coDocente, "Co-Docente");
 
+
+        // Pulsante disponibile su ogni riga che permette di caricara nel container il form
+        // per l'aggiornamento dei dati di un corso
+        // attraverso il metodo "formModificaCorso()"
         ButtonCell cella__modifica = new ButtonCell();
         Column<Corso, String> colonna__modifica = new Column<Corso, String>(cella__modifica) {
             @Override
@@ -255,6 +286,9 @@ public class SchermataDocente {
             }
         });
 
+        // Pulsante disponibile su ogni riga che permette di caricara nel container il form
+        // per l'eliminazione dei dati di un corso all'interno del DB
+        // attraverso il metodo "eliminaCorso()"
         ButtonCell cella__elimina = new ButtonCell();
         Column<Corso, String> colonna__elimina = new Column<Corso, String>(cella__elimina) {
             @Override
@@ -262,8 +296,6 @@ public class SchermataDocente {
                 return "Elimina";
             }
         };
-
-        //Aggiunge il metodo eliminaCorso al bottone elimina
         colonna__elimina.setFieldUpdater(new FieldUpdater<Corso, String>() {
             @Override
             public void update(int index, Corso object, String value) {
@@ -294,6 +326,7 @@ public class SchermataDocente {
         return tabella__corsi;
     }
 
+    // Oggetto tabella contenente gli esami tenuti dal docente
     private CellTable<Esame> tabella__esami(Esame[] result, String msg) {
 
         CellTable<Esame> tabella__esami = new CellTable<>();
@@ -340,7 +373,9 @@ public class SchermataDocente {
         tabella__esami.addColumn(colonna__aula, "Aula");
 
 
-
+        // Pulsante disponibile su ogni riga che permette di caricara nel container il form
+        // per l'inserimento del voto di uno studente all'esame sostenuto
+        // attraverso il metodo "valutazioni()"
         ButtonCell cella__valutazioni = new ButtonCell();
         Column<Esame, String> colonna__valutazioni = new Column<Esame, String>(cella__valutazioni) {
             @Override
@@ -360,6 +395,9 @@ public class SchermataDocente {
         colonna__valutazioni.setCellStyleNames("valutazioni__btn");
 
 
+        // Pulsante disponibile su ogni riga che permette di caricara nel container il form
+        // per l'aggiornamento dei dati relativi ad un esame nel DB
+        // attraverso il metodo "formModificaEsame()"
         ButtonCell cella__modifica = new ButtonCell();
         Column<Esame, String> colonna__modifica = new Column<Esame, String>(cella__modifica) {
             @Override
@@ -384,6 +422,10 @@ public class SchermataDocente {
             }
         });
 
+
+        // Pulsante disponibile su ogni riga che permette di caricara nel container il form
+        // per l'eliminazione dei dati di un esame all'interno del DB
+        // attraverso il metodo "eliminaEsame()"
         ButtonCell cella__elimina = new ButtonCell();
         Column<Esame, String> colonna__elimina = new Column<Esame, String>(cella__elimina) {
             @Override
@@ -392,7 +434,6 @@ public class SchermataDocente {
             }
         };
 
-        //aggiungo il metodo eliminaEsame() al bottone elimina
         colonna__elimina.setFieldUpdater(new FieldUpdater<Esame, String>() {
             @Override
             public void update(int index, Esame object, String value) {
@@ -463,8 +504,7 @@ public class SchermataDocente {
         return tabella__esami;
     }
 
-
-    //metodo per modificare un esame
+    // Form per la modifica di un esame selezionato
     public void formModificaEsame(int codEsame, String nomeCorso, String data, String ora, String aula, String durata) throws  ParseException{
         user__container.clear();
         FormPanel modificaEsame= new FormPanel();
@@ -486,7 +526,7 @@ public class SchermataDocente {
             @Override
             public void onSuccess(Corso[] result) {
                 for (int i = 0; i < result.length; i++) {
-                    //devo prendere solo i corsi del docente che non hanno già un esame associato
+                    // Devo prendere solo i corsi del docente che non hanno già un esame associato
                     if(result[i].getEsame()==-1) {
                         corso__list.addItem(result[i].getNome());
                     }
@@ -534,13 +574,13 @@ public class SchermataDocente {
         modificaEsame.addSubmitHandler(new FormPanel.SubmitHandler() {
             @Override
             public void onSubmit(FormPanel.SubmitEvent event) {
-                //controllo che tutti i campi siano pieni
+                // Controllo che tutti i campi siano pieni
                 if(aula__textBox.getText().length()==0 || data__dateBox.getValue() == null  || ora__listBox.getSelectedValue()== null
                         || durata__listBox.getSelectedValue()== null || corso__list.getSelectedValue()==null){
                     Window.alert("Compilare tutti i campi!");
                     event.cancel();
                 }
-                //controllo che l'esame sia dopo la fine del corso
+                // Controllo che l'esame sia dopo la fine del corso
                 serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -562,6 +602,8 @@ public class SchermataDocente {
         modificaEsame.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+                // Metodo che permette di sovrascrivere dati relativi ad un esame nel DB
                 serviceEsame.modificaEsame(codEsame, corso__list.getSelectedValue(), data__dateBox.getValue().toString(), ora__listBox.getSelectedValue(), durata__listBox.getSelectedValue(), aula__textBox.getText(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -587,6 +629,7 @@ public class SchermataDocente {
         user__container.add(modificaEsame);
     }
 
+    // Form per la creazione di un nuovo corso
     public void formCreaCorso() {
         user__container.clear();
         FormPanel creaCorso = new FormPanel();
@@ -616,6 +659,8 @@ public class SchermataDocente {
         corsoContainer.add(codocente__label);
         final ListBox codocente__list = new ListBox();
         codocente__list.addItem("Nessun codocente");
+
+        // Metodo che ritorna una lista di tutti i docenti iscritti alla piattaforma
         serviceDocente.getDocenti(new AsyncCallback<Docente[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -624,6 +669,7 @@ public class SchermataDocente {
 
             @Override
             public void onSuccess(Docente[] result) {
+                // Inserisco nella lista tutti i docenti tranne quello corrente
                 for (int i = 0; i < result.length; i++) {
                     if (result[i].getCodDocente() != docente.getCodDocente()) {
                         codocente__list.addItem(result[i].codDocente + ": " + result[i].getNome() + " " + result[i].getCognome());
@@ -674,6 +720,8 @@ public class SchermataDocente {
                 } else {
                     codocente = Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]);
                 }
+
+                // Metodo che crea un nuovo corso e lo salva all'interno del DB
                 serviceCorso.creaCorso(nome__textBox.getText(), dataI__dateBox.getValue().toString(), dataF__dataBox.getValue().toString(),
                         descrizione__text.getText(), codocente, docente.getCodDocente(), new AsyncCallback<Boolean>() {
                             @Override
@@ -705,6 +753,7 @@ public class SchermataDocente {
         user__container.add(creaCorso);
     }
 
+    // Form per la modifica di un corso selezionato
     public void formModificaCorso(String nome, String dataInizio, String dataFine, String descrizione, int codocente, int esame) throws ParseException {
         user__container.clear();
         FormPanel modificaCorso = new FormPanel();
@@ -748,6 +797,7 @@ public class SchermataDocente {
         final ListBox codocente__list = new ListBox();
         codocente__list.addItem("Nessun codocente");
 
+        // Metodo che ritorna una lista di tutti i docenti iscritti alla piattaforma
         serviceDocente.getDocenti(new AsyncCallback<Docente[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -756,6 +806,7 @@ public class SchermataDocente {
 
             @Override
             public void onSuccess(Docente[] result) {
+                // Inserisco nella lista tutti i docenti tranne quello corrente e lo scorso
                 for (int i = 0; i < result.length; i++) {
                     if (result[i].getCodDocente() != docente.getCodDocente()) {
                         codocente__list.addItem(result[i].codDocente + ": " + result[i].getNome() + " " + result[i].getCognome());
@@ -764,7 +815,6 @@ public class SchermataDocente {
                         }
                     }
                 }
-                //codocente__list.setValue(codocente, "pp" /*result[i].codDocente + ": " + result[i].getNome() + " " + result[i].getCognome()*/);
             }
         });
 
@@ -811,6 +861,8 @@ public class SchermataDocente {
                 } else {
                     codocente = Integer.parseInt(codocente__list.getSelectedValue().split(":")[0]);
                 }
+
+                // Metodo che permette di sovrascrivere dati relativi ad un corso nel DB
                 serviceCorso.modificaCorso(nome, nome__textBox.getText(), dataI__dateBox.getValue().toString(), dataF__dataBox.getValue().toString(),
                         descrizione__text.getText(), codocente, docente.getCodDocente(), esame, new AsyncCallback<Boolean>() {
                             @Override
@@ -838,6 +890,7 @@ public class SchermataDocente {
         user__container.add(modificaCorso);
     }
 
+    // Form per la creazione di un nuovo esame
     public void formCreaEsame(){
         user__container.clear();
         FormPanel creaEsame = new FormPanel();
@@ -868,6 +921,8 @@ public class SchermataDocente {
         final Label corso__label = new Label("Corso: ");
         esameContainer.add(corso__label);
         final ListBox corso__list = new ListBox();
+
+        // Metodo che ritorna una lista di tutti i corsi sostenuti dal docente
         serviceCorso.getCorsiDocente(docente.getCodDocente(), new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -877,7 +932,7 @@ public class SchermataDocente {
             @Override
             public void onSuccess(Corso[] result) {
                 for (int i = 0; i < result.length; i++) {
-                    //devo prendere solo i corsi del docente che non hanno già un esame associato
+                    // Devo prendere solo i corsi del docente che non hanno già un esame associato
                     if(result[i].getEsame()==-1) {
                         corso__list.addItem(result[i].getNome());
                     }
@@ -897,13 +952,13 @@ public class SchermataDocente {
         creaEsame.addSubmitHandler(new FormPanel.SubmitHandler() {
             @Override
             public void onSubmit(FormPanel.SubmitEvent event) {
-                //Controllo che tutti i campi siano pieni
+                // Controllo che tutti i campi siano pieni
                 if (aula__textBox.getText().length() == 0 || durata__textBox.getText().length() == 0 || data__dataBox.getValue() == null ||
                         corso__list.getSelectedValue() == null || ora__listBox.getSelectedValue()== null) {
                     Window.alert("Compilare tutti i campi!");
                     event.cancel();
                 }
-                //controllo che l'esame sia dopo la fine del corso
+                // Controllo che l'esame sia dopo la fine del corso
                 serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -934,7 +989,7 @@ public class SchermataDocente {
                     @Override
                     public void onSuccess(Integer codEsame) {
                         try {
-                            //aggiungo l'esame creato anche nella tabella dei corsi al corso a cui è stato associato
+                            // Aggiungo l'esame creato anche nella tabella dei corsi al corso a cui è stato associato
                             serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
                                 @Override
                                 public void onFailure(Throwable caught) {
@@ -973,8 +1028,13 @@ public class SchermataDocente {
         user__container.add(creaEsame);
     }
 
+    // Form per la visualizzazione degli studenti che hanno sostenuto l'esame
+    // all'interno della tabella "tabella__esamiSostenuti"
     public void valutazioni(Esame esame){
         user__container.clear();
+
+        // Metodo che ritorna tutti i Sostiene in cui il campo voto == -1 ovvero l'esame
+        // è ancora da valutare
         serviceSostiene.getStudentiInserisciVoto(esame.getCodEsame(), new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -1005,6 +1065,8 @@ public class SchermataDocente {
         });
     }
 
+    // Oggetto tabella contenente gli oggetti sostiene ovvero gli esami sostenuti dagli studenti
+    // ai quali manca ancora la valutazione
     private CellTable<Sostiene> tabella__esamiSostenuti(Sostiene[] result, String msg){
         CellTable<Sostiene> tabellaSostiene = new CellTable<>();
         tabellaSostiene.addStyleName("tabella__corsi");
@@ -1067,7 +1129,7 @@ public class SchermataDocente {
             @Override
             public void update(int index, Sostiene object, String value) {
                 try{
-                    //if(colonna__aggiungiVoto.getValue())
+
                     if((object.voto<31 && object.voto>-1) || object.voto==32){
                         int voto = object.voto;
                         serviceSostiene.inserisciVoto(object.codEsame, object.matricola, object.voto, new AsyncCallback<Boolean>() {

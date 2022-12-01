@@ -1,3 +1,13 @@
+/*
+ * La classe SchermataSegreteria permette di creare e rendere visualizzabile la pagina del portale
+ * dedicata all'utente Segreteria. Questa pagina è accessibile solamente eseguendo l'accesso attraverso il
+ * form di login con le credenziali di un utente Segreteria.
+ *
+ * In questa pagina è possibile eseguire le seguenti opperazioni:
+ *  -   Visualizzare i dati personali degli studenti
+ *  -   Pubblicare i voti degli esami
+ * */
+
 package com.university.client.schermate;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -27,7 +37,9 @@ public class SchermataSegreteria {
     private FrequentaServiceAsync serviceFrequenta = GWT.create(FrequentaService.class);
     private CorsoServiceAsync serviceCorso = GWT.create(CorsoService.class);
 
-
+    // Metodo richiamato all'interno di University.java durante il login
+    // Si occupa di creare il menu laterale nav__user e il container user__container
+    // nel quale verranno visualizzate tutte le funzioni dell'utente
     public void accesso(Segreteria segreteria) {
         RootPanel.get("container").clear();
 
@@ -74,8 +86,11 @@ public class SchermataSegreteria {
 
     }
 
+    // Metodo per la visualizzazione degli studenti all'interno della tabella "tabella__studenti"
     public void studenti() throws Exception {
         user__container.clear();
+
+        // Metodo che restituisce la lista di tutti gli studenti iscritti alla piattaforma
         serviceStudente.getStudenti(new AsyncCallback<Studente[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -93,8 +108,13 @@ public class SchermataSegreteria {
         });
     }
 
+    // Metodo per la visualizzazione degli esami sostenuti dagli studenti con le valutazioni
+    // inviate dai docenti che aspettano di essere pubblicate
     public void valutazioni() throws Exception {
         user__container.clear();
+
+        // Metodo che ritorna, degli oggetti Sostiene, quelli che hanno il campo "accettato" == false
+        // ovvero il voto non è ancora stato pubblicato
         serviceSostiene.esamiSostenuti(new AsyncCallback<Sostiene[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -111,6 +131,8 @@ public class SchermataSegreteria {
         });
     }
 
+    // Metodo per la  visualizzazione dei corsi di uno studente
+    // all'interno della tabella "tabella__corsiStudente"
     public void visualizzaCorsi(int matricola, String nome, String cognome) throws Exception {
         user__container.clear();
         serviceFrequenta.getCorsiStudente(matricola, new AsyncCallback<Corso[]>() {
@@ -143,6 +165,8 @@ public class SchermataSegreteria {
         });
     }
 
+    // Metodo per la visualizzazione degli esami di uno studente
+    // all'interno della tabella "tabella__esamiStudente"
     public void visualizzaEsami(int matricola, String nome, String cognome) throws Exception {
         user__container.clear();
 
@@ -176,6 +200,7 @@ public class SchermataSegreteria {
         });
     }
 
+    // Oggetto tabella con le informazioni degli studenti
     private CellTable<Studente> tabella__studenti(Studente[] result, String msg) {
 
         CellTable<Studente> tabella__studenti = new CellTable<>();
@@ -224,6 +249,9 @@ public class SchermataSegreteria {
         tabella__studenti.addColumn(colonna__nascita, "Data di nascita");
 
 
+        // Pulsante disponibile su ogni riga che permette di caricara nel container
+        // una nuova schermata contenente i corsi dello studente scelto attraverso il metodo
+        // "visualizzaCorsi()"
         ButtonCell cella__visualizzaCorsi = new ButtonCell();
         Column<Studente, String> colonna__visualizzaCorsi = new Column<Studente, String>(cella__visualizzaCorsi) {
             @Override
@@ -249,6 +277,10 @@ public class SchermataSegreteria {
             }
         });
 
+
+        // Pulsante disponibile su ogni riga che permette di caricara nel container
+        // una nuova schermata contenente gli esami sostenuti dallo studente scelto attraverso il metodo
+        // "visualizzaEsami()"
         ButtonCell cella__visualizzaEsami = new ButtonCell();
         Column<Studente, String> colonna__visualizzaEsami = new Column<Studente, String>(cella__visualizzaEsami) {
             @Override
@@ -280,6 +312,7 @@ public class SchermataSegreteria {
         return tabella__studenti;
     }
 
+    // Oggetto tabella contenente i corsi ai quali uno studente è iscritto
     private CellTable<Corso> tabella__corsiStudente(Corso[] corsi, String msg) {
 
         CellTable<Corso> tabella__corsiStudente = new CellTable<>();
@@ -336,6 +369,7 @@ public class SchermataSegreteria {
         return tabella__corsiStudente;
     }
 
+    // Oggetto tabella contenente gli esami sostenuti da uno studente
     private CellTable<Sostiene> tabella__esamiStudente(Sostiene[] result, String msg) {
 
         CellTable<Sostiene> tabella__esamiStudente = new CellTable<>();
@@ -381,6 +415,7 @@ public class SchermataSegreteria {
         return tabella__esamiStudente;
     }
 
+    // Oggetto tabella contenente gli esami di uno studente in cui il voto non è ancora stato pubblicato
     private CellTable<Sostiene> tabella__valutazioni(Sostiene[] result, String msg) {
 
         CellTable<Sostiene> tabella__valutazioni = new CellTable<>();
@@ -445,6 +480,9 @@ public class SchermataSegreteria {
         colonna__pubblica.setFieldUpdater(new FieldUpdater<Sostiene, String>() {
             @Override
             public void update(int index, Sostiene object, String value) {
+
+                // Metodo che imposta il campo "accettato" del Sostiene su true rendendolo visualizzabile nel
+                // libretto dello studente
                 serviceSostiene.accettaVoto(object.getCodEsame(), object.getMatricola(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable throwable) {

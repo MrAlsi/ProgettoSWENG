@@ -1,3 +1,18 @@
+/*
+ * La classe SchermataAdmin permette di creare e rendere visualizzabile la pagina del portale
+ * dedicata all'utente Admin. Questa pagina è accessibile solamente eseguendo l'accesso attraverso il
+ * form di login con le credenziali di un utente Admin.
+ *
+ * ============ CREDENZIALI DI ACCESSO ADMIN ============
+ * Username: admin
+ * Password: admin
+ *
+ * In questa pagina è possibile eseguire le seguenti opperazioni:
+ *  -   Creare account per studenti/docenti/segreteria utilizzando il loro indirizzo email
+ *  -   Aggiungere/Modificare/Visualizzare le informazioni personali degli studenti e dei docenti.
+ * */
+
+
 package com.university.client.schermate;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -28,7 +43,9 @@ public class SchermataAdmin {
     private static SostieneServiceAsync sostieneServiceAsync= GWT.create(SostieneService.class);
 
 
-    //Metodo che parte quando si accede come admin
+    // Metodo richiamato all'interno di University.java durante il login
+    // Si occupa di creare il menu laterale nav__user e il container user__container
+    // nel quale verranno visualizzate tutte le funzioni dell'utente
     public void accesso(){
         RootPanel.get("container").clear();
 
@@ -85,9 +102,11 @@ public class SchermataAdmin {
 
     /*       ~ ~ Metodi per Studente ~ ~        */
 
-    //visualizzazione della lista di studenti
+    // Metodo per la visualizzazione degli studenti all'interno della tabella "tabella__studenti"
     public void listaStudenti(){
         user__container.clear();
+
+        // Metodo che restituisce la lista di tutti gli studenti iscritti alla piattaforma
         studenteServiceAsync.getStudenti(new AsyncCallback<Studente[]>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -96,7 +115,8 @@ public class SchermataAdmin {
 
             @Override
             public void onSuccess(Studente[] result) {
-                //Bottone per creare studente
+                // Bottone che attraverso il metodo "formStudenti" fa visualizzare il form
+                // per la creazione di un nuovo studente all'interno del container
                 Button btn__creaStudente = new Button("Crea studente");
                 btn__creaStudente.addStyleName("creaCorso__btn");
                 btn__creaStudente.addClickHandler(new ClickHandler() {
@@ -105,7 +125,8 @@ public class SchermataAdmin {
                         formStudenti();
                     }
                 });
-                //Tabella con tutti gli stundenti
+
+                // Tabella contenente tutti gli stundenti iscritti alla piattaforma
                 CellTable <Studente> tabella__studenti= tabella__studenti(result,"Sembra non ci siano studenti");
                 user__container.add(new HTML("<div class=\"user__title\">Studenti iscritti alla piattaforma</div>"));
                 user__container.add(btn__creaStudente);
@@ -114,7 +135,7 @@ public class SchermataAdmin {
         });
     }
 
-    //Oggetto tabella con gli studenti
+    // Oggetto tabella con le informazioni degli studenti
     private CellTable<Studente> tabella__studenti(Studente[] result, String msg) {
 
         CellTable<Studente> tabellaStudente= new CellTable<>();
@@ -150,6 +171,9 @@ public class SchermataAdmin {
         };
         tabellaStudente.addColumn(colonna__mail,"Email");
 
+        // Pulsante disponibile su ogni riga che permette di caricara nel container
+        // una nuova schermata contenente i corsi dello studente scelto attraverso il metodo
+        // "form__visualizzaCorsi()"
         ButtonCell cella__visualizzaCorsi= new ButtonCell();
         Column<Studente, String> colonna__visualizzaCorsi=new Column<Studente, String>(cella__visualizzaCorsi) {
             @Override
@@ -170,6 +194,10 @@ public class SchermataAdmin {
         tabellaStudente.addColumn(colonna__visualizzaCorsi,"");
         colonna__visualizzaCorsi.setCellStyleNames("visualizza__btn");
 
+
+        // Pulsante disponibile su ogni riga che permette di caricara nel container
+        // una nuova schermata contenente gli esami sostenuti dallo studente scelto attraverso il metodo
+        // "form__visualizzaEsami()"
         ButtonCell cella_visualizzaEsami= new ButtonCell();
 
         Column<Studente, String> colonna__visualizzaEsami = new Column<Studente, String>(cella_visualizzaEsami) {
@@ -192,6 +220,10 @@ public class SchermataAdmin {
         tabellaStudente.addColumn(colonna__visualizzaEsami,"");
         colonna__visualizzaEsami.setCellStyleNames("visualizza__btn");
 
+
+        // Pulsante disponibile su ogni riga che permette di caricara nel container il form
+        // per l'aggiornamento dei dati di uno studente
+        // attraverso il metodo "formModificaStudente()"
         ButtonCell cella__modifica= new ButtonCell();
         Column<Studente, String> colonna__modifica=new Column<Studente, String>(cella__modifica) {
             @Override
@@ -215,7 +247,7 @@ public class SchermataAdmin {
         return tabellaStudente;
     }
 
-    //form creazione di un nuovo studente
+    // Form per la creazione di un nuovo studente
     public void formStudenti(){
         user__container.clear();
         Button btn__chiudi = new Button("< Back");
@@ -290,6 +322,8 @@ public class SchermataAdmin {
         creaStudente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+                // Metodo che crea un nuovo studente e lo salva all'interno del DB
                 studenteServiceAsync.creaStudente(nome__textBox.getText(), cognome__textBox.getText(), password__textBox.getText(), controlloMese(data[0].getSelectedValue(), data[1].getSelectedValue(), data[2].getSelectedValue()), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -313,7 +347,7 @@ public class SchermataAdmin {
         user__container.add(creaStudente);
     }
 
-    //form modifica di uno studente selezionato
+    // Form per la modifica di uno studente selezionato
     public void formModificaStudente(String nome, String cognome, String password, String mail, String dataNascita, int matricola){
         user__container.clear();
         Button btn__chiudi = new Button("< Back");
@@ -387,6 +421,7 @@ public class SchermataAdmin {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
 
+                // Metodo che permette di sovrascrivere dati relativi ad uno studente nel DB
                 studenteServiceAsync.modificaStudente(nome__textBox.getText(), cognome__textBox.getText(), mail,
                         password__textBox.getText(), controlloMese(data[0].getSelectedValue(), data[1].getSelectedValue(), data[2].getSelectedValue()),
                         matricola, new AsyncCallback<Boolean>() {
@@ -410,10 +445,12 @@ public class SchermataAdmin {
         user__container.add(modificaStudente);
     }
 
-
-    //visualizzazione degli esami di uno studente
+    // Metodo per la visualizzazione dei corsi di uno studente
+    // all'interno della tabella "tabella__corsiStudente"
     public void form__visualizzaCorsi(int matricola, String nome, String cognome) throws Exception {
         user__container.clear();
+
+        // Metodo che restituisce una lista di corsi ai quali lo studente è iscritto
         frequentaServiceAsync.getCorsiStudente(matricola, new AsyncCallback<Corso[]>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -441,7 +478,7 @@ public class SchermataAdmin {
         });
     }
 
-    //Oggetto tabella con i corsi di uno studente
+    // Oggetto tabella contenente i corsi ai quali uno studente è iscritto
     private CellTable<Corso> tabella__corsiStudente(Corso[] corsi, String msg) {
 
         CellTable<Corso> tabella__corsiStudente = new CellTable<>();
@@ -498,7 +535,8 @@ public class SchermataAdmin {
         return tabella__corsiStudente;
     }
 
-    //visualizzazione corsi di uno studente selezionato
+    // Metodo per la visualizzazione degli esami di uno studente
+    // all'interno della tabella "tabella__esamiStudente"
     public void form__visualizzaEsami(int matricola, String nome, String cognome) throws Exception {
         user__container.clear();
         sostieneServiceAsync.getEsamiLibretto(matricola, new AsyncCallback<Sostiene[]>() {
@@ -527,7 +565,7 @@ public class SchermataAdmin {
         });
     }
 
-    //Oggetto tabella con gli esami di uno studente
+    // Oggetto tabella contenente gli esami sostenuti da uno studente
     private CellTable<Sostiene> tabella__esamiStudente(Sostiene[] result, String msg) {
 
         CellTable<Sostiene> tabella__esamiStudente = new CellTable<>();
@@ -575,7 +613,7 @@ public class SchermataAdmin {
 
     /*       ~ ~ Metodi per Docente ~ ~        */
 
-    //Lista di tutti i docenti
+    // Metodo per la visualizzazione dei docenti all'interno della tabella "tabella__docenti"
     public void listaDocenti(){
         user__container.clear();
         docenteServiceAsync.getDocenti(new AsyncCallback<Docente[]>() {
@@ -586,7 +624,8 @@ public class SchermataAdmin {
             @Override
             public void onSuccess(Docente[] result) {
 
-                //Bottone per creare un docente
+                // Bottone che attraverso il metodo "formDocenti" fa visualizzare il form
+                // per la creazione di un nuovo docente all'interno del container
                 Button btn__creaDocente = new Button("Crea docente");
                 btn__creaDocente.addStyleName("creaCorso__btn");
                 btn__creaDocente.addClickHandler(new ClickHandler() {
@@ -596,7 +635,7 @@ public class SchermataAdmin {
                     }
                 });
 
-                //Tabella con tutti i docenti
+                // Tabella contenente tutti i docenti iscritti alla piattaforma
                 CellTable <Docente> tabella__docenti = tabella__docenti(result,"Sembra non ci siano docenti");
                 user__container.add(new HTML("<div class=\"user__title\">Docenti iscritti alla piattaforma</div>"));
                 user__container.add(btn__creaDocente);
@@ -606,7 +645,7 @@ public class SchermataAdmin {
         });
     }
 
-    //Oggetto tabella per i docenti
+    // Oggetto tabella con le informazioni dei docenti
     private CellTable<Docente> tabella__docenti(Docente[] result, String msg) {
 
         CellTable<Docente> tabellaDocente = new CellTable<>();
@@ -644,6 +683,10 @@ public class SchermataAdmin {
         };
         tabellaDocente.addColumn(colonna__mail, "Email");
 
+
+        // Pulsante disponibile su ogni riga che permette di caricara nel container il form
+        // per l'aggiornamento dei dati di un docente
+        // attraverso il metodo "formModificaDocente()"
         ButtonCell cella__modifica= new ButtonCell();
         Column<Docente, String> colonna__modifica=new Column<Docente, String>(cella__modifica) {
             @Override
@@ -666,7 +709,7 @@ public class SchermataAdmin {
         return tabellaDocente;
     }
 
-    //form creazione di un docente
+    // Form per la creazione di un nuovo docente
     public void formDocenti(){
         user__container.clear();
         Button btn__chiudi = new Button("< Back");
@@ -719,6 +762,8 @@ public class SchermataAdmin {
         creaDocente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+                // Metodo che crea un nuovo docente e lo salva all'interno del DB
                 docenteServiceAsync.creaDocente(nome__textBox.getText(), cognome__textBox.getText(), password__textBox.getText(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -742,7 +787,7 @@ public class SchermataAdmin {
         user__container.add(creaDocente);
     }
 
-    //form per modificare un docente
+    // Form per la modifica di un docente selezionato
     public void formModificaDocente(String nome, String cognome, String password, String mail, int codDocente){
         user__container.clear();
         Button btn__chiudi = new Button("< Back");
@@ -796,6 +841,8 @@ public class SchermataAdmin {
         creaDocente.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+                // Metodo che permette di sovrascrivere dati relativi ad un docente nel DB
                 docenteServiceAsync.modificaDocente(nome__textBox.getText(), cognome__textBox.getText(), mail, password__textBox.getText(), codDocente, new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -821,7 +868,7 @@ public class SchermataAdmin {
 
     /*       ~ ~ Metodi per Segreteria ~ ~        */
 
-    //Lista con tutti i Segretari
+    // Metodo per la visualizzazione delle segreterie all'interno della tabella "tabella__segreteria"
     public void listaSegreteria(){
         user__container.clear();
         segreteriaServiceAsync.getSegreteria(new AsyncCallback<Segreteria[]>() {
@@ -832,7 +879,9 @@ public class SchermataAdmin {
             }
             @Override
             public void onSuccess(Segreteria[] result) {
-                //Bottone per creare una segreteria
+
+                // Bottone che attraverso il metodo "formSegreteria" fa visualizzare il form
+                // per la creazione di una nuova segreteria all'interno del container
                 Button btn__creaSegreteria = new Button("Crea segreteria");
                 btn__creaSegreteria.addStyleName("creaCorso__btn");
                 btn__creaSegreteria.addClickHandler(new ClickHandler() {
@@ -841,7 +890,8 @@ public class SchermataAdmin {
                         formSegreteria();
                     }
                 });
-                //Tabella con tutti gli stundenti
+
+                // Tabella contenente tutte le segreterie iscritte alla piattaforma
                 CellTable <Segreteria> tabella__segreteria= tabella__segreteria(result,"Sembra non ci siano segreterie");
                 user__container.add(new HTML("<div class=\"user__title\">Segreterie iscritte alla piattaforma</div>"));
                 user__container.add(btn__creaSegreteria);
@@ -850,7 +900,7 @@ public class SchermataAdmin {
         });
     }
 
-    //Tabella con le segreterie
+    // Oggetto tabella con le informazioni delle segreterie
     private CellTable<Segreteria> tabella__segreteria(Segreteria[] result, String msg) {
 
         CellTable<Segreteria> tabellaSegreteria = new CellTable<>();
@@ -894,14 +944,12 @@ public class SchermataAdmin {
         tabellaSegreteria.addColumn(colonna__password, "Password");
 
 
-        //--> CSS
-
         tabellaSegreteria.setRowCount(result.length);
         tabellaSegreteria.setRowData(0, Arrays.asList(result));
         return tabellaSegreteria;
     }
 
-    //form per creare una "segreteria"
+    // Form per la creazione di una nuova segreteria
     public void formSegreteria(){
         user__container.clear();
         Button btn__chiudi = new Button("< Back");
@@ -955,6 +1003,8 @@ public class SchermataAdmin {
         creaSegreteria.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+
+                // Metodo che crea una nuova segreteria e la salva all'interno del DB
                 segreteriaServiceAsync.creaSegretaria(nome__textBox.getText(), cognome__textBox.getText(), password__textBox.getText(), new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {

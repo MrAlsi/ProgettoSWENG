@@ -1,3 +1,8 @@
+
+/*
+ * La classe University permette di creare e rendere visualizzabile la navbar e la pagina di login del sito.
+ * */
+
 package com.university.client.schermate;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -45,6 +50,9 @@ public class University implements EntryPoint {
         //creaStudente();
     }
 
+    // Il metodo "Navbar()" permette di creare e rendere visualizzabile/interagibile un menu nel fondo
+    // della pagina. Questa navbar è visualizzabile sia dalla homepage che dal portale e serve
+    // per spostarsi in modo più semmplice ed intuitivo tra le sezioni e pagine del sito web
     public void Navbar() {
 
         HorizontalPanel navbar__panel = new HorizontalPanel();
@@ -119,6 +127,9 @@ public class University implements EntryPoint {
         });
     }
 
+    // Il metodo "caricaLogin()" serve per rendere visualizzabile ed interagibile il form utile ad
+    // eseguire l'accesso alla piattaforma. Questa schermata è raggiungibile attraverso il terzo
+    // pulsante della navbar
     public void caricaLogin() {
 
         login__panel = new FormPanel();
@@ -176,10 +187,10 @@ public class University implements EntryPoint {
 
                     @Override
                     public void onSuccess(String result) {
-                        //Window.alert("sei dentro");
                         //Carica account
                         switch (result) {
                             case "Studente":
+
                                 //Carica pagina studente
                                 studenteServiceAsync.loginStudente(email__input.getText(), password__input.getText(), new AsyncCallback<Studente>() {
                                     @Override
@@ -192,9 +203,9 @@ public class University implements EntryPoint {
                                         if(result==null){
                                             Window.alert("Utente o password sbagliati");
                                         } else {
+                                            // creo e rendo visibile la schermata del portale dello studente
                                             SchermataStudente schermataStudente = new SchermataStudente();
                                             schermataStudente.accesso(result);
-                                            //Window.alert("studente");
                                         }
                                     }
                                 });
@@ -211,9 +222,9 @@ public class University implements EntryPoint {
                                         if(result==null){
                                             Window.alert("Utente o password sbagliati");
                                         } else {
+                                            // creo e rendo visibile la schermata del portale del docente
                                             SchermataDocente schermataDocente = new SchermataDocente();
                                             schermataDocente.accesso(result);
-                                            //Window.alert("docente");
                                         }
                                     }
                                 });
@@ -231,9 +242,9 @@ public class University implements EntryPoint {
                                         if(result==null){
                                             Window.alert("Utente o password sbagliati");
                                         } else {
+                                            // creo e rendo visibile la schermata del portale della segreteria
                                             SchermataSegreteria schermataSegreteria = new SchermataSegreteria();
                                             schermataSegreteria.accesso(result);
-                                            //Window.alert("docente");
                                         }
                                     }
                                 });
@@ -241,6 +252,7 @@ public class University implements EntryPoint {
                             default:
                                 //Carica admin
                                 if(email__input.getText().equals("admin") && password__input.getText().equals("admin")){
+                                    // creo e rendo visibile la schermata del portale dell'Admin'
                                     SchermataAdmin schermataAdmin=new SchermataAdmin();
                                     schermataAdmin.accesso();
                                 } else {
@@ -248,9 +260,6 @@ public class University implements EntryPoint {
                                 }
                                 break;
                         }
-                        //Window.alert(String.valueOf(result.));
-                        //Cambio pagina in PortaleStudente
-
                     }
                 });
             }
