@@ -7,7 +7,7 @@
  *  -   Creare/Modificare/Cancellare un corso. Per creare un corso, il docente deve inserire il nome del corso, la data di inizio e fine del corso, una descrizione del corso, e opzionale un co-docente o un esame. Un corso può avere solo un esame.
  *  -   Aggiungere/Modificare/Cancellare un esame. Per creare un esame, il docente deve aggiungere la data, l'ora e durezza dell'esame e l’aula dove si svolgerà l'esame. In un esame, un studente può registrarsi solo una volta.
  *  -   Visualizzare le proprie informazioni personali (nome, cognome, corsi che insegna con relativo esame)
- *  -   Inviare i voti dell'esame alla segreteria
+ *  -   Inviare i voti dell'esame alla segreteria 
  * */
 
 package com.university.client.schermate;
