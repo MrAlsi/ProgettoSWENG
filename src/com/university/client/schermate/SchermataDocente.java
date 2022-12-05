@@ -791,7 +791,7 @@ public class SchermataDocente {
         descrizione__text.setText(descrizione);
         modificaCorsoContainer.add(descrizione__text);
 
-        final Label codocente__label = new Label("Codocente: " + codocente);
+        final Label codocente__label = new Label("Codocente: ");
         modificaCorsoContainer.add(codocente__label);
 
         final ListBox codocente__list = new ListBox();
@@ -992,32 +992,35 @@ public class SchermataDocente {
                     @Override
                     public void onSuccess(Integer codEsame) {
                         try {
-                            // Aggiungo l'esame creato anche nella tabella dei corsi al corso a cui è stato associato
-                            serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
-                                @Override
-                                public void onFailure(Throwable caught) {
-                                    Window.alert("Errore nel caricare i dati dell'esame "+ caught);
-                                }
-                                @Override
-                                public void onSuccess(Corso result) {
-                                    serviceCorso.modificaCorso(result.getNome(), result.getNome(), result.getDataInizio(), result.getDataFine().toString(), result.getDescrizione(), result.getCoDocente(), result.getDocente(), codEsame, new AsyncCallback<Boolean>() {
-                                        @Override
-                                        public void onFailure(Throwable caught) {
-                                            Window.alert("Errore nel modificare il corso "+caught);
-                                        }
+                            if(codEsame!=-1) {
+                                // Aggiungo l'esame creato anche nella tabella dei corsi al corso a cui è stato associato
+                                serviceCorso.getCorso(corso__list.getSelectedValue(), new AsyncCallback<Corso>() {
+                                    @Override
+                                    public void onFailure(Throwable caught) {
+                                        Window.alert("Errore nel caricare i dati dell'esame " + caught);
+                                    }
 
-                                        @Override
-                                        public void onSuccess(Boolean result) {
-                                            Window.alert("Esame creato");
-                                            try {
-                                                esami();
-                                            } catch (Exception e) {
-                                                throw new RuntimeException(e);
+                                    @Override
+                                    public void onSuccess(Corso result) {
+                                        serviceCorso.modificaCorso(result.getNome(), result.getNome(), result.getDataInizio(), result.getDataFine().toString(), result.getDescrizione(), result.getCoDocente(), result.getDocente(), codEsame, new AsyncCallback<Boolean>() {
+                                            @Override
+                                            public void onFailure(Throwable caught) {
+                                                Window.alert("Errore nel modificare il corso " + caught);
                                             }
-                                        }
-                                    });
-                                }
-                            });
+
+                                            @Override
+                                            public void onSuccess(Boolean result) {
+                                                Window.alert("Esame creato");
+                                                try {
+                                                    esami();
+                                                } catch (Exception e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
