@@ -916,8 +916,11 @@ public class SchermataDocente {
         esameContainer.add(ora__listBox);
         final Label durata__label = new Label("Durata: ");
         esameContainer.add(durata__label);
-        final TextBox durata__textBox = new TextBox();
-        esameContainer.add(durata__textBox);
+        final ListBox durata__listBox = new ListBox();
+        for(int i=1; i<=4; i++){
+            durata__listBox.addItem((String.valueOf(i)));
+        }
+        esameContainer.add(durata__listBox);
         final Label corso__label = new Label("Corso: ");
         esameContainer.add(corso__label);
         final ListBox corso__list = new ListBox();
@@ -953,7 +956,7 @@ public class SchermataDocente {
             @Override
             public void onSubmit(FormPanel.SubmitEvent event) {
                 // Controllo che tutti i campi siano pieni
-                if (aula__textBox.getText().length() == 0 || durata__textBox.getText().length() == 0 || data__dataBox.getValue() == null ||
+                if (aula__textBox.getText().length() == 0 || durata__listBox.getSelectedValue() == null || data__dataBox.getValue() == null ||
                         corso__list.getSelectedValue() == null || ora__listBox.getSelectedValue()== null) {
                     Window.alert("Compilare tutti i campi!");
                     event.cancel();
@@ -980,7 +983,7 @@ public class SchermataDocente {
         creaEsame.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                serviceEsame.creaEsame(corso__list.getSelectedValue(), data__dataBox.getValue().toString(),ora__listBox.getSelectedValue(), durata__textBox.getText(), aula__textBox.getText(), new AsyncCallback<Integer>() {
+                serviceEsame.creaEsame(corso__list.getSelectedValue(), data__dataBox.getValue().toString(),ora__listBox.getSelectedValue(), durata__listBox.getSelectedValue(), aula__textBox.getText(), new AsyncCallback<Integer>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Errore nel creare l'esame "+caught);

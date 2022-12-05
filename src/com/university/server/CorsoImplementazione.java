@@ -114,6 +114,9 @@ public class CorsoImplementazione extends RemoteServiceServlet implements CorsoS
     @Override
     public boolean modificaCorso(String nomeCodice, String nome, String dataInizio, String dataFine, String descrizione, int codocente, int docente, int esame) {
         chiamaDB();
+        //Prima aggiorno l'esame nel caso aggiornamento del corso fosse il cambio nome
+        Esame esameCorso = repositoryEsame.GetById(esame);
+        repositoryEsame.Update(new Esame(esameCorso.getCodEsame(), nome, esameCorso.getData(), esameCorso.getOra(), esameCorso.getDurata(), esameCorso.getAula()));
         return repositoryCorso.Update(
                 new Corso(nome, pulisciData(dataInizio), pulisciData(dataFine), descrizione, codocente, docente, esame),
                 nomeCodice);
